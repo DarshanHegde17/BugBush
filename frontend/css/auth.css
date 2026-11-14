@@ -175,17 +175,30 @@ body {
     margin-bottom: 20px;
 }
 
-.brand-logo-left .logo-icon {
-    width: 44px;
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.brand-logo-img-large {
+    height: 50px !important;
+    max-height: 50px !important;
+    width: auto !important;
+    max-width: 180px !important;
+    object-fit: contain !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
     transition: transform var(--transition-fast);
 }
 
-.brand-logo-left:hover .logo-icon {
-    transform: scale(1.06);
+.brand-logo-img {
+    height: 36px !important;
+    max-height: 36px !important;
+    width: auto !important;
+    max-width: 140px !important;
+    object-fit: contain !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
+    transition: transform var(--transition-fast);
+}
+
+.brand-logo-left:hover .brand-logo-img-large {
+    transform: scale(1.05);
 }
 
 .brand-title-left {

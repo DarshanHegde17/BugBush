@@ -161,6 +161,16 @@
         display: none;
     }
 
+    .brand-logo-img {
+        height: 32px !important;
+        max-height: 32px !important;
+        max-width: 110px !important;
+    }
+
+    .nav-brand {
+        gap: 6px;
+    }
+
     /* Features Grid */
     .features-grid {
         grid-template-columns: 1fr;

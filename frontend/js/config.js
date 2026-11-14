@@ -5,7 +5,7 @@
 (function () {
     const config = {
         // Base API endpoint for backend FastAPI services
-        API_BASE_URL: window.__BUGBASH_API_URL__ || 'http://localhost:8000/api/v1',
+        API_BASE_URL: window.__BUGBASH_API_URL__ || (typeof window !== 'undefined' && window.location && window.location.origin ? window.location.origin + '/api/v1' : 'http://localhost:8000/api/v1'),
         
         // Application Metadata
         APP_NAME: 'BugBash',
@@ -21,6 +21,8 @@
             AUTH_REGISTER: '/auth/register',
             AUTH_LOGOUT: '/auth/logout',
             AUTH_FORGOT_PASSWORD: '/auth/forgot-password',
+            AUTH_RESET_PASSWORD: '/auth/reset-password',
+            AUTH_VERIFY_RESET_TOKEN: '/auth/verify-reset-token',
             AUTH_OAUTH_GOOGLE: '/auth/oauth/google',
             AUTH_VERIFY_EMAIL: '/auth/verify-email',
             AUTH_RESEND_OTP: '/auth/resend-otp',

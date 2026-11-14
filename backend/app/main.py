@@ -3,6 +3,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
+from backend.app.routers.auth import router as auth_router
+
 app = FastAPI(
     title="BugBash API",
     description="API for the BugBash platform",
@@ -16,6 +18,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Include API Routers
+app.include_router(auth_router, prefix="/api/v1/auth", tags=["Authentication"])
 
 
 @app.get("/api/health")

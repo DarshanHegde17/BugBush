@@ -1,295 +1,53 @@
 /* ==========================================================================
-   BugBash - Organization Signup Stylesheet
+   BugBash - Candidate Signup Stylesheet
    Primary Accent: #ff6b35
-   Extends auth.css with multi-step fields, org selector, and strength meter
+   Extends auth.css with individual registration layout, live entropy & match bars
    ========================================================================== */
 
-/* Expand form container for organization registration */
+/* --------------------------------------------------------------------------
+   1. Signup Form Container
+   -------------------------------------------------------------------------- */
 .form-container.signup-container {
-    max-width: 640px;
+    max-width: 480px;
     margin: 0 auto;
 }
 
-/* --------------------------------------------------------------------------
-   1. Organization Type Selector Cards
-   -------------------------------------------------------------------------- */
-.org-type-selection {
-    margin-bottom: 26px;
-}
-
-.selection-title {
-    font-size: 13.5px;
+.required-asterisk {
+    color: var(--primary-color);
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--text-primary);
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    margin-left: 2px;
 }
 
-.selection-title svg {
-    width: 16px;
-    height: 16px;
-    color: var(--primary-color);
+/* Field validation error message */
+.field-error-msg {
+    display: none;
+    font-size: 12px;
+    color: var(--danger);
+    margin-top: 4px;
+    line-height: 1.4;
+    animation: fadeIn 0.2s ease;
 }
 
-.org-type-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-}
-
-.org-type-card {
-    background: var(--surface);
-    border: 1.5px solid var(--border-color);
-    border-radius: var(--radius-lg);
-    padding: 18px 16px;
-    cursor: pointer;
-    transition: all var(--transition-normal);
-    position: relative;
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    user-select: none;
-}
-
-.org-type-card:hover {
-    background: var(--surface-hover);
-    border-color: var(--border-color-hover);
-    transform: translateY(-2px);
-}
-
-.org-type-card.active {
-    border-color: var(--primary-color);
-    background: rgba(255, 107, 53, 0.08);
-    box-shadow: 0 4px 20px var(--primary-glow);
-}
-
-.org-type-card input[type="radio"] {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
-}
-
-.org-type-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: var(--radius-md);
-    background: var(--primary-light);
-    color: var(--primary-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    transition: all var(--transition-fast);
-}
-
-.org-type-card.active .org-type-icon {
-    background: var(--primary-color);
-    color: #ffffff;
-    box-shadow: 0 2px 10px var(--primary-glow);
-}
-
-.org-type-icon svg {
-    width: 22px;
-    height: 22px;
-}
-
-.org-type-content {
-    flex: 1;
-}
-
-.org-type-content h3 {
-    font-size: 15.5px;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 3px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.org-type-content p {
-    font-size: 12.5px;
-    color: var(--text-secondary);
-    line-height: 1.45;
-}
-
-.org-type-radio-mark {
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    border: 2px solid var(--border-color);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition: all var(--transition-fast);
-}
-
-.org-type-card.active .org-type-radio-mark {
-    border-color: var(--primary-color);
-    background: var(--primary-color);
-}
-
-.org-type-card.active .org-type-radio-mark::after {
-    content: '';
-    width: 6px;
-    height: 6px;
-    background: #ffffff;
-    border-radius: 50%;
+.field-error-msg.show {
+    display: block;
 }
 
 /* --------------------------------------------------------------------------
-   2. Form Sections & Section Headers
+   2. Password Entropy Meter & Real-Time Criteria Checklist
    -------------------------------------------------------------------------- */
-.form-section {
-    background: var(--surface);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-lg);
-    padding: 24px 22px;
-    margin-bottom: 22px;
-    transition: border-color var(--transition-normal);
-}
-
-.form-section:focus-within {
-    border-color: rgba(255, 107, 53, 0.35);
-}
-
-.form-section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 18px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.section-badge-title {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.section-num-badge {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: var(--primary-light);
-    color: var(--primary-color);
-    font-size: 12px;
-    font-weight: 800;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid rgba(255, 107, 53, 0.3);
-}
-
-.section-heading-text {
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--text-primary);
-}
-
-.section-subtext {
-    font-size: 12px;
-    color: var(--text-muted);
-}
-
-/* --------------------------------------------------------------------------
-   3. Multi-Column Grid Layouts
-   -------------------------------------------------------------------------- */
-.form-row {
-    display: grid;
-    gap: 16px;
-    margin-bottom: 16px;
-}
-
-.form-row:last-child {
-    margin-bottom: 0;
-}
-
-.form-row.two-col {
-    grid-template-columns: 1fr 1fr;
-}
-
-.form-row.three-col {
-    grid-template-columns: 1.2fr 1fr 1fr;
-}
-
-/* Dropdown select element style matching input */
-.form-select {
-    width: 100%;
-    padding: 13px 16px;
-    background: var(--surface);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    color: var(--text-primary);
-    font-size: 14.5px;
-    font-family: inherit;
-    cursor: pointer;
-    transition: all var(--transition-normal);
-    appearance: none;
-    -webkit-appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%23b0b0b0' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 16px center;
-    padding-right: 42px;
-}
-
-.form-select:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.15);
-}
-
-.form-select option {
-    background-color: #1a1a1a;
-    color: #ffffff;
-}
-
-[data-theme="light"] .form-select option {
-    background-color: #ffffff;
-    color: #111827;
-}
-
-/* Autofill Quick Copy Pill */
-.autofill-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 12px;
-    color: var(--primary-color);
-    cursor: pointer;
-    background: var(--primary-light);
-    border: 1px solid rgba(255, 107, 53, 0.25);
-    padding: 4px 10px;
-    border-radius: var(--radius-full);
-    transition: all var(--transition-fast);
-    user-select: none;
-}
-
-.autofill-pill:hover {
-    background: rgba(255, 107, 53, 0.2);
-}
-
-/* --------------------------------------------------------------------------
-   4. Password Strength Meter & Criteria Checklist
-   -------------------------------------------------------------------------- */
-.password-strength-box {
+.password-entropy-meter {
     margin-top: 8px;
-    background: rgba(0, 0, 0, 0.15);
+    background: rgba(0, 0, 0, 0.2);
     border-radius: var(--radius-md);
-    padding: 10px 14px;
+    padding: 12px 14px;
     border: 1px solid var(--border-color);
 }
 
-[data-theme="light"] .password-strength-box {
+[data-theme="light"] .password-entropy-meter {
     background: rgba(0, 0, 0, 0.02);
 }
 
-.strength-meter-header {
+.entropy-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -297,184 +55,148 @@
     margin-bottom: 6px;
 }
 
-.strength-label {
+.entropy-title {
     color: var(--text-muted);
+    font-weight: 500;
 }
 
-.strength-verdict {
+.entropy-verdict {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    font-size: 11px;
 }
 
-.strength-verdict.weak { color: var(--danger); }
-.strength-verdict.fair { color: var(--warning); }
-.strength-verdict.good { color: var(--info); }
-.strength-verdict.strong { color: var(--success); }
+.entropy-verdict.weak { color: var(--danger); }
+.entropy-verdict.fair { color: var(--warning); }
+.entropy-verdict.good { color: var(--info); }
+.entropy-verdict.strong { color: var(--success); }
 
-.strength-track {
+.entropy-track {
     height: 5px;
     background: var(--surface);
     border-radius: var(--radius-full);
     overflow: hidden;
     position: relative;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 
-.strength-fill {
+.entropy-fill {
     height: 100%;
     width: 0%;
     border-radius: var(--radius-full);
     transition: width 0.3s ease, background-color 0.3s ease;
 }
 
-.strength-fill.weak { width: 25%; background-color: var(--danger); }
-.strength-fill.fair { width: 50%; background-color: var(--warning); }
-.strength-fill.good { width: 75%; background-color: var(--info); }
-.strength-fill.strong { width: 100%; background-color: var(--success); }
+.entropy-fill.weak { width: 25%; background: var(--danger); }
+.entropy-fill.fair { width: 50%; background: var(--warning); }
+.entropy-fill.good { width: 75%; background: var(--info); }
+.entropy-fill.strong { width: 100%; background: var(--success); }
 
-.criteria-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    list-style: none;
-}
-
-.criteria-item {
-    font-size: 11px;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    color: var(--text-muted);
-    transition: color var(--transition-fast);
-}
-
-.criteria-item svg {
-    width: 12px;
-    height: 12px;
-}
-
-.criteria-item.met {
-    color: var(--success);
-}
-
-.criteria-item.met svg {
-    stroke: var(--success);
-}
-
-/* --------------------------------------------------------------------------
-   5. Success State Dialog / Banner
-   -------------------------------------------------------------------------- */
-.registration-success-card {
-    display: none;
-    text-align: center;
-    background: var(--surface-card);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-xl);
-    padding: 40px 30px;
-    box-shadow: var(--shadow-lg);
-    animation: fadeInUp 0.4s ease;
-}
-
-.registration-success-card.show {
-    display: block;
-}
-
-.success-icon-badge {
-    width: 68px;
-    height: 68px;
-    border-radius: 50%;
-    background: var(--success-light);
-    color: var(--success);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 20px;
-    border: 2px solid rgba(52, 199, 89, 0.4);
-}
-
-.success-icon-badge svg {
-    width: 36px;
-    height: 36px;
-}
-
-.registration-success-card h2 {
-    font-size: 26px;
-    font-weight: 800;
-    color: var(--text-primary);
-    margin-bottom: 12px;
-}
-
-.registration-success-card p {
-    font-size: 15px;
-    color: var(--text-secondary);
-    line-height: 1.6;
-    max-width: 480px;
-    margin: 0 auto 24px auto;
-}
-
-.status-callout-box {
-    background: var(--surface);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    padding: 14px 18px;
-    text-align: left;
-    margin-bottom: 28px;
-    font-size: 13.5px;
-}
-
-.status-step-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    margin-bottom: 10px;
-}
-
-.status-step-item:last-child {
-    margin-bottom: 0;
-}
-
-.status-step-item svg {
-    width: 16px;
-    height: 16px;
-    color: var(--primary-color);
-    flex-shrink: 0;
-    margin-top: 2px;
-}
-
-/* --------------------------------------------------------------------------
-   6. Responsive Adjustments
-   -------------------------------------------------------------------------- */
-@media (max-width: 968px) {
-    .form-container.signup-container {
-        max-width: 100%;
-    }
-
-    .form-row.two-col,
-    .form-row.three-col {
-        grid-template-columns: 1fr;
-    }
-
-    .org-type-grid {
-        grid-template-columns: 1fr;
-    }
+/* Criteria Checklist */
+.criteria-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 12px;
 }
 
 @media (max-width: 480px) {
-    .form-section {
-        padding: 18px 14px;
-    }
-
-    .org-type-card {
-        padding: 14px 12px;
-    }
-
-    .section-badge-title {
-        gap: 6px;
-    }
-
-    .section-heading-text {
-        font-size: 14px;
+    .criteria-grid {
+        grid-template-columns: 1fr;
     }
 }
 
+.criteria-item {
+    font-size: 11.5px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color var(--transition-fast);
+}
+
+.criteria-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--text-muted);
+    flex-shrink: 0;
+    transition: background-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.criteria-item.valid {
+    color: var(--success);
+}
+
+.criteria-item.valid .criteria-dot {
+    background: var(--success);
+    transform: scale(1.2);
+}
+
+/* --------------------------------------------------------------------------
+   3. Password Match Status Bar
+   -------------------------------------------------------------------------- */
+.match-status-bar {
+    margin-top: 6px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 18px;
+    transition: all var(--transition-fast);
+}
+
+.match-status-bar.matched {
+    color: var(--success);
+}
+
+.match-status-bar.mismatched {
+    color: var(--danger);
+}
+
+.match-status-bar svg {
+    width: 13px;
+    height: 13px;
+}
+
+/* --------------------------------------------------------------------------
+   4. Security Metrics Badge & Auxiliary Notes
+   -------------------------------------------------------------------------- */
+.security-metric-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 107, 53, 0.1);
+    border: 1px solid rgba(255, 107, 53, 0.25);
+    padding: 8px 14px;
+    border-radius: var(--radius-full);
+    font-size: 12px;
+    color: var(--primary-color);
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+.auth-portal-note {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 18px;
+    line-height: 1.5;
+    border-top: 1px solid var(--border-color);
+    padding-top: 14px;
+}
+
+.auth-portal-note a {
+    color: var(--text-secondary);
+    text-decoration: underline;
+    transition: color var(--transition-fast);
+}
+
+.auth-portal-note a:hover {
+    color: var(--primary-color);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}

@@ -1,538 +1,369 @@
 /**
- * BugBash Organization Signup Controller
- * Manages organization type selection (College vs Company), conditional fields,
- * real-time password strength evaluation, input validation, and FastAPI registration submission.
+ * BugBash - Candidate Signup Controller
+ * Manages individual user registration, live password entropy verification,
+ * confirm password match status, field validation, API communication with
+ * POST /api/v1/auth/register, and automatic transition to OTP email verification.
  */
-
 document.addEventListener('DOMContentLoaded', () => {
-    initOrgTypeSelector();
-    initPasswordStrength();
-    initPasswordToggles();
-    initAutofillHelpers();
-    initSignupForm();
-});
+    // Form & Input Elements
+    const form = document.getElementById('signupForm');
+    const fullNameInput = document.getElementById('fullName');
+    const emailInput = document.getElementById('email');
+    const phoneInput = document.getElementById('phoneNumber');
+    const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirmPassword');
 
-/**
- * 1. Organization Type Selection (College vs Company)
- */
-function initOrgTypeSelector() {
-    const cards = document.querySelectorAll('.org-type-card');
-    const collegeConditionalFields = document.querySelectorAll('.conditional-college');
-    const companyConditionalFields = document.querySelectorAll('.conditional-company');
-    const orgNameLabel = document.getElementById('orgNameLabel');
-    const orgNameInput = document.getElementById('orgName');
-    const orgEmailLabel = document.getElementById('orgEmailLabel');
-    const orgEmailInput = document.getElementById('orgEmail');
+    // Password Toggles
+    const btnTogglePassword = document.getElementById('btnTogglePassword');
+    const btnToggleConfirm = document.getElementById('btnToggleConfirmPassword');
 
-    cards.forEach(card => {
-        card.addEventListener('click', () => {
-            cards.forEach(c => c.classList.remove('active'));
-            card.classList.add('active');
+    // Error Labels
+    const fullNameError = document.getElementById('fullNameError');
+    const emailError = document.getElementById('emailError');
+    const phoneError = document.getElementById('phoneNumberError');
+    const passwordError = document.getElementById('passwordError');
+    const confirmPasswordError = document.getElementById('confirmPasswordError');
 
-            const radio = card.querySelector('input[type="radio"]');
-            if (radio) radio.checked = true;
+    // Alert Banner
+    const alertBox = document.getElementById('signupAlert');
+    const alertMessage = document.getElementById('signupAlertMessage');
 
-            const selectedType = radio ? radio.value : 'college';
-            applyOrgTypeUI(selectedType);
-        });
-    });
+    // Submit Button
+    const submitBtn = document.getElementById('submitBtn');
+    const btnSpinner = document.getElementById('btnSpinner');
+    const btnText = document.getElementById('btnText');
 
-    function applyOrgTypeUI(type) {
-        if (type === 'college') {
-            collegeConditionalFields.forEach(el => el.style.display = 'block');
-            companyConditionalFields.forEach(el => el.style.display = 'none');
+    // Entropy & Match Elements
+    const entropyFill = document.getElementById('entropyFill');
+    const entropyVerdict = document.getElementById('entropyVerdict');
+    const critLength = document.getElementById('critLength');
+    const critUpper = document.getElementById('critUpper');
+    const critLower = document.getElementById('critLower');
+    const critNumber = document.getElementById('critNumber');
+    const critSpecial = document.getElementById('critSpecial');
+    const matchStatusBar = document.getElementById('matchStatusBar');
 
-            if (orgNameLabel) orgNameLabel.textContent = 'College / University Name';
-            if (orgNameInput) orgNameInput.placeholder = 'e.g. Stanford University / MIT / IIT';
-            if (orgEmailLabel) orgEmailLabel.textContent = 'Institution Email';
-            if (orgEmailInput) orgEmailInput.placeholder = 'admissions@university.edu';
-        } else {
-            collegeConditionalFields.forEach(el => el.style.display = 'none');
-            companyConditionalFields.forEach(el => el.style.display = 'block');
+    // Validation Regex Patterns
+    const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const PHONE_REGEX = /^[+]?[\d\s\-\(\)\.]{7,25}$/;
 
-            if (orgNameLabel) orgNameLabel.textContent = 'Company / Enterprise Name';
-            if (orgNameInput) orgNameInput.placeholder = 'e.g. Acme Technologies Inc.';
-            if (orgEmailLabel) orgEmailLabel.textContent = 'Official Work Email';
-            if (orgEmailInput) orgEmailInput.placeholder = 'contact@company.com';
-        }
+    // -------------------------------------------------------------------------
+    // 1. Password Visibility Toggles
+    // -------------------------------------------------------------------------
+    if (btnTogglePassword && passwordInput) {
+        btnTogglePassword.addEventListener('click', () => togglePassword(passwordInput, btnTogglePassword));
     }
-}
+    if (btnToggleConfirm && confirmPasswordInput) {
+        btnToggleConfirm.addEventListener('click', () => togglePassword(confirmPasswordInput, btnToggleConfirm));
+    }
 
-/**
- * 2. Password Strength Evaluation
- * Evaluates: Length >= 8, Uppercase, Lowercase, Number, Special Character
- */
-function initPasswordStrength() {
-    const passwordInput = document.getElementById('adminPassword');
-    const strengthFill = document.getElementById('strengthFill');
-    const strengthVerdict = document.getElementById('strengthVerdict');
+    function togglePassword(input, btn) {
+        const isPassword = input.type === 'password';
+        input.type = isPassword ? 'text' : 'password';
+        btn.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
+        btn.innerHTML = isPassword ? `
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                <line x1="1" y1="1" x2="23" y2="23"></line>
+            </svg>
+        ` : `
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+        `;
+    }
 
-    const criteria = {
-        length: document.getElementById('critLength'),
-        upper: document.getElementById('critUpper'),
-        lower: document.getElementById('critLower'),
-        number: document.getElementById('critNumber'),
-        symbol: document.getElementById('critSymbol')
-    };
-
-    if (!passwordInput) return;
-
-    passwordInput.addEventListener('input', () => {
-        const val = passwordInput.value;
-        const checks = {
-            length: val.length >= 8,
-            upper: /[A-Z]/.test(val),
-            lower: /[a-z]/.test(val),
-            number: /[0-9]/.test(val),
-            symbol: /[^A-Za-z0-9]/.test(val)
-        };
-
-        // Update criteria list badges
-        Object.keys(checks).forEach(k => {
-            if (criteria[k]) {
-                if (checks[k]) {
-                    criteria[k].classList.add('met');
-                } else {
-                    criteria[k].classList.remove('met');
-                }
-            }
+    // -------------------------------------------------------------------------
+    // 2. Live Password Entropy & Match Evaluation
+    // -------------------------------------------------------------------------
+    if (passwordInput) {
+        passwordInput.addEventListener('input', () => {
+            clearFieldError(passwordInput, passwordError);
+            evaluateEntropy(passwordInput.value);
+            checkPasswordMatch();
         });
+    }
 
-        // Compute score (0 to 5)
-        const score = Object.values(checks).filter(Boolean).length;
+    if (confirmPasswordInput) {
+        confirmPasswordInput.addEventListener('input', () => {
+            clearFieldError(confirmPasswordInput, confirmPasswordError);
+            checkPasswordMatch();
+        });
+    }
 
-        if (val.length === 0) {
-            strengthFill.className = 'strength-fill';
-            strengthFill.style.width = '0%';
-            strengthVerdict.textContent = 'None';
-            strengthVerdict.className = 'strength-verdict';
-            return;
+    function evaluateEntropy(password) {
+        const hasLength = password.length >= 8;
+        const hasUpper = /[A-Z]/.test(password);
+        const hasLower = /[a-z]/.test(password);
+        const hasNumber = /[0-9]/.test(password);
+        const hasSpecial = /[^A-Za-z0-9]/.test(password);
+
+        updateCriteriaItem(critLength, hasLength);
+        updateCriteriaItem(critUpper, hasUpper);
+        updateCriteriaItem(critLower, hasLower);
+        updateCriteriaItem(critNumber, hasNumber);
+        updateCriteriaItem(critSpecial, hasSpecial);
+
+        const score = [hasLength, hasUpper, hasLower, hasNumber, hasSpecial].filter(Boolean).length;
+        const isFullyValid = score === 5;
+
+        if (!entropyFill || !entropyVerdict) return { score, isFullyValid };
+
+        if (password.length === 0) {
+            entropyFill.className = 'entropy-fill';
+            entropyFill.style.width = '0%';
+            entropyVerdict.textContent = '';
+            entropyVerdict.className = 'entropy-verdict';
+            return { score: 0, isFullyValid: false };
         }
 
         if (score <= 2) {
-            strengthFill.className = 'strength-fill weak';
-            strengthVerdict.textContent = 'Weak';
-            strengthVerdict.className = 'strength-verdict weak';
+            entropyFill.className = 'entropy-fill weak';
+            entropyVerdict.textContent = 'Weak';
+            entropyVerdict.className = 'entropy-verdict weak';
         } else if (score === 3) {
-            strengthFill.className = 'strength-fill fair';
-            strengthVerdict.textContent = 'Fair';
-            strengthVerdict.className = 'strength-verdict fair';
+            entropyFill.className = 'entropy-fill fair';
+            entropyVerdict.textContent = 'Fair';
+            entropyVerdict.className = 'entropy-verdict fair';
         } else if (score === 4) {
-            strengthFill.className = 'strength-fill good';
-            strengthVerdict.textContent = 'Good';
-            strengthVerdict.className = 'strength-verdict good';
+            entropyFill.className = 'entropy-fill good';
+            entropyVerdict.textContent = 'Good';
+            entropyVerdict.className = 'entropy-verdict good';
         } else {
-            strengthFill.className = 'strength-fill strong';
-            strengthVerdict.textContent = 'Strong';
-            strengthVerdict.className = 'strength-verdict strong';
+            entropyFill.className = 'entropy-fill strong';
+            entropyVerdict.textContent = 'Strong';
+            entropyVerdict.className = 'entropy-verdict strong';
         }
 
-        // Live check if confirm password already typed
-        checkConfirmPasswordMatch();
-    });
-}
-
-/**
- * 3. Password Visibility Toggles
- */
-function initPasswordToggles() {
-    setupToggle('toggleAdminPasswordBtn', 'adminPassword');
-    setupToggle('toggleConfirmPasswordBtn', 'confirmPassword');
-
-    function setupToggle(btnId, inputId) {
-        const btn = document.getElementById(btnId);
-        const input = document.getElementById(inputId);
-        if (!btn || !input) return;
-
-        btn.addEventListener('click', () => {
-            const isPassword = input.getAttribute('type') === 'password';
-            input.setAttribute('type', isPassword ? 'text' : 'password');
-
-            btn.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
-            const eye = btn.querySelector('.icon-eye');
-            const eyeOff = btn.querySelector('.icon-eye-off');
-            if (eye && eyeOff) {
-                eye.style.display = isPassword ? 'none' : 'block';
-                eyeOff.style.display = isPassword ? 'block' : 'none';
-            }
-        });
-    }
-}
-
-/**
- * 4. Autofill Helpers ("Same as Contact Person")
- */
-function initAutofillHelpers() {
-    const copyPill = document.getElementById('copyContactToAdmin');
-    if (!copyPill) return;
-
-    copyPill.addEventListener('click', () => {
-        const contactPerson = document.getElementById('contactPerson')?.value || '';
-        const orgPhone = document.getElementById('orgPhone')?.value || '';
-        const orgEmail = document.getElementById('orgEmail')?.value || '';
-
-        const adminName = document.getElementById('adminFullName');
-        const adminPhone = document.getElementById('adminPhone');
-        const adminEmail = document.getElementById('adminEmail');
-
-        if (contactPerson && adminName && !adminName.value) adminName.value = contactPerson;
-        if (orgPhone && adminPhone && !adminPhone.value) adminPhone.value = orgPhone;
-        if (orgEmail && adminEmail && !adminEmail.value) adminEmail.value = orgEmail;
-    });
-}
-
-/**
- * 5. Confirm Password Matching
- */
-function checkConfirmPasswordMatch() {
-    const passwordInput = document.getElementById('adminPassword');
-    const confirmInput = document.getElementById('confirmPassword');
-    const confirmError = document.getElementById('confirmPasswordError');
-
-    if (!confirmInput || !confirmInput.value) return true;
-
-    if (passwordInput.value !== confirmInput.value) {
-        confirmInput.classList.add('is-invalid');
-        if (confirmError) {
-            confirmError.textContent = 'Passwords do not match.';
-            confirmError.classList.add('visible');
-        }
-        return false;
-    } else {
-        confirmInput.classList.remove('is-invalid');
-        if (confirmError) {
-            confirmError.textContent = '';
-            confirmError.classList.remove('visible');
-        }
-        return true;
-    }
-}
-
-/**
- * 6. Main Form Validation & Backend Registration
- */
-function initSignupForm() {
-    const form = document.getElementById('signupForm');
-    const submitBtn = document.getElementById('submitBtn');
-    const confirmInput = document.getElementById('confirmPassword');
-
-    if (!form) return;
-
-    if (confirmInput) {
-        confirmInput.addEventListener('input', checkConfirmPasswordMatch);
+        return { score, isFullyValid };
     }
 
-    // Auto-clear invalid state on user typing
-    form.querySelectorAll('input, select').forEach(input => {
-        input.addEventListener('input', () => {
-            clearFieldError(input);
-            hideAlert();
-        });
-    });
+    function updateCriteriaItem(element, isValid) {
+        if (!element) return;
+        if (isValid) {
+            element.classList.add('valid');
+        } else {
+            element.classList.remove('valid');
+        }
+    }
 
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
+    function checkPasswordMatch() {
+        if (!confirmPasswordInput || !matchStatusBar) return;
 
-        // 1. Determine Selected Org Type
-        const orgTypeRadio = document.querySelector('input[name="organization_type"]:checked');
-        const orgType = orgTypeRadio ? orgTypeRadio.value : 'college';
+        const p1 = passwordInput.value;
+        const p2 = confirmPasswordInput.value;
 
-        // 2. Gather Field Values
-        const orgName = (document.getElementById('orgName')?.value || '').trim();
-        const orgEmail = (document.getElementById('orgEmail')?.value || '').trim();
-        const orgWebsite = (document.getElementById('orgWebsite')?.value || '').trim();
-        const contactPerson = (document.getElementById('contactPerson')?.value || '').trim();
-        const orgPhone = (document.getElementById('orgPhone')?.value || '').trim();
-        const street = (document.getElementById('streetAddress')?.value || '').trim();
-        const city = (document.getElementById('city')?.value || '').trim();
-        const state = (document.getElementById('state')?.value || '').trim();
-        const country = (document.getElementById('country')?.value || '').trim();
-
-        // Conditional
-        const affiliation = (document.getElementById('universityAffiliation')?.value || '').trim();
-        const industry = (document.getElementById('industrySelect')?.value || '').trim();
-
-        // Admin Fields
-        const adminFullName = (document.getElementById('adminFullName')?.value || '').trim();
-        const adminEmail = (document.getElementById('adminEmail')?.value || '').trim();
-        const adminPhone = (document.getElementById('adminPhone')?.value || '').trim();
-        const adminPassword = document.getElementById('adminPassword')?.value || '';
-        const confirmPassword = document.getElementById('confirmPassword')?.value || '';
-        const termsConsent = document.getElementById('termsConsent')?.checked || false;
-
-        let hasError = false;
-
-        // Validation - Organization Info
-        if (!orgName) {
-            setFieldError(document.getElementById('orgName'), `${orgType === 'college' ? 'College' : 'Company'} name is required.`);
-            hasError = true;
+        if (!p2) {
+            matchStatusBar.className = 'match-status-bar';
+            matchStatusBar.innerHTML = '';
+            return;
         }
 
-        if (!orgEmail) {
-            setFieldError(document.getElementById('orgEmail'), 'Official email is required.');
-            hasError = true;
-        } else if (!isValidEmail(orgEmail)) {
-            setFieldError(document.getElementById('orgEmail'), 'Please provide a valid email address.');
-            hasError = true;
+        if (p1 === p2) {
+            matchStatusBar.className = 'match-status-bar matched';
+            matchStatusBar.innerHTML = `
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <span>Passwords match</span>
+            `;
+        } else {
+            matchStatusBar.className = 'match-status-bar mismatched';
+            matchStatusBar.innerHTML = `
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <span>Passwords do not match</span>
+            `;
         }
+    }
 
-        if (orgType === 'company' && !industry) {
-            setFieldError(document.getElementById('industrySelect'), 'Please select your industry.');
-            hasError = true;
+    // -------------------------------------------------------------------------
+    // 3. Clear Field Errors on User Input
+    // -------------------------------------------------------------------------
+    if (fullNameInput) {
+        fullNameInput.addEventListener('input', () => clearFieldError(fullNameInput, fullNameError));
+    }
+    if (emailInput) {
+        emailInput.addEventListener('input', () => clearFieldError(emailInput, emailError));
+    }
+    if (phoneInput) {
+        phoneInput.addEventListener('input', () => clearFieldError(phoneInput, phoneError));
+    }
+
+    function setFieldError(input, errorEl, message) {
+        if (input) input.classList.add('is-invalid');
+        if (errorEl) {
+            errorEl.textContent = message;
+            errorEl.classList.add('show');
         }
+    }
 
-        if (!contactPerson) {
-            setFieldError(document.getElementById('contactPerson'), 'Contact person is required.');
-            hasError = true;
+    function clearFieldError(input, errorEl) {
+        if (input) input.classList.remove('is-invalid');
+        if (errorEl) {
+            errorEl.textContent = '';
+            errorEl.classList.remove('show');
         }
-
-        if (!orgPhone) {
-            setFieldError(document.getElementById('orgPhone'), 'Contact phone number is required.');
-            hasError = true;
-        }
-
-        if (!street) {
-            setFieldError(document.getElementById('streetAddress'), 'Street address is required.');
-            hasError = true;
-        }
-
-        if (!city) {
-            setFieldError(document.getElementById('city'), 'City is required.');
-            hasError = true;
-        }
-
-        if (!state) {
-            setFieldError(document.getElementById('state'), 'State / Province is required.');
-            hasError = true;
-        }
-
-        if (!country) {
-            setFieldError(document.getElementById('country'), 'Country is required.');
-            hasError = true;
-        }
-
-        // Validation - Admin Account
-        if (!adminFullName) {
-            setFieldError(document.getElementById('adminFullName'), 'Administrator full name is required.');
-            hasError = true;
-        }
-
-        if (!adminEmail) {
-            setFieldError(document.getElementById('adminEmail'), 'Administrator email is required.');
-            hasError = true;
-        } else if (!isValidEmail(adminEmail)) {
-            setFieldError(document.getElementById('adminEmail'), 'Please provide a valid administrator email.');
-            hasError = true;
-        }
-
-        if (!adminPhone) {
-            setFieldError(document.getElementById('adminPhone'), 'Administrator phone number is required.');
-            hasError = true;
-        }
-
-        if (!adminPassword) {
-            setFieldError(document.getElementById('adminPassword'), 'Password is required.');
-            hasError = true;
-        } else if (adminPassword.length < 8) {
-            setFieldError(document.getElementById('adminPassword'), 'Password must be at least 8 characters long.');
-            hasError = true;
-        }
-
-        if (adminPassword !== confirmPassword) {
-            setFieldError(document.getElementById('confirmPassword'), 'Passwords do not match.');
-            hasError = true;
-        }
-
-        if (!termsConsent) {
-            showAlert('You must consent to the Terms of Service and Privacy Policy to register.', 'warning');
-            hasError = true;
-        }
-
-        if (hasError) return;
-
-        // 3. Assemble Registration Payload
-        const payload = {
-            organization_type: orgType,
-            organization_name: orgName,
-            organization_email: orgEmail,
-            website: orgWebsite || null,
-            university_affiliation: orgType === 'college' ? (affiliation || null) : null,
-            industry: orgType === 'company' ? industry : null,
-            contact_person: contactPerson,
-            phone_number: orgPhone,
-            address: {
-                street: street,
-                city: city,
-                state: state,
-                country: country
-            },
-            admin: {
-                full_name: adminFullName,
-                email: adminEmail,
-                phone: adminPhone,
-                password: adminPassword
-            }
-        };
-
-        // 4. Submit to FastAPI Backend
-        setLoadingState(true);
         hideAlert();
+    }
 
-        const apiBase = window.BugBashConfig?.API_BASE_URL || 'http://localhost:8000/api/v1';
-        const registerEndpoint = `${apiBase}${window.BugBashConfig?.ENDPOINTS?.ORGANIZATION_REGISTER || '/organizations/register'}`;
+    function showAlert(message, type = 'error') {
+        if (!alertBox || !alertMessage) return;
+        alertMessage.textContent = message;
+        alertBox.className = `alert-box show ${type}`;
+        alertBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function hideAlert() {
+        if (!alertBox) return;
+        alertBox.className = 'alert-box';
+    }
+
+    // -------------------------------------------------------------------------
+    // 4. Form Submission Handling
+    // -------------------------------------------------------------------------
+    if (form) {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideAlert();
+
+            const fullName = fullNameInput.value.trim();
+            const email = emailInput.value.trim();
+            const phone = phoneInput.value.trim();
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+
+            let hasErrors = false;
+            let firstInvalidEl = null;
+
+            // Validate Full Name
+            if (!fullName || fullName.length < 2) {
+                setFieldError(fullNameInput, fullNameError, 'Please enter your full name (at least 2 characters).');
+                hasErrors = true;
+                if (!firstInvalidEl) firstInvalidEl = fullNameInput;
+            }
+
+            // Validate Email
+            if (!email) {
+                setFieldError(emailInput, emailError, 'Email address is required.');
+                hasErrors = true;
+                if (!firstInvalidEl) firstInvalidEl = emailInput;
+            } else if (!EMAIL_REGEX.test(email)) {
+                setFieldError(emailInput, emailError, 'Please enter a valid email address (e.g. name@example.com).');
+                hasErrors = true;
+                if (!firstInvalidEl) firstInvalidEl = emailInput;
+            }
+
+            // Validate Phone Number
+            if (!phone) {
+                setFieldError(phoneInput, phoneError, 'Phone number is required.');
+                hasErrors = true;
+                if (!firstInvalidEl) firstInvalidEl = phoneInput;
+            } else if (!PHONE_REGEX.test(phone)) {
+                setFieldError(phoneInput, phoneError, 'Please enter a valid phone number (at least 7 digits).');
+                hasErrors = true;
+                if (!firstInvalidEl) firstInvalidEl = phoneInput;
+            }
+
+            // Validate Password Complexity
+            const entropyResult = evaluateEntropy(password);
+            if (!password) {
+                setFieldError(passwordInput, passwordError, 'Password is required.');
+                hasErrors = true;
+                if (!firstInvalidEl) firstInvalidEl = passwordInput;
+            } else if (!entropyResult.isFullyValid) {
+                setFieldError(passwordInput, passwordError, 'Password must fulfill all 5 security requirements.');
+                hasErrors = true;
+                if (!firstInvalidEl) firstInvalidEl = passwordInput;
+            }
+
+            // Validate Confirm Password
+            if (!confirmPassword) {
+                setFieldError(confirmPasswordInput, confirmPasswordError, 'Please confirm your password.');
+                hasErrors = true;
+                if (!firstInvalidEl) firstInvalidEl = confirmPasswordInput;
+            } else if (password !== confirmPassword) {
+                setFieldError(confirmPasswordInput, confirmPasswordError, 'Passwords do not match. Please re-enter.');
+                hasErrors = true;
+                if (!firstInvalidEl) firstInvalidEl = confirmPasswordInput;
+            }
+
+            if (hasErrors) {
+                if (firstInvalidEl) firstInvalidEl.focus();
+                return;
+            }
+
+            // All Valid -> Dispatch to API
+            await submitRegistration({
+                full_name: fullName,
+                email: email,
+                phone_number: phone,
+                password: password
+            });
+        });
+    }
+
+    /**
+     * Dispatches candidate registration payload to POST /api/v1/auth/register
+     */
+    async function submitRegistration(payload) {
+        setLoading(true);
+
+        const baseUrl = window.BugBashConfig?.API_BASE_URL || (window.location.origin + '/api/v1');
+        const endpoint = baseUrl + (window.BugBashConfig?.ENDPOINTS?.AUTH_REGISTER || '/auth/register');
 
         try {
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), window.BugBashConfig?.REQUEST_TIMEOUT || 15000);
-
-            const response = await fetch(registerEndpoint, {
+            const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 },
-                body: JSON.stringify(payload),
-                signal: controller.signal
+                body: JSON.stringify(payload)
             });
 
-            clearTimeout(timeoutId);
+            const data = await response.json().catch(() => ({}));
 
-            let data = {};
-            try {
-                data = await response.json();
-            } catch (_) {
-                // Non-JSON response
-            }
+            if (response.ok) {
+                // Success: store verification session and redirect to verify-otp.html
+                sessionStorage.setItem('bugbash_verification_email', data.email || payload.email);
+                sessionStorage.setItem('bugbash_verification_token', data.verification_token || '');
+                sessionStorage.setItem('bugbash_candidate_name', payload.full_name);
 
-            // 5. Handle Server Response
-            if (response.status === 200 || response.status === 201) {
-                // Registration Successful
-                handleRegistrationSuccess(data, adminEmail, orgName);
-            } else if (response.status === 400 || response.status === 409) {
-                // Duplicate Organization or Conflict
-                const msg = data.detail || data.message || 'An organization or administrator with this email already exists.';
-                showAlert(msg, 'error');
-                setLoadingState(false);
+                showAlert('Account created! Redirecting to email verification...', 'success');
+
+                setTimeout(() => {
+                    const redirectUrl = `verify-otp.html?email=${encodeURIComponent(data.email || payload.email)}&context=${encodeURIComponent(data.verification_token || '')}`;
+                    window.location.href = redirectUrl;
+                }, 600);
+
+            } else if (response.status === 409) {
+                // Duplicate email handling
+                showAlert(data.detail || 'An account with this email address already exists. Please sign in instead.', 'warning');
+                setFieldError(emailInput, emailError, 'Email address already registered.');
+                emailInput.focus();
             } else if (response.status === 422) {
-                // FastAPI Schema Validation Error
-                const errorDetail = Array.isArray(data.detail)
-                    ? data.detail.map(d => `${d.loc ? d.loc.join('.') : ''}: ${d.msg}`).join(', ')
-                    : (data.detail || 'Invalid registration information.');
-                showAlert(`Validation error: ${errorDetail}`, 'error');
-                setLoadingState(false);
-            } else if (response.status === 429) {
-                showAlert('Too many registration requests. Please wait a few minutes before trying again.', 'warning');
-                setLoadingState(false);
-            } else if (response.status >= 500) {
-                showAlert('Server error occurred during organization registration. Please try again shortly.', 'error');
-                setLoadingState(false);
+                const msg = data.detail?.[0]?.msg || data.detail || 'Please verify the highlighted fields.';
+                showAlert(msg, 'error');
             } else {
-                showAlert(data.detail || data.message || `Registration failed (Status code: ${response.status}).`, 'error');
-                setLoadingState(false);
+                showAlert(data.detail || 'Registration failed. Please check your information and try again.', 'error');
             }
-
-        } catch (error) {
-            console.error('BugBash Organization Registration Error:', error);
-            setLoadingState(false);
-
-            if (error.name === 'AbortError') {
-                showAlert('Registration request timed out. Please check your network or server connection.', 'error');
-            } else {
-                showAlert(
-                    `Unable to reach BugBash registration service at ${registerEndpoint}. Please ensure the backend is active (python run.py).`,
-                    'error'
-                );
-            }
-        }
-    });
-}
-
-/**
- * 7. Success State Presentation
- */
-function handleRegistrationSuccess(data, adminEmail, orgName) {
-    const form = document.getElementById('signupForm');
-    const successCard = document.getElementById('registrationSuccessCard');
-    const registeredOrgName = document.getElementById('successOrgName');
-    const sentEmailEl = document.getElementById('successEmailSent');
-
-    if (registeredOrgName) registeredOrgName.textContent = orgName;
-    if (sentEmailEl) sentEmailEl.textContent = adminEmail;
-
-    if (form && successCard) {
-        form.style.display = 'none';
-        document.querySelector('.org-type-selection')?.remove();
-        document.querySelector('.form-header')?.remove();
-        successCard.classList.add('show');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-}
-
-/**
- * 8. Validation & Alert Helpers
- */
-function isValidEmail(email) {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-}
-
-function setFieldError(input, message) {
-    if (!input) return;
-    input.classList.add('is-invalid');
-    const parent = input.closest('.form-group');
-    if (parent) {
-        const errorEl = parent.querySelector('.field-error-msg');
-        if (errorEl) {
-            errorEl.textContent = message;
-            errorEl.classList.add('visible');
+        } catch (err) {
+            console.error('[BugBash Registration Error]:', err);
+            showAlert('Unable to reach the BugBash registration server. Please verify your connection.', 'error');
+        } finally {
+            setLoading(false);
         }
     }
-    input.focus();
-}
 
-function clearFieldError(input) {
-    if (!input) return;
-    input.classList.remove('is-invalid');
-    const parent = input.closest('.form-group');
-    if (parent) {
-        const errorEl = parent.querySelector('.field-error-msg');
-        if (errorEl) {
-            errorEl.textContent = '';
-            errorEl.classList.remove('visible');
-        }
+    function setLoading(isLoading) {
+        if (!submitBtn) return;
+        submitBtn.disabled = isLoading;
+        if (btnSpinner) btnSpinner.style.display = isLoading ? 'inline-block' : 'none';
+        if (btnText) btnText.textContent = isLoading ? 'Creating Account...' : 'Create Account';
     }
-}
-
-function showAlert(message, type = 'error') {
-    const alertBox = document.getElementById('signupAlert');
-    if (!alertBox) return;
-
-    alertBox.className = `alert-box ${type} show`;
-    const content = alertBox.querySelector('.alert-content');
-    if (content) {
-        content.innerHTML = message;
-    } else {
-        alertBox.innerHTML = message;
-    }
-    alertBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-}
-
-function hideAlert() {
-    const alertBox = document.getElementById('signupAlert');
-    if (alertBox) {
-        alertBox.classList.remove('show');
-    }
-}
-
-function setLoadingState(isLoading) {
-    const btn = document.getElementById('submitBtn');
-    if (!btn) return;
-
-    btn.disabled = isLoading;
-    if (isLoading) {
-        btn.classList.add('loading');
-    } else {
-        btn.classList.remove('loading');
-    }
-}
-
+});

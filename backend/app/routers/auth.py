@@ -1,6 +1,12 @@
 import os
 from fastapi import APIRouter, HTTPException, Request, status, Query
 from backend.app.schemas.auth import (
+    RegisterRequest,
+    RegisterResponse,
+    VerifyEmailRequest,
+    VerifyEmailResponse,
+    ResendOtpRequest,
+    ResendOtpResponse,
     ForgotPasswordRequest,
     ForgotPasswordResponse,
     ResetPasswordRequest,
@@ -8,12 +14,113 @@ from backend.app.schemas.auth import (
     VerifyResetTokenResponse
 )
 from backend.app.services.password_reset_service import password_reset_service
+from backend.app.services.user_service import user_service
 
 router = APIRouter()
 
 IS_DEV = os.environ.get("ENVIRONMENT", "development").lower() in ("development", "test", "local")
 
 
+# ==============================================================================
+# 1. Candidate Registration & OTP Email Verification Endpoints
+# ==============================================================================
+@router.post(
+    "/register",
+    response_model=RegisterResponse,
+    status_code=status.HTTP_201_CREATED,
+    summary="Register a new individual candidate account",
+    description="Registers an individual candidate with full name, email, phone number, and password. Issues a 6-digit OTP."
+)
+async def register_user(payload: RegisterRequest):
+    success, user_record, token, otp, err_msg = user_service.register_user(
+        full_name=payload.full_name,
+        email=payload.email,
+        phone_number=payload.phone_number,
+        password=payload.password
+    )
+
+    if not success:
+        # Determine whether it's a conflict (duplicate email) or validation failure
+        if "already exists" in (err_msg or "").lower():
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail=err_msg
+            )
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=err_msg or "Invalid registration information."
+        )
+
+    return RegisterResponse(
+        status="success",
+        message="Account created successfully. A 6-digit verification code has been sent to your email.",
+        email=user_record["email"],
+        verification_token=token,
+        dev_otp=otp if IS_DEV else None
+    )
+
+
+@router.post(
+    "/verify-email",
+    response_model=VerifyEmailResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Verify candidate email using 6-digit OTP",
+    description="Verifies the OTP sent during registration and activates the user account."
+)
+async def verify_email(payload: VerifyEmailRequest):
+    success, err_msg = user_service.verify_email_otp(
+        token=payload.verification_token,
+        otp=payload.otp,
+        email=payload.email
+    )
+
+    if not success:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=err_msg or "Verification failed."
+        )
+
+    return VerifyEmailResponse(
+        status="success",
+        message="Email verified successfully! Your account is now active.",
+        redirect_url="login.html"
+    )
+
+
+@router.post(
+    "/resend-otp",
+    response_model=ResendOtpResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Resend verification OTP",
+    description="Generates and dispatches a fresh 6-digit OTP subject to rate limit cooldowns."
+)
+async def resend_otp(payload: ResendOtpRequest):
+    success, new_otp, err_msg = user_service.resend_otp(
+        token=payload.verification_token,
+        email=payload.email
+    )
+
+    if not success:
+        if "wait" in (err_msg or "").lower():
+            raise HTTPException(
+                status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+                detail=err_msg
+            )
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=err_msg or "Unable to resend verification code."
+        )
+
+    return ResendOtpResponse(
+        status="success",
+        message="A new verification code has been dispatched to your email.",
+        dev_otp=new_otp if IS_DEV else None
+    )
+
+
+# ==============================================================================
+# 2. Password Recovery Endpoints
+# ==============================================================================
 @router.post(
     "/forgot-password",
     response_model=ForgotPasswordResponse,
@@ -40,15 +147,12 @@ async def forgot_password(payload: ForgotPasswordRequest, request: Request):
             detail="Too many password reset requests. Please wait a few minutes before trying again."
         )
 
-    # In local development mode, we can optionally attach the reset link for direct UI testing
     response_data = {
         "status": "success",
         "message": "If an account exists with this email, a password reset link has been sent."
     }
 
-    # If in local dev environment and requested or needed for local browser simulation:
     if IS_DEV:
-        # Provide dev helper URL so developer can click directly without an SMTP mail server
         response_data["dev_reset_url"] = f"/reset-password.html?token={raw_token}"
 
     return response_data
@@ -94,4 +198,3 @@ async def reset_password(payload: ResetPasswordRequest):
         status="success",
         message="Your password has been successfully reset. You can now log in with your new password."
     )
-

@@ -2,6 +2,50 @@ from pydantic import BaseModel, EmailStr, Field
 from typing import Optional
 
 
+# ==============================================================================
+# Registration & Verification Schemas
+# ==============================================================================
+class RegisterRequest(BaseModel):
+    full_name: str = Field(..., min_length=2, max_length=100, description="Full Name of the candidate")
+    email: EmailStr = Field(..., description="Unique email address")
+    phone_number: str = Field(..., min_length=7, max_length=25, description="Contact phone number")
+    password: str = Field(..., min_length=8, description="Account password meeting complexity rules")
+
+
+class RegisterResponse(BaseModel):
+    status: str = "success"
+    message: str = "Account created successfully. A 6-digit verification code has been sent to your email."
+    email: str
+    verification_token: str
+    dev_otp: Optional[str] = Field(None, description="Local development OTP helper")
+
+
+class VerifyEmailRequest(BaseModel):
+    verification_token: Optional[str] = Field(None, description="Server-issued registration context token")
+    otp: str = Field(..., min_length=6, max_length=6, description="6-digit verification code")
+    email: Optional[EmailStr] = Field(None, description="Registered email address")
+
+
+class VerifyEmailResponse(BaseModel):
+    status: str = "success"
+    message: str = "Email verified successfully! Your account is now active."
+    redirect_url: str = "login.html"
+
+
+class ResendOtpRequest(BaseModel):
+    verification_token: Optional[str] = Field(None, description="Server-issued registration context token")
+    email: Optional[EmailStr] = Field(None, description="Registered email address")
+
+
+class ResendOtpResponse(BaseModel):
+    status: str = "success"
+    message: str = "A new verification code has been dispatched to your email."
+    dev_otp: Optional[str] = Field(None, description="Local development OTP helper")
+
+
+# ==============================================================================
+# Forgot & Reset Password Schemas
+# ==============================================================================
 class ForgotPasswordRequest(BaseModel):
     email: EmailStr = Field(..., description="Registered user email address")
 

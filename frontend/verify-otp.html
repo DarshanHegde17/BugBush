@@ -38,7 +38,7 @@
                         Verify Your <span class="highlight">Account</span>
                     </h1>
                     <p class="welcome-desc-left">
-                        Secure your organization assessment portal with two-factor email verification.
+                        Secure your coding assessment workspace with verified email authentication.
                     </p>
                 </div>
 
@@ -47,13 +47,14 @@
                     <div class="feature-pill-card">
                         <div class="feature-pill-icon" aria-hidden="true">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <polyline points="16 11 18 13 22 9"></polyline>
                             </svg>
                         </div>
                         <div class="feature-pill-content">
-                            <h3>Institutional Verification</h3>
-                            <p>Ensures only authorized personnel access assessment creation and student records.</p>
+                            <h3>Candidate Verification</h3>
+                            <p>Ensures accurate assessment credentials, performance tracking, and score delivery.</p>
                         </div>
                     </div>
 
@@ -68,6 +69,19 @@
                             <p>One-time passwords are short-lived, rate-limited, and securely validated on the server.</p>
                         </div>
                     </div>
+
+                    <div class="feature-pill-card">
+                        <div class="feature-pill-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </div>
+                        <div class="feature-pill-content">
+                            <h3>Instant Activation</h3>
+                            <p>Once verified, your candidate workspace is instantly activated to solve coding problems.</p>
+                        </div>
+                    </div>
+                </div>
 
                     <div class="feature-pill-card">
                         <div class="feature-pill-icon" aria-hidden="true">
@@ -213,7 +227,7 @@
             </div>
 
             <!-- ============================================================
-                 Workflow State E & F: Email Verified & Super Admin Approval Pending
+                 Workflow State E & F: Email Verified & Candidate Account Active
                  ============================================================ -->
             <div id="otpSuccessScreen" class="form-container otp-success-screen" role="region" aria-live="polite">
                 <div class="success-badge-icon" aria-hidden="true">
@@ -221,38 +235,20 @@
                         <polyline points="20 6 9 17 4 12"></polyline>
                     </svg>
                 </div>
-                <h2>Email Verified Successfully!</h2>
+                <h2>Account Activated Successfully!</h2>
                 <div class="verified-tag">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                    <span>Email Confirmed</span>
+                    <span>Email Verified &bull; Account Active</span>
                 </div>
 
-                <div class="approval-workflow-box">
-                    <div class="approval-step-row">
-                        <div class="step-marker done" aria-hidden="true">&#10003;</div>
-                        <div>
-                            <div class="step-info-title">Email Verified</div>
-                            <div class="step-info-desc">Ownership of administrator email <strong id="successAdminEmail" style="color: var(--text-primary);"></strong> has been authenticated.</div>
-                        </div>
-                    </div>
-                    <div class="approval-step-row">
-                        <div class="step-marker pending" aria-hidden="true">&#9679;</div>
-                        <div>
-                            <div class="step-info-title">Super Admin Approval (Pending)</div>
-                            <div class="step-info-desc">Organization <strong id="successOrgName" style="color: var(--primary-color);"></strong> has been submitted to the BugBash Security Administration team for institutional accreditation review.</div>
-                        </div>
-                    </div>
-                    <div class="approval-step-row">
-                        <div class="step-marker" style="background: var(--surface); border: 1px solid var(--border-color); color: var(--text-muted);" aria-hidden="true">3</div>
-                        <div>
-                            <div class="step-info-title">Portal Access Activation</div>
-                            <div class="step-info-desc">You will receive an official approval email once verification is complete (typically within 24 hours). Dashboard sign in will be unlocked upon approval.</div>
-                        </div>
-                    </div>
+                <div class="approval-workflow-box" style="margin-bottom: 24px;">
+                    <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6; text-align: center; margin: 0;">
+                        Your email <strong id="successAdminEmail" style="color: var(--text-primary);"></strong> has been authenticated. Your candidate account is now fully active and ready for AI-powered coding assessments.
+                    </p>
                 </div>
 
                 <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
-                    <a href="login.html" class="btn btn-primary" style="padding: 12px 28px;">Return to Sign In</a>
+                    <a href="login.html" class="btn btn-primary" style="padding: 12px 28px;">Proceed to Sign In</a>
                     <a href="index.html" class="btn btn-secondary" style="padding: 12px 24px;">Back to Home</a>
                 </div>
             </div>

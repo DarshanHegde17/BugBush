@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Register your college or company on BugBash - The AI-Powered Coding Assessment Platform.">
+    <title>Register Organization - BugBash | Smart Coding. Better Assessment.</title>
+    
+    <!-- Theme Manager (Early load to prevent theme flicker) -->
+    <script src="js/theme.js"></script>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/signup.css">
+</head>
+<body>
+
+    <div class="auth-container">
+        
+        <!-- ================================================================
+             Left Panel - Enterprise Branding & Feature Highlights
+             ================================================================ -->
+        <aside class="auth-left" aria-label="BugBash Organization Value">
+            <div class="branding-wrapper">
+                
+                <!-- Logo & Brand Header -->
+                <div class="brand-header-left">
+                    <a href="index.html" class="brand-logo-left" aria-label="BugBash Home">
+                        <div class="logo-icon" aria-hidden="true">
+                            <svg width="44" height="44" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="20" cy="20" r="18" fill="#ff6b35" opacity="0.2"/>
+                                <path d="M20 8C13.4 8 8 13.4 8 20C8 26.6 13.4 32 20 32C26.6 32 32 26.6 32 20C32 13.4 26.6 8 20 8ZM20 14C21.1 14 22 14.9 22 16C22 17.1 21.1 18 20 18C18.9 18 18 17.1 18 16C18 14.9 18.9 14 20 14ZM24 26H16V24H18V20H16V18H22V24H24V26Z" fill="#ff6b35"/>
+                            </svg>
+                        </div>
+                        <span class="brand-title-left">BugBash</span>
+                        <span class="brand-tag-left">AI</span>
+                    </a>
+                    
+                    <h1 class="welcome-heading-left">
+                        Join <span class="highlight">BugBash</span>
+                    </h1>
+                    <p class="welcome-desc-left">
+                        Create your organization and start conducting intelligent coding assessments.
+                    </p>
+                </div>
+
+                <!-- 4 Feature Highlights -->
+                <div class="features-stack">
+                    <!-- Feature 1 -->
+                    <div class="feature-pill-card">
+                        <div class="feature-pill-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="16 18 22 12 16 6"></polyline>
+                                <polyline points="8 6 2 12 8 18"></polyline>
+                                <line x1="14" y1="4" x2="10" y2="20"></line>
+                            </svg>
+                        </div>
+                        <div class="feature-pill-content">
+                            <h3>AI-Powered Code Evaluation</h3>
+                            <p>Automated algorithmic logic recognition and complexity analysis.</p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="feature-pill-card">
+                        <div class="feature-pill-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                        </div>
+                        <div class="feature-pill-content">
+                            <h3>Secure Coding Examinations</h3>
+                            <p>Proctored assessment environments with browser focus verification.</p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="feature-pill-card">
+                        <div class="feature-pill-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                        </div>
+                        <div class="feature-pill-content">
+                            <h3>Student & Candidate Management</h3>
+                            <p>Batch cohort rosters, placement drives, and hiring pipeline tracking.</p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 4 -->
+                    <div class="feature-pill-card">
+                        <div class="feature-pill-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="20" x2="18" y2="10"></line>
+                                <line x1="12" y1="20" x2="12" y2="4"></line>
+                                <line x1="6" y1="20" x2="6" y2="14"></line>
+                            </svg>
+                        </div>
+                        <div class="feature-pill-content">
+                            <h3>Advanced Assessment Analytics</h3>
+                            <p>Instant grading rubrics, comparative percentiles, and code replays.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trust Badge -->
+                <div class="security-trust-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                    <span>Built for Academic Institutions & Technical Recruitment Teams</span>
+                </div>
+
+            </div>
+        </aside>
+
+        <!-- ================================================================
+             Right Panel - Registration Form
+             ================================================================ -->
+        <main class="auth-right" aria-label="Organization Registration Portal">
+            
+            <!-- Top Utility Bar -->
+            <div class="auth-topbar">
+                <a href="index.html" class="back-home-link" title="Return to BugBash Homepage">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    <span>Back to Home</span>
+                </a>
+
+                <!-- Theme Switcher -->
+                <button type="button" class="theme-toggle" id="theme-toggle-btn" aria-label="Toggle light/dark theme" title="Toggle theme">
+                    <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="icon-moon" style="display:none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Form Container -->
+            <div class="form-container signup-container">
+                
+                <!-- Mobile Brand Bar -->
+                <div class="mobile-brand-bar">
+                    <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
+                        <circle cx="20" cy="20" r="18" fill="#ff6b35" opacity="0.2"/>
+                        <path d="M20 8C13.4 8 8 13.4 8 20C8 26.6 13.4 32 20 32C26.6 32 32 26.6 32 20C32 13.4 26.6 8 20 8ZM20 14C21.1 14 22 14.9 22 16C22 17.1 21.1 18 20 18C18.9 18 18 17.1 18 16C18 14.9 18.9 14 20 14ZM24 26H16V24H18V20H16V18H22V24H24V26Z" fill="#ff6b35"/>
+                    </svg>
+                    <span style="font-size: 20px; font-weight: 800; color: var(--text-primary);">BugBash</span>
+                </div>
+
+                <!-- Form Header -->
+                <header class="form-header">
+                    <span class="form-header-badge">Organization Onboarding</span>
+                    <h1>Create Your Organization</h1>
+                    <p>Select your institution type and configure your primary administrative account.</p>
+                </header>
+
+                <!-- Dynamic Alert Banner -->
+                <div id="signupAlert" class="alert-box" role="alert">
+                    <svg class="alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    <div class="alert-content"></div>
+                </div>
+
+                <!-- Registration Success Presentation (Displayed Post-Submission) -->
+                <div id="registrationSuccessCard" class="registration-success-card" role="region" aria-live="polite">
+                    <div class="success-icon-badge" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </div>
+                    <h2>Registration Submitted!</h2>
+                    <p>
+                        Organization <strong id="successOrgName"></strong> has been created with status 
+                        <span class="badge badge-warning" style="margin-left: 4px;">Pending Email Verification</span>.
+                    </p>
+                    <div class="status-callout-box">
+                        <div class="status-step-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                            <div>
+                                <strong>Step 1: Email Verification</strong><br>
+                                An activation OTP has been dispatched to <span id="successEmailSent" style="color: var(--primary-color); font-weight: 600;"></span>.
+                            </div>
+                        </div>
+                        <div class="status-step-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                            <div>
+                                <strong>Step 2: Super Admin Review</strong><br>
+                                Once your email is verified, BugBash security administrators review the organization profile before approving portal access.
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+                        <a href="login.html" class="btn btn-primary" style="padding: 12px 28px;">Go to Sign In</a>
+                        <a href="index.html" class="btn btn-secondary" style="padding: 12px 24px;">Return to Home</a>
+                    </div>
+                </div>
+
+                <!-- Registration Form -->
+                <form id="signupForm" class="auth-form" novalidate>
+                    
+                    <!-- 1. Organization Type Selection Cards -->
+                    <div class="org-type-selection">
+                        <div class="selection-title">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+                            <span>Select Organization Type</span>
+                        </div>
+                        <div class="org-type-grid" role="radiogroup" aria-label="Organization Type">
+                            <!-- College Option -->
+                            <div class="org-type-card active" id="orgCardCollege" role="radio" aria-checked="true" tabindex="0">
+                                <input type="radio" name="organization_type" id="orgTypeCollege" value="college" checked>
+                                <div class="org-type-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                                        <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                                    </svg>
+                                </div>
+                                <div class="org-type-content">
+                                    <h3>
+                                        <span>College / University</span>
+                                        <span class="org-type-radio-mark" aria-hidden="true"></span>
+                                    </h3>
+                                    <p>For academic exams, coding labs, and campus placement drives.</p>
+                                </div>
+                            </div>
+
+                            <!-- Company Option -->
+                            <div class="org-type-card" id="orgCardCompany" role="radio" aria-checked="false" tabindex="0">
+                                <input type="radio" name="organization_type" id="orgTypeCompany" value="company">
+                                <div class="org-type-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                                    </svg>
+                                </div>
+                                <div class="org-type-content">
+                                    <h3>
+                                        <span>Company / Enterprise</span>
+                                        <span class="org-type-radio-mark" aria-hidden="true"></span>
+                                    </h3>
+                                    <p>For technical screening, hiring pipelines, and pair programming.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ========================================================
+                         Section 1: Organization Information
+                         ======================================================== -->
+                    <div class="form-section">
+                        <div class="form-section-header">
+                            <div class="section-badge-title">
+                                <span class="section-num-badge">1</span>
+                                <span class="section-heading-text">Organization Details</span>
+                            </div>
+                            <span class="section-subtext">Entity Profile</span>
+                        </div>
+
+                        <!-- Organization Name & Affiliation / Industry -->
+                        <div class="form-row two-col">
+                            <div class="form-group">
+                                <label for="orgName" class="form-label">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+                                    <span id="orgNameLabel">College / University Name</span>
+                                </label>
+                                <input type="text" id="orgName" name="organization_name" class="input-field" placeholder="e.g. Stanford University" required>
+                                <span class="field-error-msg"></span>
+                            </div>
+
+                            <!-- Conditional: University Affiliation (College Only) -->
+                            <div class="form-group conditional-college">
+                                <label for="universityAffiliation" class="form-label">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                                    University Affiliation <span style="font-size: 11px; text-transform: none; color: var(--text-muted);">(Optional)</span>
+                                </label>
+                                <input type="text" id="universityAffiliation" name="university_affiliation" class="input-field" placeholder="e.g. Autonomous / State University">
+                                <span class="field-error-msg"></span>
+                            </div>
+
+                            <!-- Conditional: Industry (Company Only) -->
+                            <div class="form-group conditional-company" style="display:none;">
+                                <label for="industrySelect" class="form-label">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                                    Industry Sector
+                                </label>
+                                <select id="industrySelect" name="industry" class="form-select">
+                                    <option value="">Select Primary Industry</option>
+                                    <option value="Information Technology">Information Technology & Software</option>
+                                    <option value="Financial Services">Financial Services & FinTech</option>
+                                    <option value="E-Commerce">E-Commerce & Retail</option>
+                                    <option value="Healthcare">Healthcare & BioTech</option>
+                                    <option value="EdTech">Education & EdTech</option>
+                                    <option value="Consulting">Consulting & Professional Services</option>
+                                    <option value="Telecommunications">Telecommunications</option>
+                                    <option value="Other">Other Enterprise Sector</option>
+                                </select>
+                                <span class="field-error-msg"></span>
+                            </div>
+                        </div>
+
+                        <!-- Organization Email & Website -->
+                        <div class="form-row two-col">
+                            <div class="form-group">
+                                <label for="orgEmail" class="form-label">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                                    <span id="orgEmailLabel">Institution Email</span>
+                                </label>
+                                <input type="email" id="orgEmail" name="organization_email" class="input-field" placeholder="admissions@university.edu" required autocomplete="email">
+                                <span class="field-error-msg"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="orgWebsite" class="form-label">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                                    Website URL <span style="font-size: 11px; text-transform: none; color: var(--text-muted);">(Optional)</span>
+                                </label>
+                                <input type="url" id="orgWebsite" name="website" class="input-field" placeholder="https://example.edu">
+                                <span class="field-error-msg"></span>
+                            </div>
+                        </div>
+
+                        <!-- Contact Person & Phone -->
+                        <div class="form-row two-col">
+                            <div class="form-group">
+                                <label for="contactPerson" class="form-label">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                    Contact Person
+                                </label>
+                                <input type="text" id="contactPerson" name="contact_person" class="input-field" placeholder="Dean / HR Director Name" required>
+                                <span class="field-error-msg"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="orgPhone" class="form-label">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                                    Official Phone Number
+                                </label>
+                                <input type="tel" id="orgPhone" name="phone_number" class="input-field" placeholder="+1 (555) 000-0000" required>
+                                <span class="field-error-msg"></span>
+                            </div>
+                        </div>
+
+                        <!-- Street Address -->
+                        <div class="form-group" style="margin-bottom: 16px;">
+                            <label for="streetAddress" class="form-label">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                Street Address
+                            </label>
+                            <input type="text" id="streetAddress" name="street" class="input-field" placeholder="100 Academic Way, Building 4" required>
+                            <span class="field-error-msg"></span>
+                        </div>
+
+                        <!-- City, State, Country -->
+                        <div class="form-row three-col">
+                            <div class="form-group">
+                                <label for="city" class="form-label">City</label>
+                                <input type="text" id="city" name="city" class="input-field" placeholder="City" required>
+                                <span class="field-error-msg"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="state" class="form-label">State / Region</label>
+                                <input type="text" id="state" name="state" class="input-field" placeholder="State" required>
+                                <span class="field-error-msg"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="country" class="form-label">Country</label>
+                                <input type="text" id="country" name="country" class="input-field" placeholder="Country" required>
+                                <span class="field-error-msg"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ========================================================
+                         Section 2: Administrator Account Details
+                         ======================================================== -->
+                    <div class="form-section">
+                        <div class="form-section-header">
+                            <div class="section-badge-title">
+                                <span class="section-num-badge">2</span>
+                                <span class="section-heading-text">Primary Administrator Account</span>
+                            </div>
+                            <button type="button" class="autofill-pill" id="copyContactToAdmin" title="Copy Contact Person info to Admin fields">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                <span>Same as Contact</span>
+                            </button>
+                        </div>
+
+                        <!-- Admin Name & Phone -->
+                        <div class="form-row two-col">
+                            <div class="form-group">
+                                <label for="adminFullName" class="form-label">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                    Admin Full Name
+                                </label>
+                                <input type="text" id="adminFullName" name="admin_name" class="input-field" placeholder="e.g. Dr. Johnathan Doe" required autocomplete="name">
+                                <span class="field-error-msg"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="adminPhone" class="form-label">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                                    Admin Direct Phone
+                                </label>
+                                <input type="tel" id="adminPhone" name="admin_phone" class="input-field" placeholder="+1 (555) 000-0000" required autocomplete="tel">
+                                <span class="field-error-msg"></span>
+                            </div>
+                        </div>
+
+                        <!-- Admin Email -->
+                        <div class="form-group" style="margin-bottom: 16px;">
+                            <label for="adminEmail" class="form-label">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                                Admin Login Email (Receives OTP)
+                            </label>
+                            <input type="email" id="adminEmail" name="admin_email" class="input-field" placeholder="admin@institution.edu" required autocomplete="username">
+                            <span class="field-error-msg"></span>
+                        </div>
+
+                        <!-- Password & Confirm Password -->
+                        <div class="form-row two-col">
+                            <div class="form-group">
+                                <label for="adminPassword" class="form-label">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                                    Create Password
+                                </label>
+                                <div class="input-wrapper">
+                                    <input type="password" id="adminPassword" name="password" class="input-field" placeholder="Minimum 8 characters" required autocomplete="new-password">
+                                    <button type="button" id="toggleAdminPasswordBtn" class="password-toggle-btn" aria-label="Toggle password visibility" title="Show password">
+                                        <svg class="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                        <svg class="icon-eye-off" style="display:none;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+                                    </button>
+                                </div>
+                                <span class="field-error-msg"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="confirmPassword" class="form-label">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                                    Confirm Password
+                                </label>
+                                <div class="input-wrapper">
+                                    <input type="password" id="confirmPassword" name="confirm_password" class="input-field" placeholder="Re-enter password" required autocomplete="new-password">
+                                    <button type="button" id="toggleConfirmPasswordBtn" class="password-toggle-btn" aria-label="Toggle password visibility" title="Show password">
+                                        <svg class="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                        <svg class="icon-eye-off" style="display:none;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+                                    </button>
+                                </div>
+                                <span class="field-error-msg" id="confirmPasswordError"></span>
+                            </div>
+                        </div>
+
+                        <!-- Live Password Strength Meter -->
+                        <div class="password-strength-box">
+                            <div class="strength-meter-header">
+                                <span class="strength-label">Password Strength:</span>
+                                <span class="strength-verdict" id="strengthVerdict">None</span>
+                            </div>
+                            <div class="strength-track">
+                                <div class="strength-fill" id="strengthFill"></div>
+                            </div>
+                            <ul class="criteria-list">
+                                <li class="criteria-item" id="critLength">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    <span>8+ chars</span>
+                                </li>
+                                <li class="criteria-item" id="critUpper">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    <span>Uppercase</span>
+                                </li>
+                                <li class="criteria-item" id="critLower">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    <span>Lowercase</span>
+                                </li>
+                                <li class="criteria-item" id="critNumber">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    <span>Number</span>
+                                </li>
+                                <li class="criteria-item" id="critSymbol">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    <span>Symbol</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Terms & Privacy Consent -->
+                    <div class="checkbox-group" style="margin: 10px 0;">
+                        <label class="checkbox-label" for="termsConsent">
+                            <input type="checkbox" id="termsConsent" name="terms_consent" required>
+                            <span style="font-size: 13px; line-height: 1.5;">
+                                I agree to the <a href="index.html#security" class="link">Terms of Service</a> and <a href="index.html#security" class="link">Privacy Policy</a>. I understand that organization accounts require email verification and administrative review before activation.
+                            </span>
+                        </label>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" id="submitBtn" class="btn-submit" style="margin-top: 10px;">
+                        <span class="btn-spinner" aria-hidden="true"></span>
+                        <span class="btn-text">Register Organization</span>
+                        <svg class="btn-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </button>
+
+                </form>
+
+                <!-- Form Footer Navigation -->
+                <div class="form-footer-nav" style="margin-top: 20px;">
+                    <p>Already have an existing organization account? <a href="login.html">Sign In Here</a></p>
+                </div>
+
+            </div>
+
+            <!-- Bottom Legal Strip -->
+            <footer class="auth-bottom-strip">
+                <p>&copy; 2026 BugBash. All rights reserved. &bull; 
+                    <a href="index.html#security">Privacy Policy</a> &bull; 
+                    <a href="index.html#security">Terms of Service</a> &bull; 
+                    <a href="mailto:support@bugbash.io">Support</a>
+                </p>
+            </footer>
+
+        </main>
+
+    </div>
+
+    <!-- ================================================================
+         Scripts
+         ================================================================ -->
+    <!-- Backend Configuration (FastAPI Preparation) -->
+    <script src="js/config.js"></script>
+    <!-- Signup Logic Controller -->
+    <script src="js/signup.js"></script>
+
+</body>
+</html>
+

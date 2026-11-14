@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BugBash - AI-Powered Coding Assessment Platform for Colleges and Companies. Conduct smarter coding tests with AI logic recognition, secure environments, and performance analytics.">
+    <title>BugBash | Smart Coding. Better Assessment.</title>
+    
+    <!-- Theme Script (Early load to prevent theme flicker) -->
+    <script src="js/theme.js"></script>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+    <!-- ====================================================================
+         A. Navigation Bar
+         ==================================================================== -->
+    <nav class="navbar" id="main-nav" aria-label="Main Navigation">
+        <div class="container nav-container">
+            <!-- Brand Logo -->
+            <a href="#hero" class="nav-brand" aria-label="BugBash Home">
+                <div class="logo-icon" aria-hidden="true">
+                    <svg width="38" height="38" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="20" cy="20" r="18" fill="#ff6b35" opacity="0.2"/>
+                        <path d="M20 8C13.4 8 8 13.4 8 20C8 26.6 13.4 32 20 32C26.6 32 32 26.6 32 20C32 13.4 26.6 8 20 8ZM20 14C21.1 14 22 14.9 22 16C22 17.1 21.1 18 20 18C18.9 18 18 17.1 18 16C18 14.9 18.9 14 20 14ZM24 26H16V24H18V20H16V18H22V24H24V26Z" fill="#ff6b35"/>
+                    </svg>
+                </div>
+                <span class="logo-text">BugBash</span>
+                <span class="logo-tag">AI</span>
+            </a>
+
+            <!-- Desktop Navigation Links -->
+            <ul class="nav-links" role="menubar">
+                <li role="none"><a href="#hero" role="menuitem" class="active">Home</a></li>
+                <li role="none"><a href="#features" role="menuitem">Features</a></li>
+                <li role="none"><a href="#how-it-works" role="menuitem">How It Works</a></li>
+                <li role="none"><a href="#for-colleges" role="menuitem">For Colleges</a></li>
+                <li role="none"><a href="#for-companies" role="menuitem">For Companies</a></li>
+                <li role="none"><a href="#ai-evaluation" role="menuitem">AI Engine</a></li>
+                <li role="none"><a href="#security" role="menuitem">Security</a></li>
+            </ul>
+
+            <!-- Navigation Actions & Theme Toggle -->
+            <div class="nav-actions">
+                <!-- Theme Switcher Button -->
+                <button type="button" class="theme-toggle" id="theme-toggle-btn" aria-label="Toggle theme" title="Toggle theme">
+                    <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="icon-moon" style="display:none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+
+                <!-- Auth Buttons -->
+                <a href="login.html" class="btn-login" data-action="login">Login</a>
+                <a href="signup.html" class="btn-signup" data-action="signup">Sign Up</a>
+
+                <!-- Hamburger Button (Mobile) -->
+                <button type="button" class="hamburger" id="hamburger-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Drawer Overlay -->
+    <div class="mobile-backdrop" id="mobile-backdrop"></div>
+    <div class="mobile-menu" id="mobile-menu" role="dialog" aria-modal="true" aria-label="Mobile Navigation">
+        <div class="mobile-menu-header">
+            <div class="nav-brand">
+                <svg width="30" height="30" viewBox="0 0 40 40" fill="none">
+                    <circle cx="20" cy="20" r="18" fill="#ff6b35" opacity="0.2"/>
+                    <path d="M20 8C13.4 8 8 13.4 8 20C8 26.6 13.4 32 20 32C26.6 32 32 26.6 32 20C32 13.4 26.6 8 20 8ZM20 14C21.1 14 22 14.9 22 16C22 17.1 21.1 18 20 18C18.9 18 18 17.1 18 16C18 14.9 18.9 14 20 14ZM24 26H16V24H18V20H16V18H22V24H24V26Z" fill="#ff6b35"/>
+                </svg>
+                <span class="logo-text">BugBash</span>
+            </div>
+        </div>
+        <ul class="mobile-links">
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#how-it-works">How It Works</a></li>
+            <li><a href="#for-colleges">For Colleges</a></li>
+            <li><a href="#for-companies">For Companies</a></li>
+            <li><a href="#ai-evaluation">AI Engine</a></li>
+            <li><a href="#security">Security</a></li>
+        </ul>
+        <div class="mobile-menu-actions">
+            <a href="login.html" class="btn btn-secondary" style="width: 100%;">Login</a>
+            <a href="signup.html" class="btn btn-primary" style="width: 100%;">Sign Up</a>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         B. Hero Section
+         ==================================================================== -->
+    <header class="hero" id="hero">
+        <div class="hero-glow-blob" aria-hidden="true"></div>
+        <div class="container">
+            <div class="hero-grid">
+                <!-- Left: Hero Text & CTAs -->
+                <div class="hero-content">
+                    <div class="hero-badge-pill">
+                        <span class="pill-dot"></span>
+                        <span>AI-Powered Coding Assessment 2.0</span>
+                    </div>
+                    <h1 class="hero-title">
+                        Transform the Way You <span class="highlight">Evaluate Coding Skills</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        Conduct smarter coding assessments with AI-powered logic recognition, secure examination environments and intelligent performance analytics.
+                    </p>
+                    <div class="hero-cta-group">
+                        <a href="signup.html" class="btn btn-primary btn-cta" data-action="signup">
+                            <span>Get Started</span>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </a>
+                        <a href="#features" class="btn btn-secondary btn-cta">Explore Features</a>
+                    </div>
+                    
+                    <div class="hero-trust-bar">
+                        <div class="trust-avatars" aria-hidden="true">
+                            <div class="trust-avatar">🎓</div>
+                            <div class="trust-avatar">🏢</div>
+                            <div class="trust-avatar">💻</div>
+                            <div class="trust-avatar">+5k</div>
+                        </div>
+                        <p class="trust-text">
+                            Trusted by <strong>colleges, educators</strong> and <strong>engineering teams</strong> worldwide.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Right: Visual Coding IDE & Floating Telemetry Cards -->
+                <div class="hero-visual" aria-label="Interactive Coding Assessment Preview">
+                    <div class="ide-window">
+                        <!-- Top Bar -->
+                        <div class="ide-topbar">
+                            <div class="window-dots" aria-hidden="true">
+                                <span class="dot red"></span>
+                                <span class="dot yellow"></span>
+                                <span class="dot green"></span>
+                            </div>
+                            <div class="ide-tabs" role="tablist" aria-label="Language code preview tabs">
+                                <button type="button" class="code-tab-btn active" data-lang="python" role="tab" aria-selected="true">solution.py</button>
+                                <button type="button" class="code-tab-btn" data-lang="java" role="tab" aria-selected="false">Solution.java</button>
+                                <button type="button" class="code-tab-btn" data-lang="cpp" role="tab" aria-selected="false">solution.cpp</button>
+                            </div>
+                            <div class="ide-badge-timer">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                                <span>42:15</span>
+                            </div>
+                        </div>
+
+                        <!-- Code Body (Python Tab) -->
+                        <div class="ide-body">
+                            <div class="code-snippet active" id="code-snippet-python">
+                                <div class="code-line"><span class="line-num">1</span><span class="code-text"><span class="c-comment"># Optimized Two-Sum with Hash Map</span></span></div>
+                                <div class="code-line"><span class="line-num">2</span><span class="code-text"><span class="c-keyword">def</span> <span class="c-func">find_target_pair</span>(<span class="c-param">nums</span>, <span class="c-param">target</span>):</span></div>
+                                <div class="code-line"><span class="line-num">3</span><span class="code-text">&nbsp;&nbsp;&nbsp;&nbsp;seen = {}</span></div>
+                                <div class="code-line"><span class="line-num">4</span><span class="code-text">&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-keyword">for</span> i, val <span class="c-keyword">in</span> <span class="c-func">enumerate</span>(nums):</span></div>
+                                <div class="code-line"><span class="line-num">5</span><span class="code-text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;diff = target - val</span></div>
+                                <div class="code-line"><span class="line-num">6</span><span class="code-text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-keyword">if</span> diff <span class="c-keyword">in</span> seen:</span></div>
+                                <div class="code-line"><span class="line-num">7</span><span class="code-text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-keyword">return</span> [seen[diff], i]</span></div>
+                                <div class="code-line"><span class="line-num">8</span><span class="code-text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seen[val] = i</span></div>
+                                <div class="code-line"><span class="line-num">9</span><span class="code-text">&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-keyword">return</span> []</span></div>
+                            </div>
+
+                            <div class="code-snippet" id="code-snippet-java">
+                                <div class="code-line"><span class="line-num">1</span><span class="code-text"><span class="c-keyword">public</span> <span class="c-keyword">int</span>[] <span class="c-func">findTargetPair</span>(<span class="c-keyword">int</span>[] <span class="c-param">nums</span>, <span class="c-keyword">int</span> <span class="c-param">target</span>) {</span></div>
+                                <div class="code-line"><span class="line-num">2</span><span class="code-text">&nbsp;&nbsp;&nbsp;&nbsp;Map&lt;Integer, Integer&gt; map = <span class="c-keyword">new</span> HashMap&lt;&gt;();</span></div>
+                                <div class="code-line"><span class="line-num">3</span><span class="code-text">&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-keyword">for</span> (<span class="c-keyword">int</span> i = <span class="c-num">0</span>; i &lt; nums.length; i++) {</span></div>
+                                <div class="code-line"><span class="line-num">4</span><span class="code-text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-keyword">int</span> diff = target - nums[i];</span></div>
+                                <div class="code-line"><span class="line-num">5</span><span class="code-text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-keyword">if</span> (map.containsKey(diff)) <span class="c-keyword">return</span> <span class="c-keyword">new</span> <span class="c-keyword">int</span>[]{map.get(diff), i};</span></div>
+                                <div class="code-line"><span class="line-num">6</span><span class="code-text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map.put(nums[i], i);</span></div>
+                                <div class="code-line"><span class="line-num">7</span><span class="code-text">&nbsp;&nbsp;&nbsp;&nbsp;}</span></div>
+                                <div class="code-line"><span class="line-num">8</span><span class="code-text">&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-keyword">return</span> <span class="c-keyword">new</span> <span class="c-keyword">int</span>[]{};</span></div>
+                                <div class="code-line"><span class="line-num">9</span><span class="code-text">}</span></div>
+                            </div>
+
+                            <div class="code-snippet" id="code-snippet-cpp">
+                                <div class="code-line"><span class="line-num">1</span><span class="code-text">vector&lt;<span class="c-keyword">int</span>&gt; <span class="c-func">findTargetPair</span>(vector&lt;<span class="c-keyword">int</span>&gt;&amp; <span class="c-param">nums</span>, <span class="c-keyword">int</span> <span class="c-param">target</span>) {</span></div>
+                                <div class="code-line"><span class="line-num">2</span><span class="code-text">&nbsp;&nbsp;&nbsp;&nbsp;unordered_map&lt;<span class="c-keyword">int</span>, <span class="c-keyword">int</span>&gt; mp;</span></div>
+                                <div class="code-line"><span class="line-num">3</span><span class="code-text">&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-keyword">for</span> (<span class="c-keyword">int</span> i = <span class="c-num">0</span>; i &lt; nums.size(); ++i) {</span></div>
+                                <div class="code-line"><span class="line-num">4</span><span class="code-text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-keyword">int</span> diff = target - nums[i];</span></div>
+                                <div class="code-line"><span class="line-num">5</span><span class="code-text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-keyword">if</span> (mp.count(diff)) <span class="c-keyword">return</span> {mp[diff], i};</span></div>
+                                <div class="code-line"><span class="line-num">6</span><span class="code-text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mp[nums[i]] = i;</span></div>
+                                <div class="code-line"><span class="line-num">7</span><span class="code-text">&nbsp;&nbsp;&nbsp;&nbsp;}</span></div>
+                                <div class="code-line"><span class="line-num">8</span><span class="code-text">&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-keyword">return</span> {};</span></div>
+                                <div class="code-line"><span class="line-num">9</span><span class="code-text">}</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Real-Time Evaluation Telemetry -->
+                        <div class="ide-eval-panel">
+                            <div class="eval-header">
+                                <span class="eval-title">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                    </svg>
+                                    AI Logic Engine: Pattern Recognized
+                                </span>
+                                <span class="badge badge-success">Optimal O(n)</span>
+                            </div>
+                            <div class="eval-metrics">
+                                <div class="metric-pill">
+                                    <span class="label">Time Complexity</span>
+                                    <span class="val">O(n) Linear</span>
+                                </div>
+                                <div class="metric-pill">
+                                    <span class="label">Space Complexity</span>
+                                    <span class="val">O(n) Hash Map</span>
+                                </div>
+                                <div class="metric-pill">
+                                    <span class="label">Unit Tests</span>
+                                    <span class="val" style="color: var(--success);">18/18 Passed (8ms)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Floating Card 1: Preserving Original Brand Treatment -->
+                    <div class="floating-card card-1">
+                        <div class="card-header-mini">
+                            <span class="card-tag">#EVAL-1042</span>
+                            <span class="badge badge-success">Optimal Logic</span>
+                        </div>
+                        <p class="card-caption">Hash Map Lookups Detected</p>
+                    </div>
+
+                    <!-- Floating Card 2: Environment Security -->
+                    <div class="floating-card card-2">
+                        <div class="card-header-mini">
+                            <span class="card-tag">#PROCTOR-99</span>
+                            <span class="badge badge-primary">Focus Locked</span>
+                        </div>
+                        <p class="card-caption">Zero Tab Switches Detected</p>
+                    </div>
+
+                    <!-- Floating Card 3: Multi-Language Runner -->
+                    <div class="floating-card card-3">
+                        <div class="card-header-mini">
+                            <span class="card-tag">#BENCH-08</span>
+                            <span class="badge badge-warning">Top 2% Speed</span>
+                        </div>
+                        <p class="card-caption">Edge Cases Resilient</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ====================================================================
+         C. Platform Features Section
+         ==================================================================== -->
+    <section class="section section-alt" id="features">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-eyebrow">Platform Features</span>
+                <h2 class="section-title">Built for Integrity, Scalability, and Precision</h2>
+                <p class="section-description">
+                    Empower your organization with intelligent evaluation tools that transcend simple pass/fail assertions.
+                </p>
+            </div>
+
+            <div class="features-grid">
+                <!-- Feature 1 -->
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2a10 10 0 1 0 10 10H12V2z"></path>
+                            <path d="M12 2a10 10 0 0 1 10 10h-10V2z"></path>
+                            <path d="M12 12L2.1 12.5"></path>
+                            <path d="M12 12l4.5 7.8"></path>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">AI Logic Recognition</h3>
+                    <p class="feature-description">
+                        Identifies core algorithmic approaches (Two Pointers, DP, Graphs) and assesses problem-solving strategy regardless of syntax differences or variable naming.
+                    </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="16 18 22 12 16 6"></polyline>
+                            <polyline points="8 6 2 12 8 18"></polyline>
+                            <line x1="14" y1="4" x2="10" y2="20"></line>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Smart Code Evaluation</h3>
+                    <p class="feature-description">
+                        Comprehensive evaluation analyzing edge-case coverage, asymptotic time/memory benchmarks, and structural code hygiene inside secure execution environments.
+                    </p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Secure Examination Browser</h3>
+                    <p class="feature-description">
+                        Enforces fullscreen focus, detects tab shifts, restricts copy-paste manipulation, and provides comprehensive event streams for proctor audits.
+                    </p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Real-Time Assessment Monitoring</h3>
+                    <p class="feature-description">
+                        Live supervisory console offering instructors and interviewers instant insight into active candidate status, execution logs, and suspicious focus departures.
+                    </p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="20" x2="18" y2="10"></line>
+                            <line x1="12" y1="20" x2="12" y2="4"></line>
+                            <line x1="6" y1="20" x2="6" y2="14"></line>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Advanced Performance Analytics</h3>
+                    <p class="feature-description">
+                        Deep percentile scoring, topic-by-topic competency heatmaps, code complexity distributions, and exportable candidate dossiers for data-driven decisions.
+                    </p>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                            <polyline points="2 17 12 22 22 17"></polyline>
+                            <polyline points="2 12 12 17 22 12"></polyline>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Multi-Language Coding Support</h3>
+                    <p class="feature-description">
+                        Seamless assessment in Python, Java, C++, C, JavaScript, TypeScript, Go, Rust, and SQL, executing inside isolated sandboxed runner instances.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         D. How It Works Section
+         ==================================================================== -->
+    <section class="section" id="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-eyebrow">Seamless Workflow</span>
+                <h2 class="section-title">How BugBash Works</h2>
+                <p class="section-description">
+                    From initial assessment creation to final AI-assisted performance review in five straightforward steps.
+                </p>
+            </div>
+
+            <div class="workflow-track">
+                <!-- Step 1 -->
+                <div class="workflow-step">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Create an Assessment</h3>
+                    <p class="step-desc">
+                        Curate custom algorithmic problems, import curated challenges from the question library, and set custom grading rubrics.
+                    </p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="workflow-step">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Invite Candidates</h3>
+                    <p class="step-desc">
+                        Upload batch student rosters or dispatch automated, personalized secure assessment links to job candidates.
+                    </p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="workflow-step">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">Candidates Solve Questions</h3>
+                    <p class="step-desc">
+                        Candidates code in our distraction-free, proctored in-browser IDE with instant test-runner feedback and autocompletion.
+                    </p>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="workflow-step">
+                    <div class="step-number">4</div>
+                    <h3 class="step-title">BugBash Evaluates Solutions</h3>
+                    <p class="step-desc">
+                        Our engine executes code in sandboxes, validates hidden edge cases, estimates Big-O complexity, and recognizes algorithmic intent.
+                    </p>
+                </div>
+
+                <!-- Step 5 -->
+                <div class="workflow-step">
+                    <div class="step-number">5</div>
+                    <h3 class="step-title">Review AI Reports</h3>
+                    <p class="step-desc">
+                        Inspect detailed scorecards, execution replays, logic accuracy reports, and candidate rankings with actionable hiring signals.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         E. College Section
+         ==================================================================== -->
+    <section class="section section-alt" id="for-colleges">
+        <div class="container">
+            <div class="split-layout">
+                <!-- Left: College Details -->
+                <div class="split-content">
+                    <span class="badge badge-primary tag">For Academic Institutions</span>
+                    <h2>Conduct Fair, Scalable Coding Examinations & Evaluations</h2>
+                    <p>
+                        BugBash empowers computer science departments, professors, and placement cells to conduct high-integrity semester exams, practical lab evaluations, and campus recruitment drives without manual grading fatigue.
+                    </p>
+                    <ul class="feature-checklist">
+                        <li class="checklist-item">
+                            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <span><strong>Bulk Student Management:</strong> Import full classes via CSV or LMS integration with department-level role access.</span>
+                        </li>
+                        <li class="checklist-item">
+                            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <span><strong>Proctored Practical Exams:</strong> Controlled exam windows with session monitoring, tab-switch alerts, and auto-submit.</span>
+                        </li>
+                        <li class="checklist-item">
+                            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <span><strong>Automated Placement Drives:</strong> Screen hundreds of students simultaneously for campus placement readiness with standardized benchmarks.</span>
+                        </li>
+                        <li class="checklist-item">
+                            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <span><strong>Cohort Analytics & Grading Rubrics:</strong> Instant grade exports, pass/fail thresholds, and curriculum gap identification.</span>
+                        </li>
+                    </ul>
+                    <a href="signup.html" class="btn btn-primary">Empower Your College</a>
+                </div>
+
+                <!-- Right: Interactive College Dashboard Preview Card -->
+                <div class="preview-box">
+                    <div class="preview-box-header">
+                        <span class="preview-box-title">Batch 2026: Data Structures Final Practical</span>
+                        <span class="badge badge-success">Live Exam</span>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-box">
+                            <span class="num">184</span>
+                            <span class="lbl">Students</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="num">92%</span>
+                            <span class="lbl">Avg Score</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="num">0</span>
+                            <span class="lbl">Breaches</span>
+                        </div>
+                    </div>
+                    <table class="mock-table" aria-label="Student Exam Performance Table">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Algorithm Used</th>
+                                <th>Complexity</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Rahul S. (CS-04)</strong></td>
+                                <td>Quickselect</td>
+                                <td>O(n) avg</td>
+                                <td><span class="badge badge-success">100 / 100</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Ananya M. (CS-19)</strong></td>
+                                <td>Min-Heap</td>
+                                <td>O(n log k)</td>
+                                <td><span class="badge badge-success">95 / 100</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Karthik P. (CS-31)</strong></td>
+                                <td>Bubble Sort</td>
+                                <td>O(n²) sub</td>
+                                <td><span class="badge badge-warning">65 / 100</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         F. Company Section
+         ==================================================================== -->
+    <section class="section" id="for-companies">
+        <div class="container">
+            <div class="split-layout reversed">
+                <!-- Left: Recruiter Evaluation Box -->
+                <div class="preview-box">
+                    <div class="preview-box-header">
+                        <span class="preview-box-title">Senior Backend Engineer Candidate Screening</span>
+                        <span class="badge badge-primary">AI Report</span>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-box">
+                            <span class="num">Top 3%</span>
+                            <span class="lbl">Benchmark</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="num">98.5%</span>
+                            <span class="lbl">Code Quality</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="num">Strong Hire</span>
+                            <span class="lbl">AI Verdict</span>
+                        </div>
+                    </div>
+                    <table class="mock-table" aria-label="Candidate Technical Evaluation Table">
+                        <thead>
+                            <tr>
+                                <th>Candidate</th>
+                                <th>Track</th>
+                                <th>Test Passed</th>
+                                <th>Recommendation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Alex Chen</strong></td>
+                                <td>Distributed Systems</td>
+                                <td>10/10</td>
+                                <td><span class="badge badge-success">Fast-Track</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Elena Rostova</strong></td>
+                                <td>Full-Stack (Node/Py)</td>
+                                <td>9/10</td>
+                                <td><span class="badge badge-primary">Advance</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Marcus Vance</strong></td>
+                                <td>Systems (Go/C++)</td>
+                                <td>6/10</td>
+                                <td><span class="badge badge-warning">Review</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Right: Company Details -->
+                <div class="split-content">
+                    <span class="badge badge-primary tag">For Technical Hiring Teams</span>
+                    <h2>Screen Developers with High-Signal Technical Assessments</h2>
+                    <p>
+                        Cut engineering interview hours in half. BugBash allows engineering leaders and recruiters to filter top-tier engineering talent with objective, cheating-resistant coding benchmarks tailored to your tech stack.
+                    </p>
+                    <ul class="feature-checklist">
+                        <li class="checklist-item">
+                            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <span><strong>Custom Coding Tests:</strong> Build realistic engineering questions that mirror production codebases and real-world architectures.</span>
+                        </li>
+                        <li class="checklist-item">
+                            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <span><strong>Collaborative Pair-Coding:</strong> Conduct live technical interviews in synchronous browser rooms with built-in execution sandboxes.</span>
+                        </li>
+                        <li class="checklist-item">
+                            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <span><strong>Plagiarism & AI Copy Detection:</strong> Detect code similarities, external paste attempts, and anomalous solving speed.</span>
+                        </li>
+                        <li class="checklist-item">
+                            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <span><strong>Comprehensive Talent Dossiers:</strong> Share standardized evaluation packets with hiring managers, complete with code replays and complexity analysis.</span>
+                        </li>
+                    </ul>
+                    <a href="signup.html" class="btn btn-primary">Start Hiring Smarter</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         G. AI-Powered Evaluation Section
+         ==================================================================== -->
+    <section class="section section-alt" id="ai-evaluation">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-eyebrow">Intelligent Assessment Core</span>
+                <h2 class="section-title">Beyond Basic Unit Tests: How BugBash AI Evaluates Code</h2>
+                <p class="section-description">
+                    Conventional platforms only verify output matches test cases. BugBash analyzes candidate thinking, structural choices, and computational complexity.
+                </p>
+            </div>
+
+            <div class="ai-cards-grid">
+                <!-- AI Feature 1 -->
+                <div class="ai-card">
+                    <div class="ai-card-header">
+                        <div class="ai-card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="18" cy="5" r="3"></circle>
+                                <circle cx="6" cy="12" r="3"></circle>
+                                <circle cx="18" cy="19" r="3"></circle>
+                                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                            </svg>
+                        </div>
+                        <h3 class="ai-card-title">Algorithm Recognition</h3>
+                    </div>
+                    <p class="ai-card-text">
+                        Understands whether a candidate solved a problem via Dynamic Programming, Two Pointers, Divide and Conquer, Greedy, or Brute Force. The AI parses the Abstract Syntax Tree (AST) to evaluate problem-solving intuition independent of variable names.
+                    </p>
+                    <div class="ai-code-pill">
+                        Detected Pattern: <strong>Memoized Top-Down Recursion</strong> (Optimal)
+                    </div>
+                </div>
+
+                <!-- AI Feature 2 -->
+                <div class="ai-card">
+                    <div class="ai-card-header">
+                        <div class="ai-card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="20" x2="18" y2="10"></line>
+                                <line x1="12" y1="20" x2="12" y2="4"></line>
+                                <line x1="6" y1="20" x2="6" y2="14"></line>
+                            </svg>
+                        </div>
+                        <h3 class="ai-card-title">Complexity Estimation</h3>
+                    </div>
+                    <p class="ai-card-text">
+                        Combines static AST cycle analysis with dynamic input scaling benchmarks to compute asymptotic Time Complexity O(f(n)) and auxiliary Space Complexity O(g(n)). Flags quadratic solutions for problems solvable in linear time.
+                    </p>
+                    <div class="ai-code-pill">
+                        Complexity Verdict: <strong>Time O(n log n)</strong> | <strong>Space O(1)</strong>
+                    </div>
+                </div>
+
+                <!-- AI Feature 3 -->
+                <div class="ai-card">
+                    <div class="ai-card-header">
+                        <div class="ai-card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="12"></line>
+                                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                            </svg>
+                        </div>
+                        <h3 class="ai-card-title">Code Optimization Suggestions</h3>
+                    </div>
+                    <p class="ai-card-text">
+                        Generates constructive feedback highlighting memory allocations, excessive recursion depths, redundant iterations, and non-idiomatic practices, aiding students in continuous learning and reviewers in candidate debriefs.
+                    </p>
+                    <div class="ai-code-pill">
+                        Feedback: <strong>Replace O(n) linear search inside loop with HashSet</strong>
+                    </div>
+                </div>
+
+                <!-- AI Feature 4 -->
+                <div class="ai-card">
+                    <div class="ai-card-header">
+                        <div class="ai-card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                            </svg>
+                        </div>
+                        <h3 class="ai-card-title">Different Valid Solution Comparisons</h3>
+                    </div>
+                    <p class="ai-card-text">
+                        Different candidates solve problems with different approaches (e.g. Iterative vs Recursive, In-place vs Auxiliary Buffer). BugBash compares candidate logic against multiple valid canonical patterns, crediting creative correctness fairly.
+                    </p>
+                    <div class="ai-code-pill">
+                        Equivalence: <strong>Alternative Valid Two-Pointer Approach Verified</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         H. Security & Environment Section
+         ==================================================================== -->
+    <section class="section" id="security">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-eyebrow">Trust & Integrity</span>
+                <h2 class="section-title">Secure Examination Environment & Proctoring</h2>
+                <p class="section-description">
+                    Transparent, reliable safeguards engineered to preserve exam credibility without making unverified claims.
+                </p>
+            </div>
+
+            <div class="security-grid">
+                <!-- Security Card 1 -->
+                <div class="security-card">
+                    <div class="security-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                        </svg>
+                    </div>
+                    <h3 class="security-title">Fullscreen & Focus Telemetry</h3>
+                    <p class="security-desc">
+                        Monitors browser focus state, window blur occurrences, and tab-switch attempts. Logs exact timestamps and durations of any viewport loss.
+                    </p>
+                </div>
+
+                <!-- Security Card 2 -->
+                <div class="security-card">
+                    <div class="security-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                    </div>
+                    <h3 class="security-title">Clipboard & Key Restrictions</h3>
+                    <p class="security-desc">
+                        Restricts external paste events, right-click context menus, and developer tools inspection shortcuts to mitigate unauthorized source insertion.
+                    </p>
+                </div>
+
+                <!-- Security Card 3 -->
+                <div class="security-card">
+                    <div class="security-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polygon points="10 8 16 12 10 16 10 8"></polygon>
+                        </svg>
+                    </div>
+                    <h3 class="security-title">Execution Sandboxing</h3>
+                    <p class="security-desc">
+                        Candidate code runs inside isolated, memory-bounded, non-networked Docker execution micro-containers with strict CPU and time quotas.
+                    </p>
+                </div>
+
+                <!-- Security Card 4 -->
+                <div class="security-card">
+                    <div class="security-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M23 7l-7 5 7 5V7z"></path>
+                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                        </svg>
+                    </div>
+                    <h3 class="security-title">Proctor Supervision Signals</h3>
+                    <p class="security-desc">
+                        Optional webcam and microphone activity tracking flags unusual audio anomalies or secondary face presence for post-test proctor audits.
+                    </p>
+                </div>
+
+                <!-- Security Card 5 -->
+                <div class="security-card">
+                    <div class="security-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                    </div>
+                    <h3 class="security-title">Immutable Audit Trail</h3>
+                    <p class="security-desc">
+                        Every keystroke velocity anomaly, compile trigger, submission attempt, and focus transition is captured in an immutable verification log.
+                    </p>
+                </div>
+
+                <!-- Security Card 6 -->
+                <div class="security-card">
+                    <div class="security-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="security-title">Composite Integrity Scoring</h3>
+                    <p class="security-desc">
+                        Generates a multi-factor integrity score combining focus metrics, paste ratio, typing cadence, and execution frequency for proctor review.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Transparent Security Disclaimer Box -->
+            <div class="security-disclaimer">
+                <div class="disclaimer-icon" aria-hidden="true">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                </div>
+                <div class="disclaimer-text">
+                    <strong>Integrity Transparency Notice:</strong> BugBash provides robust, browser-level proctoring signals, telemetry detection, and sandboxed code execution to uphold assessment standards. Browser-based monitoring assists human evaluators by surfacing behavioral anomalies, but does not guarantee absolute device hardware lockdown.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         I. Call to Action (CTA) Section
+         ==================================================================== -->
+    <section class="cta-section" id="cta">
+        <div class="container">
+            <div class="cta-box">
+                <h2 class="cta-title">Ready to Make Coding Assessments Smarter?</h2>
+                <p class="cta-subtitle">
+                    Join forward-thinking colleges and high-growth engineering teams. Experience fair, accurate, and AI-accelerated skill evaluation today.
+                </p>
+                <div class="cta-actions">
+                    <a href="signup.html" class="btn btn-primary btn-cta" data-action="signup">
+                        <span>Get Started with BugBash</span>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </a>
+                    <a href="#how-it-works" class="btn btn-secondary btn-cta">See How It Works</a>
+                </div>
+                <p class="cta-guarantee">
+                    Free evaluation tier available • Zero installation required • Instant setup
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         J. Footer
+         ==================================================================== -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer-grid">
+                <!-- Brand Column -->
+                <div class="footer-brand">
+                    <div class="logo">
+                        <svg width="34" height="34" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="20" cy="20" r="18" fill="#ff6b35" opacity="0.2"/>
+                            <path d="M20 8C13.4 8 8 13.4 8 20C8 26.6 13.4 32 20 32C26.6 32 32 26.6 32 20C32 13.4 26.6 8 20 8ZM20 14C21.1 14 22 14.9 22 16C22 17.1 21.1 18 20 18C18.9 18 18 17.1 18 16C18 14.9 18.9 14 20 14ZM24 26H16V24H18V20H16V18H22V24H24V26Z" fill="#ff6b35"/>
+                        </svg>
+                        <span class="logo-text">BugBash</span>
+                    </div>
+                    <p class="footer-tagline">Smart Coding. Better Assessment.</p>
+                    <p class="footer-about">
+                        Next-generation coding assessment platform with AI-powered logic recognition, automated complexity grading, and integrity-focused evaluation.
+                    </p>
+                </div>
+
+                <!-- Product Links -->
+                <div>
+                    <h4 class="footer-column-title">Product</h4>
+                    <ul class="footer-links">
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#ai-evaluation">AI Logic Engine</a></li>
+                        <li><a href="#security">Security & Proctoring</a></li>
+                        <li><a href="#hero">Sandbox Execution</a></li>
+                    </ul>
+                </div>
+
+                <!-- Solutions Links -->
+                <div>
+                    <h4 class="footer-column-title">Solutions</h4>
+                    <ul class="footer-links">
+                        <li><a href="#for-colleges">For Colleges</a></li>
+                        <li><a href="#for-companies">For Companies</a></li>
+                        <li><a href="#for-colleges">Campus Placement</a></li>
+                        <li><a href="#for-companies">Technical Hiring</a></li>
+                        <li><a href="#for-colleges">Semester Exams</a></li>
+                    </ul>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="footer-column-title">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="login.html">Candidate Login</a></li>
+                        <li><a href="signup.html">Create Account</a></li>
+                        <li><a href="#hero">Documentation</a></li>
+                        <li><a href="#security">Privacy Standards</a></li>
+                        <li><a href="#hero">System Status</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact & Support -->
+                <div>
+                    <h4 class="footer-column-title">Contact</h4>
+                    <div class="footer-contact-info">
+                        <p><strong>Support & Sales:</strong><br><a href="mailto:support@bugbash.io">support@bugbash.io</a></p>
+                        <p><strong>Global Headquarters:</strong><br>BugBash Technologies Inc.<br>Bangalore & Global</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Legal Bar -->
+            <div class="footer-bottom">
+                <p class="footer-copyright">&copy; 2026 BugBash. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="#security">Privacy Policy</a>
+                    <a href="#security">Terms and Conditions</a>
+                    <a href="#security">Security Policy</a>
+                    <a href="#security">Cookie Settings</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ====================================================================
+         Scripts
+         ==================================================================== -->
+    <!-- Backend Configuration (FastAPI Preparation) -->
+    <script src="js/config.js"></script>
+    <!-- Main Interactive Script -->
+    <script src="js/main.js"></script>
+
+</body>
+</html>

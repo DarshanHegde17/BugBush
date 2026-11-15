@@ -69,3 +69,31 @@ class ResetPasswordResponse(BaseModel):
 class VerifyResetTokenResponse(BaseModel):
     valid: bool
     reason: Optional[str] = None
+
+
+# ==============================================================================
+# Login Schemas
+# ==============================================================================
+class LoginRequest(BaseModel):
+    email: EmailStr = Field(..., description="Registered account email")
+    password: str = Field(..., min_length=1, description="Account password")
+    remember_me: Optional[bool] = Field(False, description="Remember login session across browser reloads")
+
+
+class UserBasicInfo(BaseModel):
+    id: str
+    email: str
+    name: str
+    phone_number: Optional[str] = None
+    role: str = "candidate"
+    organization_type: Optional[str] = None
+    is_verified: bool = True
+    created_at: Optional[str] = None
+
+
+class LoginResponse(BaseModel):
+    status: str = "success"
+    access_token: str
+    token_type: str = "bearer"
+    user: UserBasicInfo
+    redirect_url: str = "/user/dashboard"

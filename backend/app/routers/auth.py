@@ -11,7 +11,10 @@ from backend.app.schemas.auth import (
     ForgotPasswordResponse,
     ResetPasswordRequest,
     ResetPasswordResponse,
-    VerifyResetTokenResponse
+    VerifyResetTokenResponse,
+    LoginRequest,
+    LoginResponse,
+    UserBasicInfo
 )
 from backend.app.services.password_reset_service import password_reset_service
 from backend.app.services.user_service import user_service
@@ -119,7 +122,59 @@ async def resend_otp(payload: ResendOtpRequest):
 
 
 # ==============================================================================
-# 2. Password Recovery Endpoints
+# 2. Candidate Login & Authentication
+# ==============================================================================
+@router.post(
+    "/login",
+    response_model=LoginResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Sign in to BugBash candidate workspace",
+    description="Authenticates candidate credentials and issues an HMAC-SHA256 Bearer JWT session token."
+)
+async def login_user(payload: LoginRequest):
+    success, user, err_msg = user_service.authenticate_user(
+        email=payload.email,
+        password=payload.password
+    )
+
+    if not success:
+        # Check if unverified
+        if user and not user.get("is_verified", False):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=err_msg or "Your email has not been verified yet. Please complete verification."
+            )
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=err_msg or "Invalid email or password."
+        )
+
+    # Issue JWT token
+    token = user_service.create_access_token(user, remember_me=payload.remember_me or False)
+
+    created_at_val = user.get("created_at")
+    created_str = created_at_val.isoformat() if hasattr(created_at_val, "isoformat") else str(created_at_val or "")
+
+    return LoginResponse(
+        status="success",
+        access_token=token,
+        token_type="bearer",
+        user=UserBasicInfo(
+            id=user.get("id", user["email"]),
+            email=user["email"],
+            name=user.get("full_name", "Candidate"),
+            phone_number=user.get("phone_number"),
+            role=user.get("role", "candidate"),
+            organization_type=user.get("organization_type"),
+            is_verified=user.get("is_verified", True),
+            created_at=created_str
+        ),
+        redirect_url="/user/dashboard"
+    )
+
+
+# ==============================================================================
+# 3. Password Recovery Endpoints
 # ==============================================================================
 @router.post(
     "/forgot-password",

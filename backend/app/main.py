@@ -1,9 +1,11 @@
 import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 from backend.app.routers.auth import router as auth_router
+from backend.app.routers.users import router as users_router, practice_router
 
 app = FastAPI(
     title="BugBash API",
@@ -21,6 +23,8 @@ app.add_middleware(
 
 # Include API Routers
 app.include_router(auth_router, prefix="/api/v1/auth", tags=["Authentication"])
+app.include_router(users_router, prefix="/api/v1/users", tags=["Users & Dashboard"])
+app.include_router(practice_router, prefix="/api/v1/practice", tags=["Practice Coding"])
 
 
 @app.get("/api/health")
@@ -28,7 +32,38 @@ def health_check():
     return {"status": "healthy", "service": "BugBash API"}
 
 
-# Mount frontend static files
 frontend_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "frontend"))
+
+# Direct HTML Clean URL Handlers
+@app.get("/login", include_in_schema=False)
+def serve_login():
+    return FileResponse(os.path.join(frontend_dir, "login.html"))
+
+@app.get("/signup", include_in_schema=False)
+def serve_signup():
+    return FileResponse(os.path.join(frontend_dir, "signup.html"))
+
+@app.get("/verify-otp", include_in_schema=False)
+def serve_verify_otp():
+    return FileResponse(os.path.join(frontend_dir, "verify-otp.html"))
+
+@app.get("/forgot-password", include_in_schema=False)
+def serve_forgot_password():
+    return FileResponse(os.path.join(frontend_dir, "forgot-password.html"))
+
+@app.get("/reset-password", include_in_schema=False)
+def serve_reset_password():
+    return FileResponse(os.path.join(frontend_dir, "reset-password.html"))
+
+@app.get("/user/dashboard", include_in_schema=False)
+def serve_user_dashboard():
+    return FileResponse(os.path.join(frontend_dir, "user", "dashboard.html"))
+
+@app.get("/user/profile", include_in_schema=False)
+def serve_user_profile():
+    return FileResponse(os.path.join(frontend_dir, "user", "profile.html"))
+
+
+# Mount frontend static files
 if os.path.exists(frontend_dir):
     app.mount("/", StaticFiles(directory=frontend_dir, html=True), name="frontend")

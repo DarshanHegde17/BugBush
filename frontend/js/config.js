@@ -32,7 +32,15 @@
             ASSESSMENTS: '/assessments',
             CODE_EXECUTE: '/execute',
             MONITORING: '/monitoring',
-            HEALTH: '/health'
+            HEALTH: '/health',
+            USERS_ME: '/users/me',
+            USERS_DASHBOARD: '/users/me/dashboard',
+            USERS_ASSESSMENTS: '/users/me/assessments',
+            USERS_RESULTS: '/users/me/results',
+            USERS_ACTIVITY: '/users/me/activity',
+            USERS_PROFILE: '/users/me/profile',
+            USERS_CHANGE_PASSWORD: '/users/me/change-password',
+            PRACTICE_PROBLEMS: '/practice/problems'
         },
 
         // Role-Based Dashboard Navigation Mapping
@@ -42,8 +50,8 @@
             organization_admin: 'organization-dashboard.html',
             college_admin: 'college-dashboard.html',
             company_admin: 'company-dashboard.html',
-            student: 'student-dashboard.html',
-            candidate: 'candidate-dashboard.html'
+            student: '/user/dashboard',
+            candidate: '/user/dashboard'
         },
 
         // OAuth Feature Flag

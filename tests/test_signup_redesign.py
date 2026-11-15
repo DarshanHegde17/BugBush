@@ -28,7 +28,10 @@ with opener.open(urllib.request.Request(f'{BASE_WEB}/signup.html')) as resp:
 
     # Must have left-side copy
     assert 'Join <span class="highlight">BugBash</span>' in html, 'Missing Join BugBash heading'
-    assert 'Create your account and start experiencing intelligent coding assessments.' in html, 'Missing description'
+    assert 'Your all-in-one account for college coding exams, skill mastery, and verified badges to power your resume.' in html, 'Missing description'
+    assert 'College Exams & Lab Tests' in html, 'Missing College Exams feature'
+    assert 'Earn Badges for Your Resume' in html, 'Missing Resume Badges feature'
+    assert 'College Exam Ready' in html, 'Missing trust badge'
 
     # Must NOT have old organization fields
     assert 'orgCardCollege' not in html, 'Obsolete orgCardCollege still present!'

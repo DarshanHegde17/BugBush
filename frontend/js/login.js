@@ -217,14 +217,14 @@ function resolveDashboardUrl(role, orgType) {
             return routes.organization_admin || 'organization-dashboard.html';
 
         case 'student':
-            return routes.student || 'student-dashboard.html';
+            return routes.student || '/user/dashboard';
 
         case 'candidate':
-            return routes.candidate || 'candidate-dashboard.html';
+            return routes.candidate || '/user/dashboard';
 
         default:
-            console.warn(`Unrecognized role '${role}'. Falling back to default dashboard.`);
-            return 'dashboard.html';
+            console.warn(`Unrecognized role '${role}'. Falling back to candidate dashboard.`);
+            return routes.candidate || '/user/dashboard';
     }
 }
 

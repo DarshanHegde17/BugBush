@@ -12,6 +12,27 @@
     box-sizing: border-box;
 }
 
+/* Universal Link, Image & SVG Reset */
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:visited {
+    color: inherit;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+svg {
+    max-width: 100%;
+    height: auto;
+    flex-shrink: 0;
+}
+
 :root {
     /* Brand Accent Colors */
     --primary-color: #ff6b35;
@@ -320,7 +341,10 @@ body {
     overflow: hidden;
 }
 
-.brand-logo-img {
+.brand-logo-img,
+.nav-brand img,
+.footer-brand img,
+.mobile-menu-header img {
     height: 40px !important;
     max-height: 40px !important;
     width: auto !important;

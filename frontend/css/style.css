@@ -31,6 +31,15 @@ svg {
     max-width: 100%;
     height: auto;
     flex-shrink: 0;
+    vertical-align: middle;
+}
+
+/* Universal SVG containment guard */
+svg:not([width]) {
+    width: 20px;
+    height: 20px;
+    max-width: 24px;
+    max-height: 24px;
 }
 
 :root {
@@ -198,9 +207,11 @@ body {
     white-space: nowrap;
 }
 
-.btn-primary {
+.btn-primary,
+.btn-primary:visited {
     background: var(--primary-color);
-    color: #ffffff;
+    background: var(--primary-gradient);
+    color: #ffffff !important;
 }
 
 .btn-primary:hover {
@@ -209,16 +220,17 @@ body {
     box-shadow: 0 6px 20px var(--primary-glow);
 }
 
-.btn-secondary {
+.btn-secondary,
+.btn-secondary:visited {
     background: var(--surface);
-    color: var(--text-primary);
+    color: var(--text-primary) !important;
     border: 1px solid var(--border-color);
 }
 
 .btn-secondary:hover {
     background: var(--surface-hover);
     border-color: var(--primary-color);
-    color: var(--primary-color);
+    color: var(--primary-color) !important;
     transform: translateY(-2px);
 }
 
@@ -228,35 +240,38 @@ body {
     border-radius: var(--radius-lg);
 }
 
-.btn-login {
+.btn-login,
+.btn-login:visited {
     background: transparent;
     border: 1px solid var(--border-color);
-    color: var(--text-primary);
+    color: var(--text-primary) !important;
     padding: 9px 20px;
     border-radius: var(--radius-md);
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    text-decoration: none;
+    text-decoration: none !important;
     transition: all var(--transition-fast);
 }
 
 .btn-login:hover {
     background: var(--surface);
     border-color: var(--primary-color);
-    color: var(--primary-color);
+    color: var(--primary-color) !important;
 }
 
-.btn-signup {
+.btn-signup,
+.btn-signup:visited {
     background: var(--primary-color);
-    color: #ffffff;
+    background: var(--primary-gradient);
+    color: #ffffff !important;
     border: none;
     padding: 9px 22px;
     border-radius: var(--radius-md);
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    text-decoration: none;
+    text-decoration: none !important;
     transition: all var(--transition-fast);
 }
 

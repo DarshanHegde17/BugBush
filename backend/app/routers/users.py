@@ -8,6 +8,9 @@ from backend.app.schemas.dashboard import (
     SimpleStatusResponse,
     DashboardSummaryResponse,
     AssessmentItem,
+    AssessmentDetailResponse,
+    AssessmentStatisticsResponse,
+    StartAssessmentResponse,
     ResultItem,
     ActivityItem,
     PracticeProblemItem
@@ -124,13 +127,35 @@ async def get_my_dashboard(current_user: dict = Depends(get_current_user)):
 
 
 @router.get(
+    "/me/assessments/statistics",
+    response_model=AssessmentStatisticsResponse,
+    summary="Get assessment statistics breakdown",
+    description="Returns live counts for total, available, upcoming, in-progress, completed, and expired assessments."
+)
+async def get_my_assessment_statistics(current_user: dict = Depends(get_current_user)):
+    return user_service.get_user_assessment_statistics(current_user["email"])
+
+
+@router.get(
     "/me/assessments",
     response_model=List[AssessmentItem],
     summary="Get my assessments",
-    description="Returns assessments assigned to or available for the authenticated user."
+    description="Returns assessments assigned to or available for the authenticated user with optional dynamic filters."
 )
-async def get_my_assessments(current_user: dict = Depends(get_current_user)):
-    return user_service.get_user_assessments(current_user["email"])
+async def get_my_assessments(
+    status: Optional[str] = Query(None, description="Filter by status: Available, Upcoming, In Progress, Completed, Expired, All"),
+    difficulty: Optional[str] = Query(None, description="Filter by difficulty: Easy, Medium, Hard, All"),
+    category: Optional[str] = Query(None, description="Filter by category"),
+    q: Optional[str] = Query(None, description="Search by title, description or creator"),
+    current_user: dict = Depends(get_current_user)
+):
+    return user_service.get_user_assessments(
+        email=current_user["email"],
+        status=status,
+        difficulty=difficulty,
+        category=category,
+        query=q
+    )
 
 
 @router.get(
@@ -151,6 +176,43 @@ async def get_my_results(current_user: dict = Depends(get_current_user)):
 )
 async def get_my_activity(current_user: dict = Depends(get_current_user)):
     return user_service.get_user_activity(current_user["email"])
+
+
+# ==============================================================================
+# Dedicated Assessment Session & Inspection Endpoints (/api/v1/assessments)
+# ==============================================================================
+assessments_router = APIRouter()
+
+@assessments_router.get(
+    "/{assessment_id}",
+    response_model=AssessmentDetailResponse,
+    summary="Get full assessment details, instructions & questions",
+    description="Returns syllabus, rules, allowed languages, and questions breakdown for modal display."
+)
+async def get_assessment_details(
+    assessment_id: str,
+    current_user: dict = Depends(get_current_user)
+):
+    success, data, err = user_service.get_assessment_details(current_user["email"], assessment_id)
+    if not success or not data:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=err or "Assessment not found.")
+    return data
+
+
+@assessments_router.post(
+    "/{assessment_id}/start",
+    response_model=StartAssessmentResponse,
+    summary="Start assessment attempt",
+    description="Authorizes and begins an examination session, verifying schedules and attempt limits."
+)
+async def start_assessment(
+    assessment_id: str,
+    current_user: dict = Depends(get_current_user)
+):
+    success, attempt_info, err = user_service.start_assessment_attempt(current_user["email"], assessment_id)
+    if not success:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=err or "Unable to start assessment.")
+    return attempt_info
 
 
 # ==============================================================================

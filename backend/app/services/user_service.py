@@ -232,85 +232,198 @@ class UserService:
                 "id": "asmt-101",
                 "title": "Data Structures & Algorithmic Logic Test",
                 "description": "Evaluate binary search trees, hash collisions, dynamic arrays, and recursion complexity.",
+                "instructions": "This proctored assessment tests your understanding of core algorithmic principles. Ensure stable internet connection and webcam access.",
                 "category": "Algorithms & Logic",
                 "difficulty": "Medium",
+                "questions_count": 3,
                 "duration_minutes": 60,
-                "start_date": "Nov 15, 2026",
+                "start_date": "Nov 15, 2026 - 00:00 UTC",
                 "deadline": "Nov 30, 2026 - 23:59 UTC",
                 "status": "Available",
+                "creator_name": "Department of Computer Science",
                 "score": None,
                 "max_score": 100,
-                "can_start": True
+                "can_start": True,
+                "allowed_attempts": 1,
+                "attempts_used": 0,
+                "allowed_languages": ["Python", "C++", "Java", "JavaScript", "Go"],
+                "rules": [
+                    "Full-screen lockdown mode will be enforced throughout the duration.",
+                    "Audio and video telemetry monitoring is active.",
+                    "Code execution is sandboxed in a secure cloud runner.",
+                    "No external IDEs, AI assistants, or unauthorized tabs permitted."
+                ],
+                "questions": [
+                    {"order": 1, "title": "Optimized Two-Sum with Hash Map", "difficulty": "Easy", "points": 25},
+                    {"order": 2, "title": "Longest Substring Without Repeating Characters", "difficulty": "Medium", "points": 35},
+                    {"order": 3, "title": "Binary Tree Level Order Traversal", "difficulty": "Medium", "points": 40}
+                ]
             },
             {
                 "id": "asmt-102",
                 "title": "Semester Examination: Advanced Dynamic Programming",
                 "description": "Proctored university semester exam covering memoization tables, DAG shortest paths, and knapsack variations.",
+                "instructions": "Official university semester assessment. All code submissions will undergo automated structural and Big-O efficiency analysis.",
                 "category": "Core Computer Science",
                 "difficulty": "Hard",
+                "questions_count": 4,
                 "duration_minutes": 90,
                 "start_date": "Dec 05, 2026 - 10:00 UTC",
                 "deadline": "Dec 05, 2026 - 12:00 UTC",
                 "status": "Upcoming",
+                "creator_name": "University Examination Board",
                 "score": None,
                 "max_score": 100,
-                "can_start": False
+                "can_start": False,
+                "allowed_attempts": 1,
+                "attempts_used": 0,
+                "allowed_languages": ["Python", "C++", "Java"],
+                "rules": [
+                    "Only registered students with verified college credentials may access.",
+                    "Examination window is strictly fixed to 10:00 - 12:00 UTC on Dec 05, 2026.",
+                    "Plagiarism detection algorithm compares AST tokens against campus cohort."
+                ],
+                "questions": [
+                    {"order": 1, "title": "Coin Change - Minimum Denominations", "difficulty": "Medium", "points": 20},
+                    {"order": 2, "title": "0/1 Knapsack with Custom Weight Constraints", "difficulty": "Medium", "points": 25},
+                    {"order": 3, "title": "Longest Common Subsequence Matrix", "difficulty": "Hard", "points": 25},
+                    {"order": 4, "title": "Matrix Chain Multiplication Optimization", "difficulty": "Hard", "points": 30}
+                ]
             },
             {
                 "id": "asmt-103",
                 "title": "Object-Oriented Design & Clean Code Evaluation",
                 "description": "Refactor monolithic methods, implement design patterns, and adhere to SOLID principles in code.",
+                "instructions": "You have an ongoing assessment session in progress. You may resume where you left off.",
                 "category": "Software Engineering",
                 "difficulty": "Easy",
+                "questions_count": 2,
                 "duration_minutes": 45,
-                "start_date": "Nov 14, 2026",
+                "start_date": "Nov 14, 2026 - 10:00 UTC",
                 "deadline": "Nov 25, 2026 - 18:00 UTC",
                 "status": "In Progress",
+                "creator_name": "Software Engineering Faculty",
                 "score": None,
                 "max_score": 100,
-                "can_start": True
+                "can_start": True,
+                "allowed_attempts": 1,
+                "attempts_used": 1,
+                "allowed_languages": ["Python", "Java", "C++"],
+                "rules": [
+                    "Resume your existing examination session before the submission deadline.",
+                    "Your latest code snapshot has been preserved."
+                ],
+                "questions": [
+                    {"order": 1, "title": "Factory Pattern & Polymorphic Vehicles", "difficulty": "Easy", "points": 40},
+                    {"order": 2, "title": "LRU Cache Memory Policy", "difficulty": "Medium", "points": 60}
+                ]
             },
             {
                 "id": "asmt-104",
                 "title": "Campus Placement Algorithmic Screening Benchmark",
                 "description": "Comprehensive engineering placement test across graph theory, dynamic programming, and systems logic.",
+                "instructions": "Tier-1 engineering placement qualifying test. High performance benchmark unlocks corporate hiring partner referrals.",
                 "category": "Placement & Hiring",
                 "difficulty": "Hard",
+                "questions_count": 3,
                 "duration_minutes": 120,
-                "start_date": "Nov 18, 2026",
+                "start_date": "Nov 18, 2026 - 09:00 UTC",
                 "deadline": "Dec 12, 2026 - 23:59 UTC",
                 "status": "Available",
+                "creator_name": "BugBash Placement Cell",
                 "score": None,
                 "max_score": 100,
-                "can_start": True
+                "can_start": True,
+                "allowed_attempts": 1,
+                "attempts_used": 0,
+                "allowed_languages": ["Python", "C++", "Java", "Go"],
+                "rules": [
+                    "Camera, microphone, and secondary screen detection enabled.",
+                    "Candidate scores rank on national placement leaderboard."
+                ],
+                "questions": [
+                    {"order": 1, "title": "Search in Rotated Sorted Array", "difficulty": "Medium", "points": 30},
+                    {"order": 2, "title": "Course Schedule & Dependency Cycle Check", "difficulty": "Medium", "points": 30},
+                    {"order": 3, "title": "Trapping Rain Water - Peak Elevation", "difficulty": "Hard", "points": 40}
+                ]
             },
             {
                 "id": "asmt-105",
                 "title": "Syntax & Computational Complexity Quiz",
                 "description": "Comprehensive diagnostic covering Big-O space/time notation, loop invariants, and asymptotic bounds.",
-                "category": "Computer Science",
+                "instructions": "Assessment completed. You may view your scorecard and AI evaluation feedback.",
+                "category": "Core Computer Science",
                 "difficulty": "Easy",
+                "questions_count": 3,
                 "duration_minutes": 30,
-                "start_date": "Nov 08, 2026",
+                "start_date": "Nov 08, 2026 - 00:00 UTC",
                 "deadline": "Completed on Nov 10, 2026",
                 "status": "Completed",
+                "creator_name": "CS Department Academic Staff",
                 "score": 94,
                 "max_score": 100,
-                "can_start": False
+                "can_start": False,
+                "allowed_attempts": 1,
+                "attempts_used": 1,
+                "allowed_languages": ["Python", "JavaScript"],
+                "rules": ["Single-attempt diagnostic quiz."],
+                "questions": [
+                    {"order": 1, "title": "Asymptotic Analysis & Master Theorem", "difficulty": "Easy", "points": 30},
+                    {"order": 2, "title": "Space-Time Tradeoff in Hash Maps", "difficulty": "Easy", "points": 30},
+                    {"order": 3, "title": "Amortized Complexity of Dynamic Vectors", "difficulty": "Easy", "points": 40}
+                ]
             },
             {
                 "id": "asmt-106",
                 "title": "Recursion, Trees & Graph Traversals Assessment",
                 "description": "In-depth problem set on BFS, DFS, Dijkstra, topological sort, and balanced BST verification.",
+                "instructions": "Assessment completed with verified merit certificate.",
                 "category": "Data Structures",
                 "difficulty": "Medium",
+                "questions_count": 3,
                 "duration_minutes": 75,
-                "start_date": "Nov 01, 2026",
+                "start_date": "Nov 01, 2026 - 00:00 UTC",
                 "deadline": "Completed on Nov 04, 2026",
                 "status": "Completed",
+                "creator_name": "Algorithms Evaluation Board",
                 "score": 88,
                 "max_score": 100,
-                "can_start": False
+                "can_start": False,
+                "allowed_attempts": 1,
+                "attempts_used": 1,
+                "allowed_languages": ["Python", "C++", "Java"],
+                "rules": ["Single-attempt proctored test."],
+                "questions": [
+                    {"order": 1, "title": "Binary Tree Maximum Path Sum", "difficulty": "Hard", "points": 35},
+                    {"order": 2, "title": "Shortest Path in Weighted DAG", "difficulty": "Medium", "points": 35},
+                    {"order": 3, "title": "Detect Cycle in Directed Graph", "difficulty": "Medium", "points": 30}
+                ]
+            },
+            {
+                "id": "asmt-107",
+                "title": "Midterm Diagnostic: Pointers & Low-Level Memory",
+                "description": "Diagnostic test on dynamic memory allocation, pointer arithmetic, and cache lines.",
+                "instructions": "The deadline for this assessment expired on October 25, 2026. Submissions are no longer accepted.",
+                "category": "Core Computer Science",
+                "difficulty": "Medium",
+                "questions_count": 3,
+                "duration_minutes": 60,
+                "start_date": "Oct 15, 2026 - 00:00 UTC",
+                "deadline": "Expired on Oct 25, 2026",
+                "status": "Expired",
+                "creator_name": "Department of Computer Science",
+                "score": None,
+                "max_score": 100,
+                "can_start": False,
+                "allowed_attempts": 1,
+                "attempts_used": 0,
+                "allowed_languages": ["C", "C++"],
+                "rules": ["Past examination session."],
+                "questions": [
+                    {"order": 1, "title": "Memory Leak Detection & Valgrind Analysis", "difficulty": "Medium", "points": 30},
+                    {"order": 2, "title": "Custom Malloc Implementation", "difficulty": "Hard", "points": 40},
+                    {"order": 3, "title": "Dangling Pointer Mitigation", "difficulty": "Easy", "points": 30}
+                ]
             }
         ]
 
@@ -720,11 +833,141 @@ class UserService:
     # ==========================================================================
     # User-Isolated Dashboard, Assessments, Results & Activity
     # ==========================================================================
-    def get_user_assessments(self, email: str) -> List[dict]:
-        """Returns assessments assigned to or available for this specific authenticated user."""
+    # User Assessments, Statistics & Examination Lifecycle
+    # ==========================================================================
+    def get_user_assessments(
+        self,
+        email: str,
+        status: Optional[str] = None,
+        difficulty: Optional[str] = None,
+        category: Optional[str] = None,
+        query: Optional[str] = None
+    ) -> List[dict]:
+        """Returns assessments assigned to or available for this user with dynamic filters."""
         clean_email = email.strip().lower()
         self._init_user_dashboard_data(clean_email)
-        return self._user_assessments.get(clean_email, [])
+        assessments = self._user_assessments.get(clean_email, [])
+
+        q = (query or "").strip().lower()
+        st = (status or "").strip().lower()
+        diff = (difficulty or "").strip().lower()
+        cat = (category or "").strip().lower()
+
+        results = []
+        for a in assessments:
+            if st and st != "all" and a.get("status", "").lower() != st:
+                continue
+            if diff and diff != "all" and a.get("difficulty", "").lower() != diff:
+                continue
+            if cat and cat != "all" and a.get("category", "").lower() != cat:
+                continue
+            if q:
+                match_title = q in a.get("title", "").lower()
+                match_desc = q in a.get("description", "").lower()
+                match_cat = q in a.get("category", "").lower()
+                match_creator = q in a.get("creator_name", "").lower()
+                if not (match_title or match_desc or match_cat or match_creator):
+                    continue
+            results.append(a)
+
+        return results
+
+    def get_user_assessment_statistics(self, email: str) -> dict:
+        """Returns verified counts across all 5 assessment lifecycle statuses."""
+        clean_email = email.strip().lower()
+        self._init_user_dashboard_data(clean_email)
+        assessments = self._user_assessments.get(clean_email, [])
+
+        total = len(assessments)
+        available = sum(1 for a in assessments if a.get("status") == "Available")
+        upcoming = sum(1 for a in assessments if a.get("status") == "Upcoming")
+        in_progress = sum(1 for a in assessments if a.get("status") == "In Progress")
+        completed = sum(1 for a in assessments if a.get("status") == "Completed")
+        expired = sum(1 for a in assessments if a.get("status") == "Expired")
+
+        return {
+            "total_assessments": total,
+            "available_assessments": available,
+            "upcoming_assessments": upcoming,
+            "in_progress_assessments": in_progress,
+            "completed_assessments": completed,
+            "expired_assessments": expired
+        }
+
+    def get_assessment_details(self, email: str, assessment_id: str) -> Tuple[bool, Optional[dict], Optional[str]]:
+        """Returns full structured detail, syllabus, rules, and questions breakdown for an assessment."""
+        clean_email = email.strip().lower()
+        self._init_user_dashboard_data(clean_email)
+        assessments = self._user_assessments.get(clean_email, [])
+        for a in assessments:
+            if a.get("id") == assessment_id:
+                data = dict(a)
+                data["total_questions"] = data.get("questions_count", len(data.get("questions", [])))
+                data["start_time"] = data.get("start_date")
+                data["end_time"] = data.get("deadline")
+                data["max_marks"] = data.get("max_score", 100)
+                return True, data, None
+        return False, None, "Assessment not found or not assigned to your account."
+
+    def start_assessment_attempt(self, email: str, assessment_id: str) -> Tuple[bool, Optional[dict], Optional[str]]:
+        """
+        Validates schedule, permissions, and attempt limits before starting an assessment session.
+        Returns: (success, attempt_info, error_message)
+        """
+        clean_email = email.strip().lower()
+        self._init_user_dashboard_data(clean_email)
+        assessments = self._user_assessments.get(clean_email, [])
+
+        target = None
+        for a in assessments:
+            if a.get("id") == assessment_id:
+                target = a
+                break
+
+        if not target:
+            return False, None, "Assessment not found or not assigned to your account."
+
+        status = target.get("status")
+        if status == "Upcoming":
+            return False, None, f"This assessment has not opened yet. It is scheduled to start on {target.get('start_date')}."
+
+        if status == "Expired":
+            return False, None, f"This assessment has expired. The submission deadline was on {target.get('deadline')}."
+
+        attempts_used = target.get("attempts_used", 0)
+        allowed_attempts = target.get("allowed_attempts", 1)
+
+        if status == "Completed" and attempts_used >= allowed_attempts:
+            return False, None, f"You have already exhausted all {allowed_attempts} allowed attempt(s) for this assessment."
+
+        import uuid
+        attempt_id = f"att_{uuid.uuid4().hex[:12]}"
+
+        if not hasattr(self, "_assessment_attempts"):
+            self._assessment_attempts = {}
+
+        target["attempts_used"] = attempts_used + 1
+        target["status"] = "In Progress"
+
+        exam_url = f"/user/assessment/exam/{attempt_id}"
+
+        attempt_record = {
+            "attempt_id": attempt_id,
+            "assessment_id": assessment_id,
+            "user_email": clean_email,
+            "started_at": datetime.now(timezone.utc).isoformat(),
+            "status": "In Progress",
+            "exam_url": exam_url
+        }
+        self._assessment_attempts[attempt_id] = attempt_record
+
+        return True, {
+            "attempt_id": attempt_id,
+            "assessment_id": assessment_id,
+            "status": "In Progress",
+            "exam_url": exam_url,
+            "message": "Assessment attempt initialized securely. Launching examination workspace..."
+        }, None
 
     def get_user_results(self, email: str) -> List[dict]:
         """Returns assessment results belonging strictly to this authenticated user."""

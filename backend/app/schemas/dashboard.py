@@ -51,19 +51,72 @@ class DashboardSummaryResponse(BaseModel):
 # ==============================================================================
 # Assessment Schemas
 # ==============================================================================
+class AssessmentQuestionPreview(BaseModel):
+    order: int
+    title: str
+    difficulty: str
+    points: int
+
+
 class AssessmentItem(BaseModel):
     id: str
     title: str
     description: str
     category: str
     difficulty: str  # Easy, Medium, Hard
+    questions_count: int = 3
     duration_minutes: int
     start_date: str
     deadline: str
     status: str  # Upcoming, Available, In Progress, Completed, Expired
+    creator_name: Optional[str] = "BugBash Academic Assessment Board"
     score: Optional[int] = None
     max_score: int = 100
     can_start: bool = False
+
+
+class AssessmentDetailResponse(BaseModel):
+    id: str
+    title: str
+    description: str
+    instructions: str = ""
+    category: str
+    difficulty: str
+    questions_count: int = 3
+    total_questions: Optional[int] = 3
+    questions: List[AssessmentQuestionPreview] = []
+    max_marks: int = 100
+    duration: Optional[str] = "90 mins"
+    duration_minutes: int = 90
+    allowed_languages: List[str] = ["Python", "C++", "Java", "JavaScript", "Go"]
+    start_date: Optional[str] = None
+    start_time: Optional[str] = None
+    deadline: Optional[str] = None
+    end_time: Optional[str] = None
+    rules: List[str] = []
+    allowed_attempts: int = 1
+    attempts_used: int = 0
+    status: str
+    creator_name: str = "BugBash Academic Assessment Board"
+    is_eligible: bool = True
+    eligibility_reason: Optional[str] = None
+
+
+class AssessmentStatisticsResponse(BaseModel):
+    total_assessments: int
+    available_assessments: int
+    upcoming_assessments: int
+    in_progress_assessments: int
+    completed_assessments: int
+    expired_assessments: int
+
+
+class StartAssessmentResponse(BaseModel):
+    status: str = "success"
+    attempt_id: str
+    assessment_id: str
+    exam_url: str
+    message: str = "Assessment environment initialized successfully."
 
 
 # ==============================================================================

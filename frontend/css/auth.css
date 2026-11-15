@@ -26,6 +26,15 @@ svg {
     max-width: 100%;
     height: auto;
     flex-shrink: 0;
+    vertical-align: middle;
+}
+
+/* Universal SVG containment guard: prevents any un-dimensioned SVG from blowing up */
+svg:not([width]) {
+    width: 20px;
+    height: 20px;
+    max-width: 24px;
+    max-height: 24px;
 }
 
 img {
@@ -730,15 +739,17 @@ body {
 /* Submit & Primary Action Buttons */
 .btn-submit,
 .btn-primary,
-.btn.btn-primary {
+.btn.btn-primary,
+button[type="submit"] {
     width: 100%;
     background: var(--primary-color) !important;
     background: var(--primary-gradient) !important;
     color: #ffffff !important;
-    border: none;
+    border: none !important;
     padding: 14px 24px;
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-md) !important;
     font-size: 15.5px;
+    font-family: inherit;
     font-weight: 700;
     cursor: pointer;
     transition: all var(--transition-normal);
@@ -954,6 +965,27 @@ a.auth-link:visited:hover {
 
 .auth-bottom-strip a:hover {
     color: var(--primary-color);
+}
+
+/* Dedicated Portals Note (Prevents browser default purple visited links) */
+.auth-portal-note {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 18px;
+    line-height: 1.5;
+}
+
+.auth-portal-note a,
+.auth-portal-note a:visited {
+    color: var(--text-secondary) !important;
+    text-decoration: underline !important;
+    transition: color var(--transition-fast);
+}
+
+.auth-portal-note a:hover,
+.auth-portal-note a:visited:hover {
+    color: var(--primary-color) !important;
 }
 
 /* --------------------------------------------------------------------------

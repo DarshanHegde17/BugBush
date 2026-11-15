@@ -186,14 +186,16 @@
     padding-top: 14px;
 }
 
-.auth-portal-note a {
-    color: var(--text-secondary);
-    text-decoration: underline;
-    transition: color var(--transition-fast);
+.auth-portal-note a,
+.auth-portal-note a:visited {
+    color: var(--text-secondary) !important;
+    text-decoration: underline !important;
+    transition: color var(--transition-fast) !important;
 }
 
-.auth-portal-note a:hover {
-    color: var(--primary-color);
+.auth-portal-note a:hover,
+.auth-portal-note a:visited:hover {
+    color: var(--primary-color) !important;
 }
 
 /* --------------------------------------------------------------------------

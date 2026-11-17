@@ -295,6 +295,76 @@
     line-height: 1.5;
 }
 
+/* Local Development OTP Helper Banner */
+.dev-otp-card {
+    background: rgba(255, 107, 53, 0.08);
+    border: 1px dashed var(--primary-color);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+    margin-bottom: 20px;
+}
+
+.dev-otp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.dev-otp-badge {
+    background: var(--primary-gradient);
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+}
+
+.dev-otp-notice {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.dev-otp-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.dev-otp-number {
+    font-family: monospace;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: var(--primary-color);
+    background: var(--surface);
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+}
+
+.btn-dev-autofill {
+    background: var(--surface);
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.btn-dev-autofill:hover {
+    background: var(--primary-color);
+    color: #ffffff;
+}
+
 /* --------------------------------------------------------------------------
    4. Responsive Adjustments
    -------------------------------------------------------------------------- */

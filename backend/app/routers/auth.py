@@ -1,4 +1,5 @@
 import os
+import asyncio
 from fastapi import APIRouter, HTTPException, Request, status, Query
 from backend.app.schemas.auth import (
     RegisterRequest,
@@ -18,6 +19,7 @@ from backend.app.schemas.auth import (
 )
 from backend.app.services.password_reset_service import password_reset_service
 from backend.app.services.user_service import user_service
+from backend.app.services.email_service import email_service
 
 router = APIRouter()
 
@@ -53,6 +55,13 @@ async def register_user(payload: RegisterRequest):
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=err_msg or "Invalid registration information."
         )
+
+    # Dispatch real email via SMTP if configured
+    asyncio.create_task(email_service.send_otp_email(
+        to_email=user_record["email"],
+        otp_code=otp,
+        candidate_name=payload.full_name
+    ))
 
     return RegisterResponse(
         status="success",
@@ -113,6 +122,19 @@ async def resend_otp(payload: ResendOtpRequest):
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=err_msg or "Unable to resend verification code."
         )
+
+    target_email = payload.email
+    if not target_email and payload.verification_token:
+        otp_rec = user_service._otps.get(payload.verification_token)
+        if otp_rec:
+            target_email = otp_rec.get("email")
+
+    if target_email:
+        asyncio.create_task(email_service.send_otp_email(
+            to_email=target_email,
+            otp_code=new_otp,
+            candidate_name="Candidate"
+        ))
 
     return ResendOtpResponse(
         status="success",
@@ -206,6 +228,13 @@ async def forgot_password(payload: ForgotPasswordRequest, request: Request):
         "status": "success",
         "message": "If an account exists with this email, a password reset link has been sent."
     }
+
+    reset_url = f"http://127.0.0.1:8000/reset-password.html?token={raw_token}"
+    asyncio.create_task(email_service.send_password_reset_email(
+        to_email=payload.email,
+        reset_url=reset_url,
+        user_name="Candidate"
+    ))
 
     if IS_DEV:
         response_data["dev_reset_url"] = f"/reset-password.html?token={raw_token}"

@@ -177,6 +177,18 @@
                     <div class="alert-content"></div>
                 </div>
 
+                <!-- Local Development OTP Helper Banner -->
+                <div id="devOtpBanner" class="dev-otp-card" style="display:none;" aria-live="polite">
+                    <div class="dev-otp-header">
+                        <span class="dev-otp-badge">DEVELOPMENT HELPER</span>
+                        <span class="dev-otp-notice">SMTP server not connected for live delivery</span>
+                    </div>
+                    <div class="dev-otp-body">
+                        <span>Your 6-Digit Code: <strong id="devOtpCode" class="dev-otp-number">------</strong></span>
+                        <button type="button" id="btnAutoFillOtp" class="btn-dev-autofill">Auto-Fill & Verify</button>
+                    </div>
+                </div>
+
                 <!-- OTP Input Form -->
                 <form id="otpForm" class="auth-form" novalidate>
                     

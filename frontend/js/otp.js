@@ -33,6 +33,34 @@ function initOtpVerification() {
         inputs[0].focus();
     }
 
+    // Check for Dev OTP in URL or Session Storage (Local Dev Mode)
+    function showDevOtpHelper(code) {
+        if (!code) return;
+        const banner = document.getElementById('devOtpBanner');
+        const codeEl = document.getElementById('devOtpCode');
+        const btnAutoFill = document.getElementById('btnAutoFillOtp');
+        if (banner && codeEl) {
+            codeEl.textContent = code;
+            banner.style.display = 'block';
+            if (btnAutoFill) {
+                btnAutoFill.onclick = function() {
+                    const digits = String(code).split('');
+                    inputs.forEach((input, idx) => {
+                        input.value = digits[idx] || '';
+                        input.classList.add('filled');
+                    });
+                    updateSubmitState();
+                    handleVerify();
+                };
+            }
+        }
+    }
+
+    const initialDevOtp = urlParams.get('dev_otp') || sessionStorage.getItem('bugbash_dev_otp');
+    if (initialDevOtp) {
+        showDevOtpHelper(initialDevOtp);
+    }
+
     // 2. Six-Digit Input Event Handlers
     inputs.forEach((input, index) => {
         // Handle Keydown: Digit filtering, Backspace, and Arrow navigation
@@ -211,6 +239,10 @@ function initOtpVerification() {
 
                 if (response.ok) {
                     showAlert('A new 6-digit verification code has been dispatched to your email.', 'success');
+                    if (data.dev_otp) {
+                        sessionStorage.setItem('bugbash_dev_otp', data.dev_otp);
+                        showDevOtpHelper(data.dev_otp);
+                    }
                     startCountdown(60);
                     // Clear inputs and refocus first box
                     inputs.forEach(i => {
@@ -282,6 +314,7 @@ function initOtpVerification() {
             // State Transitions:
             if (response.ok) {
                 // States E & F: Email Verified & Super Admin Approval Pending
+                sessionStorage.removeItem('bugbash_dev_otp');
                 transitionToSuccessState(orgName, rawEmail);
             } else if (response.status === 400 || response.status === 401) {
                 // State B: Invalid OTP

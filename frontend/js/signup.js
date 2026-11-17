@@ -333,11 +333,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 sessionStorage.setItem('bugbash_verification_email', data.email || payload.email);
                 sessionStorage.setItem('bugbash_verification_token', data.verification_token || '');
                 sessionStorage.setItem('bugbash_candidate_name', payload.full_name);
+                if (data.dev_otp) {
+                    sessionStorage.setItem('bugbash_dev_otp', data.dev_otp);
+                }
 
                 showAlert('Account created! Redirecting to email verification...', 'success');
 
                 setTimeout(() => {
-                    const redirectUrl = `verify-otp.html?email=${encodeURIComponent(data.email || payload.email)}&context=${encodeURIComponent(data.verification_token || '')}`;
+                    let redirectUrl = `verify-otp.html?email=${encodeURIComponent(data.email || payload.email)}&context=${encodeURIComponent(data.verification_token || '')}`;
+                    if (data.dev_otp) {
+                        redirectUrl += `&dev_otp=${encodeURIComponent(data.dev_otp)}`;
+                    }
                     window.location.href = redirectUrl;
                 }, 600);
 

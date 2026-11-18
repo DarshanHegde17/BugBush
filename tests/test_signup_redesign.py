@@ -46,7 +46,8 @@ with opener.open(urllib.request.Request(f'{BASE_WEB}/signup.html')) as resp:
     print('  [PASS] Brand identity, beetle logo, and left-side copy verified')
 
 print('\n=== 2. Testing Registration API (POST /api/v1/auth/register) ===')
-candidate_email = 'candidate.alex@bugbash.io'
+import time
+candidate_email = f'candidate.alex.{int(time.time())}@bugbash.io'
 reg_payload = {
     'full_name': 'Alex Rivera',
     'email': candidate_email,

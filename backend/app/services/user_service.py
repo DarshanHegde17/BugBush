@@ -1,18 +1,3 @@
-import re
-import secrets
-import hashlib
-import logging
-from datetime import datetime, timedelta, timezone
-from typing import Dict, Optional, Tuple, List
-
-from backend.app.services.password_reset_service import PasswordResetService
-
-logger = logging.getLogger("bugbash.auth.user_service")
-
-# Phone regex accepting standard international / domestic formats: +1 (555) 000-0000, 9876543210, etc.
-PHONE_REGEX = re.compile(r'^[+]?[\d\s\-\(\)\.]{7,25}$')
-
-
 import os
 import re
 import secrets
@@ -22,6 +7,7 @@ from datetime import datetime, timedelta, timezone
 from typing import Dict, Optional, Tuple, List, Any
 
 import jwt
+from backend.app.database.mongodb import mongodb
 from backend.app.services.password_reset_service import PasswordResetService
 
 logger = logging.getLogger("bugbash.auth.user_service")
@@ -36,13 +22,14 @@ JWT_ALGORITHM = "HS256"
 class UserService:
     """
     Core User Management Service for BugBash:
+    - Persistent MongoDB storage across server restarts (compatible with MongoDB Compass)
     - Individual candidate registration & authentication
     - JWT token generation & validation
     - Unique email constraint enforcement
-    - PBKDF2-HMAC-SHA256 salted password hashing
+    - PBKDF2-HMAC-SHA256 salted password hashing (with bcrypt verification compatibility)
     - Cryptographic 6-digit OTP generation and verification
     - Account activation upon successful email verification
-    - Dynamic per-user assessments, results, and activity tracking
+    - Dynamic per-user assessments, results, and activity tracking in MongoDB
     - Zero plain password or sensitive credential logging
     """
 
@@ -50,37 +37,35 @@ class UserService:
         self.otp_expiry = timedelta(minutes=otp_expiry_minutes)
         self.resend_cooldown = timedelta(seconds=resend_cooldown_seconds)
 
-        # User Store: { email_lower: { full_name, email, phone_number, password_hash, is_verified, role, created_at, id } }
+        # In-memory fast caches
         self._users: Dict[str, dict] = {
             "demo@bugbash.com": {
                 "id": "usr_demo_01",
                 "full_name": "Demo Candidate",
+                "name": "Demo Candidate",
                 "email": "demo@bugbash.com",
                 "phone_number": "+1 (555) 123-4567",
                 "password_hash": PasswordResetService.hash_password("DemoPassword123!"),
+                "password": PasswordResetService.hash_password("DemoPassword123!"),
                 "is_verified": True,
                 "role": "candidate",
                 "college_name": "BugBash Institute of Engineering",
                 "degree_major": "Computer Science & Engineering",
                 "graduation_year": "2026",
-                "created_at": datetime(2026, 1, 15, 10, 0, tzinfo=timezone.utc)
+                "created_at": datetime(2026, 1, 15, 10, 0, tzinfo=timezone.utc),
+                "updated_at": datetime.now(timezone.utc)
             }
         }
 
-        # OTP Store: { verification_token: { email, otp, expires_at, attempts, last_sent_at } }
+        # OTP Store
         self._otps: Dict[str, dict] = {}
-
-        # Reverse lookup: { email_lower: verification_token }
         self._email_to_token: Dict[str, str] = {}
 
-        # User Assessments Store: { email_lower: List[dict] }
+        # User Assessments, Results, Activity Caches
         self._user_assessments: Dict[str, List[dict]] = {}
-
-        # User Results Store: { email_lower: List[dict] }
         self._user_results: Dict[str, List[dict]] = {}
-
-        # User Activity Store: { email_lower: List[dict] }
         self._user_activity: Dict[str, List[dict]] = {}
+        self._assessment_attempts: Dict[str, dict] = {}
 
         # Global Practice Problems Catalog
         self._practice_problems: List[dict] = [
@@ -163,46 +148,46 @@ class UserService:
             },
             {
                 "id": "prob-08",
-                "title": "Trapping Rain Water - Peak Elevation",
-                "slug": "trapping-rain-water",
-                "difficulty": "Hard",
-                "category": "Two Pointers",
-                "languages": ["Python", "C++", "Java"],
-                "acceptance_rate": "42%",
-                "tags": ["Two Pointers", "Dynamic Programming", "Stack"],
+                "title": "Binary Tree Level Order Traversal",
+                "slug": "binary-tree-level-order",
+                "difficulty": "Medium",
+                "category": "Trees & BFS",
+                "languages": ["Python", "C++", "Java", "JavaScript"],
+                "acceptance_rate": "65%",
+                "tags": ["Tree", "BFS", "Queue"],
                 "solved": False
             },
             {
                 "id": "prob-09",
-                "title": "Reverse a Singly Linked List",
-                "slug": "reverse-linked-list",
-                "difficulty": "Easy",
-                "category": "Linked List",
-                "languages": ["Python", "C++", "Java", "JavaScript", "Go"],
-                "acceptance_rate": "91%",
-                "tags": ["Linked List", "Recursion"],
-                "solved": True
+                "title": "Trapping Rain Water - Two Pointer Optimization",
+                "slug": "trapping-rain-water",
+                "difficulty": "Hard",
+                "category": "Two Pointers & Arrays",
+                "languages": ["Python", "C++", "Java"],
+                "acceptance_rate": "42%",
+                "tags": ["Two Pointers", "Array", "Monotonic Stack"],
+                "solved": False
             },
             {
                 "id": "prob-10",
-                "title": "Binary Tree Maximum Path Sum",
-                "slug": "binary-tree-max-path",
-                "difficulty": "Hard",
-                "category": "Trees & Recursion",
-                "languages": ["Python", "C++", "Java", "Go"],
-                "acceptance_rate": "39%",
-                "tags": ["Tree", "DFS", "Binary Tree"],
+                "title": "Maximum Subarray Sum - Kadane's Algorithm",
+                "slug": "maximum-subarray-kadane",
+                "difficulty": "Easy",
+                "category": "Dynamic Programming",
+                "languages": ["Python", "C++", "Java", "JavaScript", "Go"],
+                "acceptance_rate": "77%",
+                "tags": ["Dynamic Programming", "Array"],
                 "solved": False
             },
             {
                 "id": "prob-11",
-                "title": "Climbing Stairs - Step Permutations",
-                "slug": "climbing-stairs",
-                "difficulty": "Easy",
-                "category": "Dynamic Programming",
-                "languages": ["Python", "C++", "Java", "JavaScript", "Go"],
-                "acceptance_rate": "86%",
-                "tags": ["Dynamic Programming", "Math"],
+                "title": "Word Search & Backtracking Matrix",
+                "slug": "word-search-backtracking",
+                "difficulty": "Medium",
+                "category": "Backtracking",
+                "languages": ["Python", "C++", "Java"],
+                "acceptance_rate": "49%",
+                "tags": ["Backtracking", "Matrix", "DFS"],
                 "solved": False
             },
             {
@@ -218,16 +203,75 @@ class UserService:
             }
         ]
 
-        # Initialize demo data
+        # Initialize demo data in MongoDB
         self._init_user_dashboard_data("demo@bugbash.com")
 
+    # --------------------------------------------------------------------------
+    # Database Helper: Resolve User from MongoDB or In-Memory
+    # --------------------------------------------------------------------------
+    def _get_user_doc(self, email: str) -> Optional[dict]:
+        """
+        Retrieves user document from MongoDB, ensuring persistence across restarts.
+        Falls back to local cache if MongoDB is unreachable.
+        """
+        clean_email = email.strip().lower()
+
+        # 1. Query MongoDB first
+        if mongodb.users is not None:
+            try:
+                user = mongodb.users.find_one({"email": clean_email})
+                if user:
+                    if "_id" in user:
+                        user["_id"] = str(user["_id"])
+                    if "full_name" not in user and "name" in user:
+                        user["full_name"] = user["name"]
+                    if "password_hash" not in user and "password" in user:
+                        user["password_hash"] = user["password"]
+                    self._users[clean_email] = user
+                    return user
+            except Exception as e:
+                logger.warning(f"Error querying user '{clean_email}' from MongoDB: {e}")
+
+        # 2. Check local memory
+        return self._users.get(clean_email)
+
+    # --------------------------------------------------------------------------
+    # Initial Dashboard Data Seeder
+    # --------------------------------------------------------------------------
     def _init_user_dashboard_data(self, email: str):
-        """Initializes personalized assessments, results, and activity for a user."""
+        """Initializes personalized assessments, results, and activity for a user in MongoDB."""
         email_clean = email.strip().lower()
+
+        # Check MongoDB first
+        if mongodb.assessments is not None:
+            try:
+                count = mongodb.assessments.count_documents({"user_email": email_clean})
+                if count > 0:
+                    asmts = list(mongodb.assessments.find({"user_email": email_clean}))
+                    for a in asmts:
+                        if "_id" in a:
+                            a["_id"] = str(a["_id"])
+                    self._user_assessments[email_clean] = asmts
+
+                    results = list(mongodb.results.find({"user_email": email_clean}))
+                    for r in results:
+                        if "_id" in r:
+                            r["_id"] = str(r["_id"])
+                    self._user_results[email_clean] = results
+
+                    activity = list(mongodb.activity.find({"user_email": email_clean}))
+                    for act in activity:
+                        if "_id" in act:
+                            act["_id"] = str(act["_id"])
+                    self._user_activity[email_clean] = activity
+                    return
+            except Exception as e:
+                logger.warning(f"Error querying user assessments from MongoDB: {e}")
+
         if email_clean in self._user_assessments:
             return
 
-        self._user_assessments[email_clean] = [
+        default_assessments = [
             {
                 "id": "asmt-101",
                 "title": "Data Structures & Algorithmic Logic Test",
@@ -338,185 +382,219 @@ class UserService:
                 "attempts_used": 0,
                 "allowed_languages": ["Python", "C++", "Java", "Go"],
                 "rules": [
-                    "Camera, microphone, and secondary screen detection enabled.",
-                    "Candidate scores rank on national placement leaderboard."
+                    "Mandatory placement qualifying round. Complete all 3 problems.",
+                    "Submissions undergo code structure, cyclomatic complexity, and memory leak analysis."
                 ],
                 "questions": [
-                    {"order": 1, "title": "Search in Rotated Sorted Array", "difficulty": "Medium", "points": 30},
-                    {"order": 2, "title": "Course Schedule & Dependency Cycle Check", "difficulty": "Medium", "points": 30},
-                    {"order": 3, "title": "Trapping Rain Water - Peak Elevation", "difficulty": "Hard", "points": 40}
+                    {"order": 1, "title": "Course Schedule & Dependency Cycles", "difficulty": "Medium", "points": 30},
+                    {"order": 2, "title": "Trapping Rain Water with Two Pointers", "difficulty": "Hard", "points": 35},
+                    {"order": 3, "title": "Word Search & Backtracking Matrix", "difficulty": "Medium", "points": 35}
                 ]
             },
             {
                 "id": "asmt-105",
-                "title": "Syntax & Computational Complexity Quiz",
-                "description": "Comprehensive diagnostic covering Big-O space/time notation, loop invariants, and asymptotic bounds.",
-                "instructions": "Assessment completed. You may view your scorecard and AI evaluation feedback.",
-                "category": "Core Computer Science",
-                "difficulty": "Easy",
-                "questions_count": 3,
-                "duration_minutes": 30,
-                "start_date": "Nov 08, 2026 - 00:00 UTC",
-                "deadline": "Completed on Nov 10, 2026",
-                "status": "Completed",
-                "creator_name": "CS Department Academic Staff",
-                "score": 94,
-                "max_score": 100,
-                "can_start": False,
-                "allowed_attempts": 3,
-                "attempts_used": 1,
-                "allowed_languages": ["Python", "JavaScript"],
-                "rules": ["Single-attempt diagnostic quiz."],
-                "questions": [
-                    {"order": 1, "title": "Asymptotic Analysis & Master Theorem", "difficulty": "Easy", "points": 30},
-                    {"order": 2, "title": "Space-Time Tradeoff in Hash Maps", "difficulty": "Easy", "points": 30},
-                    {"order": 3, "title": "Amortized Complexity of Dynamic Vectors", "difficulty": "Easy", "points": 40}
-                ]
-            },
-            {
-                "id": "asmt-106",
-                "title": "Recursion, Trees & Graph Traversals Assessment",
-                "description": "In-depth problem set on BFS, DFS, Dijkstra, topological sort, and balanced BST verification.",
-                "instructions": "Assessment completed with verified merit certificate.",
-                "category": "Data Structures",
+                "title": "Full-Stack System Architecture & API Design Assessment",
+                "description": "Design RESTful microservices, optimize rate-limiting algorithms, and model transactional databases.",
+                "instructions": "Completed assessment. Official scorecard and skill badge have been cryptographically verified.",
+                "category": "System Design",
                 "difficulty": "Medium",
                 "questions_count": 3,
                 "duration_minutes": 75,
                 "start_date": "Nov 01, 2026 - 00:00 UTC",
-                "deadline": "Completed on Nov 04, 2026",
+                "deadline": "Nov 10, 2026 - 23:59 UTC",
                 "status": "Completed",
-                "creator_name": "Algorithms Evaluation Board",
-                "score": 88,
+                "creator_name": "System Architecture Lab",
+                "score": 92,
                 "max_score": 100,
                 "can_start": False,
                 "allowed_attempts": 3,
                 "attempts_used": 1,
-                "allowed_languages": ["Python", "C++", "Java"],
-                "rules": ["Single-attempt proctored test."],
+                "allowed_languages": ["Python", "JavaScript", "Java", "Go"],
+                "rules": [
+                    "This assessment has been graded and finalized.",
+                    "Review score breakdown in Results & Reports."
+                ],
                 "questions": [
-                    {"order": 1, "title": "Binary Tree Maximum Path Sum", "difficulty": "Hard", "points": 35},
-                    {"order": 2, "title": "Shortest Path in Weighted DAG", "difficulty": "Medium", "points": 35},
-                    {"order": 3, "title": "Detect Cycle in Directed Graph", "difficulty": "Medium", "points": 30}
+                    {"order": 1, "title": "Distributed Rate Limiter - Token Bucket", "difficulty": "Medium", "points": 30},
+                    {"order": 2, "title": "Database Connection Pool Thread Safety", "difficulty": "Medium", "points": 35},
+                    {"order": 3, "title": "Idempotent Payment Webhook Handler", "difficulty": "Medium", "points": 35}
+                ]
+            },
+            {
+                "id": "asmt-106",
+                "title": "Machine Learning & Intelligent Optimization Logic",
+                "description": "Implement gradient descent from scratch, compute confusion matrices, and tune hyperparameters.",
+                "instructions": "Completed laboratory practical. Automated evaluation verified loss convergence and numerical stability.",
+                "category": "AI & Machine Learning",
+                "difficulty": "Hard",
+                "questions_count": 3,
+                "duration_minutes": 90,
+                "start_date": "Oct 20, 2026 - 08:00 UTC",
+                "deadline": "Oct 28, 2026 - 23:59 UTC",
+                "status": "Completed",
+                "creator_name": "AI Research Group",
+                "score": 86,
+                "max_score": 100,
+                "can_start": False,
+                "allowed_attempts": 3,
+                "attempts_used": 1,
+                "allowed_languages": ["Python"],
+                "rules": [
+                    "External numerical libraries (numpy, scipy) were permitted under test harness constraints.",
+                    "Final results certified for academic credit."
+                ],
+                "questions": [
+                    {"order": 1, "title": "Vectorized Logistic Regression", "difficulty": "Medium", "points": 30},
+                    {"order": 2, "title": "K-Means Centroid Convergence", "difficulty": "Medium", "points": 35},
+                    {"order": 3, "title": "Backpropagation Through Computational Graph", "difficulty": "Hard", "points": 35}
                 ]
             },
             {
                 "id": "asmt-107",
-                "title": "Midterm Diagnostic: Pointers & Low-Level Memory",
-                "description": "Diagnostic test on dynamic memory allocation, pointer arithmetic, and cache lines.",
-                "instructions": "The deadline for this assessment expired on October 25, 2026. Submissions are no longer accepted.",
-                "category": "Core Computer Science",
-                "difficulty": "Medium",
+                "title": "Distributed Systems & Concurrency Race Conditions",
+                "description": "Debug mutex deadlocks, implement Raft consensus state transitions, and analyze Paxos rounds.",
+                "instructions": "Assessment expired on Oct 25, 2026. The examination window is officially closed.",
+                "category": "Distributed Systems",
+                "difficulty": "Hard",
                 "questions_count": 3,
-                "duration_minutes": 60,
+                "duration_minutes": 100,
                 "start_date": "Oct 15, 2026 - 00:00 UTC",
                 "deadline": "Expired on Oct 25, 2026",
                 "status": "Expired",
-                "creator_name": "Department of Computer Science",
+                "creator_name": "Systems & Networking Faculty",
                 "score": None,
                 "max_score": 100,
                 "can_start": False,
                 "allowed_attempts": 3,
                 "attempts_used": 0,
-                "allowed_languages": ["C", "C++"],
-                "rules": ["Past examination session."],
+                "allowed_languages": ["Go", "C++", "Java", "Python"],
+                "rules": [
+                    "The submission deadline for this cohort has passed.",
+                    "Contact course coordinator to request deferred re-examination access."
+                ],
                 "questions": [
-                    {"order": 1, "title": "Memory Leak Detection & Valgrind Analysis", "difficulty": "Medium", "points": 30},
-                    {"order": 2, "title": "Custom Malloc Implementation", "difficulty": "Hard", "points": 40},
-                    {"order": 3, "title": "Dangling Pointer Mitigation", "difficulty": "Easy", "points": 30}
+                    {"order": 1, "title": "Reader-Writer Lock without Starvation", "difficulty": "Hard", "points": 30},
+                    {"order": 2, "title": "Raft Leader Election Heartbeat Cycle", "difficulty": "Hard", "points": 35},
+                    {"order": 3, "title": "Vector Clock Timestamp Synchronization", "difficulty": "Medium", "points": 35}
                 ]
             }
         ]
 
-        self._user_results[email_clean] = [
+        default_results = [
             {
-                "id": "res-201",
+                "id": "res-105",
                 "assessment_id": "asmt-105",
-                "assessment_title": "Syntax & Computational Complexity Quiz",
-                "score": 94,
+                "assessment_title": "Full-Stack System Architecture & API Design Assessment",
+                "score": 92,
                 "max_score": 100,
-                "percentage": 94.0,
-                "completion_date": "Nov 10, 2026",
+                "percentage": 92.0,
+                "completion_date": "Nov 08, 2026",
                 "result_status": "Distinction",
-                "feedback": "Exceptional algorithmic efficiency and clean structure. Passed all 24/24 edge and stress cases.",
+                "feedback": "Outstanding performance in concurrent handling, latency mitigation, and modular architecture.",
                 "metrics": {
                     "logic_correctness": 96,
-                    "time_complexity": 92,
-                    "space_efficiency": 95,
-                    "code_quality": 93,
-                    "test_cases_passed": "24 / 24 Passed (100%)"
+                    "time_complexity": 90,
+                    "space_efficiency": 88,
+                    "code_quality": 94,
+                    "test_cases_passed": "18/18"
                 }
             },
             {
-                "id": "res-202",
+                "id": "res-106",
                 "assessment_id": "asmt-106",
-                "assessment_title": "Recursion, Trees & Graph Traversals Assessment",
-                "score": 88,
+                "assessment_title": "Machine Learning & Intelligent Optimization Logic",
+                "score": 86,
                 "max_score": 100,
-                "percentage": 88.0,
-                "completion_date": "Nov 04, 2026",
+                "percentage": 86.0,
+                "completion_date": "Oct 26, 2026",
                 "result_status": "Merit",
-                "feedback": "Strong recursive decomposition and clean tree traversals. Minor suboptimal auxiliary space in DFS branch.",
+                "feedback": "Strong mathematical intuition. Clean gradient convergence with minimal memory allocation.",
                 "metrics": {
-                    "logic_correctness": 90,
-                    "time_complexity": 85,
+                    "logic_correctness": 88,
+                    "time_complexity": 84,
                     "space_efficiency": 86,
-                    "code_quality": 91,
-                    "test_cases_passed": "18 / 20 Passed (90%)"
+                    "code_quality": 88,
+                    "test_cases_passed": "16/18"
                 }
             }
         ]
 
-        self._user_activity[email_clean] = [
+        default_activity = [
             {
-                "id": "act-301",
+                "id": "act-01",
                 "type": "assessment_completed",
-                "title": "Completed Syntax & Complexity Quiz",
-                "description": "Scored 94% (Distinction) with 24/24 test cases passing.",
-                "timestamp": "2 days ago",
-                "score": 94,
+                "title": "Completed: System Architecture & API Design",
+                "description": "Scored 92/100 (Distinction). Earned Level-3 Backend Badge.",
+                "timestamp": "Nov 08, 2026 - 11:32 UTC",
+                "score": 92,
                 "icon": "award"
             },
             {
-                "id": "act-302",
+                "id": "act-02",
                 "type": "practice_solved",
-                "title": "Solved 'Two Sum - Optimized Hash Map'",
-                "description": "Executed in Python 3 with O(N) runtime and O(N) space.",
-                "timestamp": "3 days ago",
+                "title": "Solved: Two Sum - Optimized Hash Map",
+                "description": "Completed in Python (100% test cases passed, runtime 32ms).",
+                "timestamp": "Nov 06, 2026 - 16:40 UTC",
                 "icon": "code"
             },
             {
-                "id": "act-303",
+                "id": "act-03",
                 "type": "practice_solved",
-                "title": "Solved 'Valid Parentheses & Delimiter Matching'",
-                "description": "Executed in C++ using std::stack with O(1) auxiliary space.",
-                "timestamp": "5 days ago",
+                "title": "Solved: Valid Parentheses & Delimiter Matching",
+                "description": "Completed in C++ (O(1) memory auxiliary stack).",
+                "timestamp": "Nov 04, 2026 - 14:15 UTC",
                 "icon": "code"
-            },
-            {
-                "id": "act-304",
-                "type": "assessment_completed",
-                "title": "Completed Trees & Graphs Assessment",
-                "description": "Achieved 88% Merit and unlocked verified resume badge.",
-                "timestamp": "Nov 04, 2026",
-                "score": 88,
-                "icon": "check-circle"
             }
         ]
+
+        self._user_assessments[email_clean] = default_assessments
+        self._user_results[email_clean] = default_results
+        self._user_activity[email_clean] = default_activity
+
+        # Persist to MongoDB
+        if mongodb.assessments is not None:
+            try:
+                docs = []
+                for a in default_assessments:
+                    d = dict(a)
+                    d["user_email"] = email_clean
+                    docs.append(d)
+                if docs:
+                    mongodb.assessments.insert_many(docs)
+
+                res_docs = []
+                for r in default_results:
+                    rd = dict(r)
+                    rd["user_email"] = email_clean
+                    res_docs.append(rd)
+                if res_docs:
+                    mongodb.results.insert_many(res_docs)
+
+                act_docs = []
+                for ac in default_activity:
+                    acd = dict(ac)
+                    acd["user_email"] = email_clean
+                    act_docs.append(acd)
+                if act_docs:
+                    mongodb.activity.insert_many(act_docs)
+            except Exception as e:
+                logger.warning(f"Error persisting default dashboard data to MongoDB: {e}")
 
     # ==========================================================================
     # Authentication & JWT Session Management
     # ==========================================================================
     def authenticate_user(self, email: str, password: str) -> Tuple[bool, Optional[dict], Optional[str]]:
         """
-        Validates user credentials against salted hash.
+        Validates user credentials against salted hash stored in MongoDB or memory.
         Returns: (success, user_dict, error_message)
         """
         clean_email = email.strip().lower()
-        if clean_email not in self._users:
+        user = self._get_user_doc(clean_email)
+        if not user:
             return False, None, "Invalid email or password. Please verify your credentials."
 
-        user = self._users[clean_email]
-        if not PasswordResetService.verify_password(password, user["password_hash"]):
+        stored_hash = user.get("password_hash") or user.get("password")
+        if not stored_hash or not PasswordResetService.verify_password(password, stored_hash):
             return False, None, "Invalid email or password. Please verify your credentials."
 
         if not user.get("is_verified", False):
@@ -533,8 +611,8 @@ class UserService:
         delta = timedelta(days=7) if remember_me else timedelta(hours=24)
         payload = {
             "sub": user["email"],
-            "user_id": user.get("id", user["email"]),
-            "name": user.get("full_name", ""),
+            "user_id": str(user.get("id") or user.get("_id") or user["email"]),
+            "name": user.get("full_name") or user.get("name", ""),
             "role": user.get("role", "candidate"),
             "iat": int(now.timestamp()),
             "exp": int((now + delta).timestamp())
@@ -548,7 +626,7 @@ class UserService:
             email = payload.get("sub")
             if not email:
                 return None
-            user = self._users.get(email.lower())
+            user = self._get_user_doc(email.lower())
             if user:
                 self._init_user_dashboard_data(email.lower())
             return user
@@ -563,7 +641,7 @@ class UserService:
         password: str
     ) -> Tuple[bool, Optional[dict], Optional[str], Optional[str], Optional[str]]:
         """
-        Registers a new individual candidate account.
+        Registers a new individual candidate account in MongoDB.
         Returns: (success, user_dict, verification_token, otp, error_message)
         """
         clean_name = full_name.strip()
@@ -583,18 +661,31 @@ class UserService:
             return False, None, None, None, complexity_err or "Password does not meet complexity requirements."
 
         # 2. Email uniqueness check
-        if clean_email in self._users:
-            existing = self._users[clean_email]
+        existing = self._get_user_doc(clean_email)
+        if existing:
             if existing.get("is_verified", False):
                 return False, None, None, None, "An account with this email address already exists. Please sign in instead."
             else:
                 # User exists but is unverified: update details, refresh password, and issue fresh OTP
                 hashed_pw = PasswordResetService.hash_password(password)
                 existing["full_name"] = clean_name
+                existing["name"] = clean_name
                 existing["phone_number"] = clean_phone
                 existing["password_hash"] = hashed_pw
+                existing["password"] = hashed_pw
                 existing["updated_at"] = datetime.now(timezone.utc)
-                
+                self._users[clean_email] = existing
+
+                if mongodb.users is not None:
+                    try:
+                        mongodb.users.update_one(
+                            {"email": clean_email},
+                            {"$set": existing},
+                            upsert=True
+                        )
+                    except Exception as e:
+                        logger.warning(f"Error updating unverified user in MongoDB: {e}")
+
                 # Issue new OTP
                 token, otp = self._create_otp_for_email(clean_email)
                 masked_email = clean_email[0] + "***@" + clean_email.split("@")[-1]
@@ -605,16 +696,36 @@ class UserService:
         hashed_password = PasswordResetService.hash_password(password)
 
         # 4. Create user record in pending verification state
+        now = datetime.now(timezone.utc)
         user_record = {
+            "id": f"usr_{secrets.token_hex(6)}",
             "full_name": clean_name,
+            "name": clean_name,
             "email": clean_email,
             "phone_number": clean_phone,
             "password_hash": hashed_password,
+            "password": hashed_password,
             "is_verified": False,
             "role": "candidate",
-            "created_at": datetime.now(timezone.utc)
+            "college_name": "BugBash Institute of Engineering",
+            "degree_major": "Computer Science & Engineering",
+            "graduation_year": "2026",
+            "created_at": now,
+            "updated_at": now
         }
         self._users[clean_email] = user_record
+
+        # Persist to MongoDB
+        if mongodb.users is not None:
+            try:
+                mongodb.users.update_one(
+                    {"email": clean_email},
+                    {"$set": user_record},
+                    upsert=True
+                )
+                logger.info(f"User {clean_email} saved to MongoDB successfully.")
+            except Exception as e:
+                logger.error(f"Error saving user to MongoDB: {e}")
 
         # 5. Generate secure 6-digit OTP and context token
         token, otp = self._create_otp_for_email(clean_email)
@@ -626,7 +737,7 @@ class UserService:
 
     def _create_otp_for_email(self, email: str) -> Tuple[str, str]:
         """Internal helper to generate a 6-digit OTP and 32-byte context token."""
-        # Generate 6-digit cryptographic numeric OTP (100000 - 999999)
+        clean_email = email.strip().lower()
         otp = f"{secrets.randbelow(900000) + 100000}"
         token = secrets.token_urlsafe(32)
 
@@ -634,19 +745,29 @@ class UserService:
         expires_at = now + self.otp_expiry
 
         # Invalidate previous token for this email if any
-        if email in self._email_to_token:
-            old_token = self._email_to_token[email]
+        if clean_email in self._email_to_token:
+            old_token = self._email_to_token[clean_email]
             self._otps.pop(old_token, None)
 
-        self._otps[token] = {
-            "email": email,
+        otp_doc = {
+            "email": clean_email,
+            "token": token,
             "otp": otp,
             "created_at": now,
             "expires_at": expires_at,
             "last_sent_at": now,
             "attempts": 0
         }
-        self._email_to_token[email] = token
+        self._otps[token] = otp_doc
+        self._email_to_token[clean_email] = token
+
+        # Persist to MongoDB
+        if mongodb.otps is not None:
+            try:
+                mongodb.otps.delete_many({"email": clean_email})
+                mongodb.otps.insert_one(dict(otp_doc))
+            except Exception as e:
+                logger.warning(f"Error storing OTP in MongoDB: {e}")
 
         return token, otp
 
@@ -657,7 +778,7 @@ class UserService:
         email: Optional[str] = None
     ) -> Tuple[bool, Optional[str]]:
         """
-        Validates OTP and activates user account.
+        Validates OTP and activates user account in MongoDB.
         Returns: (success, error_message)
         """
         clean_otp = otp.strip()
@@ -673,36 +794,88 @@ class UserService:
                 matched_token = self._email_to_token[normalized_email]
                 otp_record = self._otps.get(matched_token)
 
+        # Query MongoDB if not found in memory
+        if not otp_record and mongodb.otps is not None:
+            try:
+                if token:
+                    otp_record = mongodb.otps.find_one({"token": token})
+                    if otp_record:
+                        matched_token = token
+                elif email:
+                    otp_record = mongodb.otps.find_one({"email": email.strip().lower()})
+                    if otp_record:
+                        matched_token = otp_record.get("token")
+            except Exception as e:
+                logger.warning(f"Error querying OTP from MongoDB: {e}")
+
         if not otp_record:
             return False, "Invalid or missing verification session. Please request a new verification code."
 
         now = datetime.now(timezone.utc)
+        expires_at = otp_record["expires_at"]
+        if isinstance(expires_at, datetime) and expires_at.tzinfo is None:
+            expires_at = expires_at.replace(tzinfo=timezone.utc)
 
         # Check expiration
-        if now > otp_record["expires_at"]:
+        if now > expires_at:
             return False, "Verification code has expired. Please request a new one."
 
         # Brute-force protection: max 5 failed attempts per OTP
         if otp_record["attempts"] >= 5:
-            self._otps.pop(matched_token, None)
+            if matched_token:
+                self._otps.pop(matched_token, None)
+            if mongodb.otps is not None:
+                try:
+                    mongodb.otps.delete_many({"token": matched_token})
+                except Exception:
+                    pass
             return False, "Too many failed attempts. This verification code has been revoked. Please request a new one."
 
         otp_record["attempts"] += 1
+        if mongodb.otps is not None and matched_token:
+            try:
+                mongodb.otps.update_one({"token": matched_token}, {"$inc": {"attempts": 1}})
+            except Exception:
+                pass
 
         # Check OTP match using constant-time comparison
-        if not secrets.compare_digest(otp_record["otp"], clean_otp):
+        if not secrets.compare_digest(str(otp_record["otp"]), clean_otp):
             remaining = 5 - otp_record["attempts"]
             return False, f"Incorrect verification code. {remaining} attempt(s) remaining."
 
-        # Activate user account
-        user_email = otp_record["email"]
+        # Activate user account in MongoDB and memory
+        user_email = otp_record["email"].strip().lower()
         if user_email in self._users:
             self._users[user_email]["is_verified"] = True
             self._users[user_email]["verified_at"] = now
 
+        if mongodb.users is not None:
+            try:
+                mongodb.users.update_one(
+                    {"email": user_email},
+                    {"$set": {
+                        "is_verified": True,
+                        "verified_at": now,
+                        "updated_at": now
+                    }}
+                )
+                logger.info(f"User {user_email} marked as verified in MongoDB.")
+            except Exception as e:
+                logger.error(f"Error activating user in MongoDB: {e}")
+
         # Invalidate OTP record immediately upon activation
-        self._otps.pop(matched_token, None)
+        if matched_token:
+            self._otps.pop(matched_token, None)
         self._email_to_token.pop(user_email, None)
+
+        if mongodb.otps is not None:
+            try:
+                mongodb.otps.delete_many({"email": user_email})
+            except Exception:
+                pass
+
+        # Seed assessments for this newly verified user in MongoDB
+        self._init_user_dashboard_data(user_email)
 
         masked_email = user_email[0] + "***@" + user_email.split("@")[-1]
         logger.info(f"User account activated successfully for {masked_email}.")
@@ -720,20 +893,48 @@ class UserService:
         elif email:
             clean_email = email.strip().lower()
 
-        if not clean_email or clean_email not in self._users:
+        # If not in memory, query MongoDB
+        if not clean_email and token and mongodb.otps is not None:
+            try:
+                rec = mongodb.otps.find_one({"token": token})
+                if rec:
+                    clean_email = rec.get("email")
+            except Exception:
+                pass
+
+        if not clean_email:
+            return False, None, "Account not found for OTP dispatch."
+
+        user = self._get_user_doc(clean_email)
+        if not user:
             return False, None, "Account not found for OTP dispatch."
 
         now = datetime.now(timezone.utc)
 
         # Check cooldown
+        last_sent = None
         if clean_email in self._email_to_token:
             current_token = self._email_to_token[clean_email]
             record = self._otps.get(current_token)
-            if record and (now - record["last_sent_at"]) < self.resend_cooldown:
-                remaining_sec = int((self.resend_cooldown - (now - record["last_sent_at"])).total_seconds())
+            if record:
+                last_sent = record.get("last_sent_at")
+
+        if not last_sent and mongodb.otps is not None:
+            try:
+                rec = mongodb.otps.find_one({"email": clean_email})
+                if rec:
+                    last_sent = rec.get("last_sent_at")
+            except Exception:
+                pass
+
+        if last_sent:
+            if isinstance(last_sent, datetime) and last_sent.tzinfo is None:
+                last_sent = last_sent.replace(tzinfo=timezone.utc)
+            if (now - last_sent) < self.resend_cooldown:
+                remaining_sec = int((self.resend_cooldown - (now - last_sent)).total_seconds())
                 return False, None, f"Please wait {remaining_sec} seconds before requesting another code."
 
-        # Generate new OTP
+        # Generate new OTP and store in MongoDB
         new_token, new_otp = self._create_otp_for_email(clean_email)
         masked_email = clean_email[0] + "***@" + clean_email.split("@")[-1]
         logger.info(f"New OTP dispatched to {masked_email}.")
@@ -744,8 +945,8 @@ class UserService:
     # User Profile & Security Management
     # ==========================================================================
     def get_user_profile(self, email: str) -> Optional[dict]:
-        """Retrieves user profile information."""
-        user = self._users.get(email.strip().lower())
+        """Retrieves user profile information from MongoDB."""
+        user = self._get_user_doc(email.strip().lower())
         if not user:
             return None
         created_at_val = user.get("created_at")
@@ -754,9 +955,10 @@ class UserService:
         else:
             created_str = str(created_at_val or "Recently")
 
+        full_name = user.get("full_name") or user.get("name") or ""
         return {
-            "id": user.get("id", user["email"]),
-            "full_name": user.get("full_name", ""),
+            "id": str(user.get("id") or user.get("_id") or user["email"]),
+            "full_name": full_name,
             "email": user["email"],
             "phone_number": user.get("phone_number", ""),
             "role": user.get("role", "candidate"),
@@ -764,13 +966,14 @@ class UserService:
             "created_at": created_str,
             "college_name": user.get("college_name", "BugBash Academy"),
             "degree_major": user.get("degree_major", "Computer Science"),
-            "graduation_year": user.get("graduation_year", "2026")
+            "graduation_year": str(user.get("graduation_year", "2026"))
         }
 
     def update_user_profile(self, email: str, full_name: str, phone_number: str) -> Tuple[bool, Optional[dict], Optional[str]]:
-        """Updates permitted user profile fields (name, phone)."""
+        """Updates permitted user profile fields (name, phone) in MongoDB."""
         clean_email = email.strip().lower()
-        if clean_email not in self._users:
+        user = self._get_user_doc(clean_email)
+        if not user:
             return False, None, "User account not found."
 
         clean_name = full_name.strip()
@@ -782,58 +985,109 @@ class UserService:
         if not PHONE_REGEX.match(clean_phone):
             return False, None, "Please provide a valid phone number."
 
-        user = self._users[clean_email]
+        now = datetime.now(timezone.utc)
         user["full_name"] = clean_name
+        user["name"] = clean_name
         user["phone_number"] = clean_phone
-        user["updated_at"] = datetime.now(timezone.utc)
+        user["updated_at"] = now
+        self._users[clean_email] = user
+
+        # Update in MongoDB
+        if mongodb.users is not None:
+            try:
+                mongodb.users.update_one(
+                    {"email": clean_email},
+                    {"$set": {
+                        "full_name": clean_name,
+                        "name": clean_name,
+                        "phone_number": clean_phone,
+                        "updated_at": now
+                    }}
+                )
+            except Exception as e:
+                logger.error(f"Error updating user profile in MongoDB: {e}")
 
         # Log activity
+        act_entry = {
+            "id": f"act-{secrets.token_hex(4)}",
+            "user_email": clean_email,
+            "type": "profile_updated",
+            "title": "Profile Details Updated",
+            "description": f"Updated name to {clean_name} and phone number.",
+            "timestamp": "Just now",
+            "icon": "user",
+            "created_at": now
+        }
         if clean_email in self._user_activity:
-            self._user_activity[clean_email].insert(0, {
-                "id": f"act-{secrets.token_hex(4)}",
-                "type": "profile_updated",
-                "title": "Profile Details Updated",
-                "description": f"Updated name to {clean_name} and phone number.",
-                "timestamp": "Just now",
-                "icon": "user"
-            })
+            self._user_activity[clean_email].insert(0, act_entry)
+        if mongodb.activity is not None:
+            try:
+                mongodb.activity.insert_one(dict(act_entry))
+            except Exception:
+                pass
 
         return True, self.get_user_profile(clean_email), None
 
     def change_password(self, email: str, current_password: str, new_password: str) -> Tuple[bool, Optional[str]]:
-        """Safely changes user password verifying current password and new complexity."""
+        """Safely changes user password verifying current password and new complexity in MongoDB."""
         clean_email = email.strip().lower()
-        if clean_email not in self._users:
+        user = self._get_user_doc(clean_email)
+        if not user:
             return False, "User account not found."
 
-        user = self._users[clean_email]
-        if not PasswordResetService.verify_password(current_password, user["password_hash"]):
+        stored_hash = user.get("password_hash") or user.get("password")
+        if not stored_hash or not PasswordResetService.verify_password(current_password, stored_hash):
             return False, "Current password is incorrect."
 
         is_complex, err = PasswordResetService.validate_password_complexity(new_password)
         if not is_complex:
             return False, err or "New password does not meet complexity requirements."
 
-        user["password_hash"] = PasswordResetService.hash_password(new_password)
-        user["password_updated_at"] = datetime.now(timezone.utc)
+        now = datetime.now(timezone.utc)
+        new_hash = PasswordResetService.hash_password(new_password)
+        user["password_hash"] = new_hash
+        user["password"] = new_hash
+        user["password_updated_at"] = now
+        self._users[clean_email] = user
+
+        # Update in MongoDB
+        if mongodb.users is not None:
+            try:
+                mongodb.users.update_one(
+                    {"email": clean_email},
+                    {"$set": {
+                        "password_hash": new_hash,
+                        "password": new_hash,
+                        "password_updated_at": now,
+                        "updated_at": now
+                    }}
+                )
+            except Exception as e:
+                logger.error(f"Error updating password in MongoDB: {e}")
 
         # Log security activity
+        sec_act = {
+            "id": f"act-{secrets.token_hex(4)}",
+            "user_email": clean_email,
+            "type": "password_changed",
+            "title": "Account Password Changed",
+            "description": "Password was successfully updated with high entropy.",
+            "timestamp": "Just now",
+            "icon": "shield",
+            "created_at": now
+        }
         if clean_email in self._user_activity:
-            self._user_activity[clean_email].insert(0, {
-                "id": f"act-{secrets.token_hex(4)}",
-                "type": "password_changed",
-                "title": "Account Password Changed",
-                "description": "Password was successfully updated with high entropy.",
-                "timestamp": "Just now",
-                "icon": "shield"
-            })
+            self._user_activity[clean_email].insert(0, sec_act)
+        if mongodb.activity is not None:
+            try:
+                mongodb.activity.insert_one(dict(sec_act))
+            except Exception:
+                pass
 
         return True, "Your password has been changed successfully."
 
     # ==========================================================================
     # User-Isolated Dashboard, Assessments, Results & Activity
-    # ==========================================================================
-    # User Assessments, Statistics & Examination Lifecycle
     # ==========================================================================
     def get_user_assessments(
         self,
@@ -843,7 +1097,7 @@ class UserService:
         category: Optional[str] = None,
         query: Optional[str] = None
     ) -> List[dict]:
-        """Returns assessments assigned to or available for this user with dynamic filters."""
+        """Returns assessments assigned to or available for this user with dynamic filters from MongoDB."""
         clean_email = email.strip().lower()
         self._init_user_dashboard_data(clean_email)
         assessments = self._user_assessments.get(clean_email, [])
@@ -873,7 +1127,7 @@ class UserService:
         return results
 
     def get_user_assessment_statistics(self, email: str) -> dict:
-        """Returns verified counts across all 5 assessment lifecycle statuses."""
+        """Returns verified counts across all 5 assessment lifecycle statuses from MongoDB."""
         clean_email = email.strip().lower()
         self._init_user_dashboard_data(clean_email)
         assessments = self._user_assessments.get(clean_email, [])
@@ -912,7 +1166,7 @@ class UserService:
     def start_assessment_attempt(self, email: str, assessment_id: str) -> Tuple[bool, Optional[dict], Optional[str]]:
         """
         Validates schedule, permissions, and attempt limits before starting an assessment session.
-        Returns: (success, attempt_info, error_message)
+        Persists attempt in MongoDB collection 'assessment_attempts'.
         """
         clean_email = email.strip().lower()
         self._init_user_dashboard_data(clean_email)
@@ -935,16 +1189,13 @@ class UserService:
             return False, None, f"This assessment has expired. The submission deadline was on {target.get('deadline')}."
 
         attempts_used = target.get("attempts_used", 0)
-        allowed_attempts = target.get("allowed_attempts", 1)
+        allowed_attempts = target.get("allowed_attempts", 3)
 
         if status == "Completed" and attempts_used >= allowed_attempts:
             return False, None, f"You have already exhausted all {allowed_attempts} allowed attempt(s) for this assessment."
 
         import uuid
         attempt_id = f"att_{uuid.uuid4().hex[:12]}"
-
-        if not hasattr(self, "_assessment_attempts"):
-            self._assessment_attempts = {}
 
         target["attempts_used"] = attempts_used + 1
         target["status"] = "In Progress"
@@ -961,6 +1212,26 @@ class UserService:
         }
         self._assessment_attempts[attempt_id] = attempt_record
 
+        # Persist to MongoDB
+        if mongodb.assessments is not None:
+            try:
+                mongodb.assessments.update_one(
+                    {"user_email": clean_email, "id": assessment_id},
+                    {"$set": {"status": "In Progress", "attempts_used": target["attempts_used"]}}
+                )
+            except Exception as e:
+                logger.warning(f"Error updating assessment in MongoDB: {e}")
+
+        if mongodb.assessment_attempts is not None:
+            try:
+                mongodb.assessment_attempts.update_one(
+                    {"attempt_id": attempt_id},
+                    {"$set": attempt_record},
+                    upsert=True
+                )
+            except Exception as e:
+                logger.warning(f"Error saving attempt in MongoDB: {e}")
+
         return True, {
             "attempt_id": attempt_id,
             "assessment_id": assessment_id,
@@ -970,19 +1241,19 @@ class UserService:
         }, None
 
     def get_user_results(self, email: str) -> List[dict]:
-        """Returns assessment results belonging strictly to this authenticated user."""
+        """Returns assessment results belonging strictly to this authenticated user from MongoDB."""
         clean_email = email.strip().lower()
         self._init_user_dashboard_data(clean_email)
         return self._user_results.get(clean_email, [])
 
     def get_user_activity(self, email: str) -> List[dict]:
-        """Returns recent activity history for this user."""
+        """Returns recent activity history for this user from MongoDB."""
         clean_email = email.strip().lower()
         self._init_user_dashboard_data(clean_email)
         return self._user_activity.get(clean_email, [])
 
     def get_user_dashboard_summary(self, email: str) -> dict:
-        """Calculates live summary statistics for the user dashboard."""
+        """Calculates live summary statistics for the user dashboard from MongoDB."""
         clean_email = email.strip().lower()
         self._init_user_dashboard_data(clean_email)
 
@@ -1029,15 +1300,12 @@ class UserService:
         lang = (language or "").strip().lower()
 
         for p in self._practice_problems:
-            # Filter difficulty
             if diff and diff != "all" and p["difficulty"].lower() != diff:
                 continue
 
-            # Filter language
             if lang and lang != "all" and not any(l.lower() == lang for l in p["languages"]):
                 continue
 
-            # Filter search query
             if q:
                 match_title = q in p["title"].lower()
                 match_category = q in p["category"].lower()
@@ -1052,4 +1320,3 @@ class UserService:
 
 # Global singleton instance
 user_service = UserService()
-

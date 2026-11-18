@@ -7,6 +7,7 @@ from typing import Dict, List, Optional, Tuple, Any
 
 from backend.app.code_execution.sandbox import code_sandbox
 from backend.app.services.user_service import user_service
+from backend.app.database.mongodb import mongodb
 
 logger = logging.getLogger("bugbash.exam_service")
 
@@ -488,13 +489,33 @@ class ExamService:
         """
         clean_email = user_email.strip().lower()
 
-        # Check existing in-memory session
+        # Check existing in-memory session or query MongoDB
         attempt = self._attempts.get(attempt_id)
-        if not attempt:
+        if not attempt and mongodb.assessment_attempts is not None:
+            try:
+                db_attempt = mongodb.assessment_attempts.find_one({"attempt_id": attempt_id})
+                if db_attempt:
+                    db_attempt.pop("_id", None)
+                    if "expires_at" in db_attempt:
+                        attempt = db_attempt
+                        self._attempts[attempt_id] = attempt
+            except Exception as e:
+                logger.warning(f"Error reading attempt from MongoDB: {e}")
+
+        if not attempt or "expires_at" not in attempt:
             # Check user_service._assessment_attempts
             raw_attempts = getattr(user_service, "_assessment_attempts", {})
-            if attempt_id in raw_attempts:
-                raw = raw_attempts[attempt_id]
+            raw = raw_attempts.get(attempt_id)
+            if not raw and mongodb.assessment_attempts is not None:
+                try:
+                    db_raw = mongodb.assessment_attempts.find_one({"attempt_id": attempt_id})
+                    if db_raw:
+                        db_raw.pop("_id", None)
+                        raw = db_raw
+                except Exception as e:
+                    logger.warning(f"Error querying raw attempt from MongoDB: {e}")
+
+            if raw:
                 if raw["user_email"] != clean_email:
                     return False, None, "Access denied: You do not own this examination attempt."
 
@@ -525,12 +546,15 @@ class ExamService:
                 started_dt = datetime.now(timezone.utc)
                 expires_dt = started_dt + timedelta(minutes=duration_min)
 
+                user_doc = user_service._get_user_doc(clean_email) or {}
+                candidate_name = user_doc.get("full_name") or user_doc.get("name") or "Candidate"
+
                 attempt = {
                     "attempt_id": attempt_id,
                     "assessment_id": asmt_id,
                     "assessment_title": asmt_meta.get("title", "BugBash Coding Assessment"),
                     "user_email": clean_email,
-                    "candidate_name": user_service._users.get(clean_email, {}).get("full_name", "Candidate"),
+                    "candidate_name": candidate_name,
                     "duration_minutes": duration_min,
                     "started_at": started_dt.isoformat(),
                     "expires_at": expires_dt.isoformat(),
@@ -548,6 +572,15 @@ class ExamService:
                     "proctor_events": []
                 }
                 self._attempts[attempt_id] = attempt
+                if mongodb.assessment_attempts is not None:
+                    try:
+                        mongodb.assessment_attempts.update_one(
+                            {"attempt_id": attempt_id},
+                            {"$set": dict(attempt)},
+                            upsert=True
+                        )
+                    except Exception as e:
+                        logger.warning(f"Error saving attempt to MongoDB: {e}")
             else:
                 # If attempt_id does not exist, return 404
                 return False, None, f"Examination session #{attempt_id} was not found. Please start from the Assessments page."
@@ -865,6 +898,22 @@ class ExamService:
             "saved_at": now_iso
         }
 
+        # Persist submission and updated draft to MongoDB
+        if mongodb.assessment_attempts is not None:
+            try:
+                mongodb.assessment_attempts.update_one(
+                    {"attempt_id": attempt_id},
+                    {
+                        "$set": {
+                            f"submissions.{question_id}": attempt["submissions"][question_id],
+                            f"drafts.{question_id}": attempt["drafts"][question_id],
+                            f"question_statuses.{question_id}": new_status
+                        }
+                    }
+                )
+            except Exception as e:
+                logger.warning(f"Error persisting submission to MongoDB: {e}")
+
         if final_status == "Accepted":
             feedback_msg = f"All {total_cases} test cases passed successfully! Full score awarded."
         elif not feedback_msg:
@@ -917,6 +966,22 @@ class ExamService:
             attempt["question_statuses"][question_id] = status
 
         curr_status = attempt["question_statuses"].get(question_id, "Not Answered")
+
+        # Persist draft to MongoDB
+        if mongodb.assessment_attempts is not None:
+            try:
+                mongodb.assessment_attempts.update_one(
+                    {"attempt_id": attempt_id},
+                    {
+                        "$set": {
+                            f"drafts.{question_id}": attempt["drafts"][question_id],
+                            f"question_statuses.{question_id}": curr_status
+                        }
+                    }
+                )
+            except Exception as e:
+                logger.warning(f"Error persisting draft to MongoDB: {e}")
+
         return True, {
             "saved": True,
             "timestamp": now_iso,
@@ -952,6 +1017,24 @@ class ExamService:
         attempt["feedback"] = feedback
 
         summary = self._finalize_attempt_score(attempt)
+
+        # Update attempt in MongoDB
+        if mongodb.assessment_attempts is not None:
+            try:
+                mongodb.assessment_attempts.update_one(
+                    {"attempt_id": attempt_id},
+                    {
+                        "$set": {
+                            "status": "Completed",
+                            "submitted_at": now_iso,
+                            "feedback": feedback,
+                            "summary": summary
+                        }
+                    }
+                )
+            except Exception as e:
+                logger.warning(f"Error persisting completed attempt to MongoDB: {e}")
+
         return True, summary, None
 
     def _finalize_attempt_score(self, attempt: dict) -> dict:
@@ -977,7 +1060,7 @@ class ExamService:
 
         percentage = round((total_score / max_score) * 100, 1)
 
-        # Update user assessment record in user_service
+        # Update user assessment record in user_service & MongoDB
         user_service._init_user_dashboard_data(clean_email)
         asmts = user_service._user_assessments.get(clean_email, [])
         for a in asmts:
@@ -986,39 +1069,63 @@ class ExamService:
                 a["score"] = total_score
                 break
 
+        if mongodb.assessments is not None:
+            try:
+                mongodb.assessments.update_one(
+                    {"user_email": clean_email, "id": attempt["assessment_id"]},
+                    {"$set": {"status": "Completed", "score": total_score}}
+                )
+            except Exception as e:
+                logger.warning(f"Error updating assessment in MongoDB: {e}")
+
         # Log result in user results
         result_id = f"res_{secrets.token_hex(4)}"
+        result_doc = {
+            "id": result_id,
+            "user_email": clean_email,
+            "assessment_id": attempt["assessment_id"],
+            "assessment_title": attempt["assessment_title"],
+            "score": total_score,
+            "max_score": max_score,
+            "percentage": percentage,
+            "completion_date": datetime.now(timezone.utc).strftime("%b %d, %Y"),
+            "result_status": "Distinction" if percentage >= 85 else ("Passed" if percentage >= 60 else "Needs Improvement"),
+            "feedback": f"Completed proctored coding assessment with score {total_score}/{max_score}.",
+            "metrics": {
+                "logic_correctness": min(100, int(percentage * 1.05)),
+                "time_complexity": 88,
+                "space_efficiency": 90,
+                "code_quality": 92,
+                "test_cases_passed": f"{sum(s.get('passed_tests', 0) for s in submissions.values())}/{sum(s.get('total_tests', 0) for s in submissions.values())}"
+            }
+        }
         if clean_email in user_service._user_results:
-            user_service._user_results[clean_email].insert(0, {
-                "id": result_id,
-                "assessment_id": attempt["assessment_id"],
-                "assessment_title": attempt["assessment_title"],
-                "score": total_score,
-                "max_score": max_score,
-                "percentage": percentage,
-                "completion_date": datetime.now(timezone.utc).strftime("%b %d, %Y"),
-                "result_status": "Distinction" if percentage >= 85 else ("Passed" if percentage >= 60 else "Needs Improvement"),
-                "feedback": f"Completed proctored coding assessment with score {total_score}/{max_score}.",
-                "metrics": {
-                    "logic_correctness": min(100, int(percentage * 1.05)),
-                    "time_complexity": 88,
-                    "space_efficiency": 90,
-                    "code_quality": 92,
-                    "test_cases_passed": f"{sum(s.get('passed_tests', 0) for s in submissions.values())}/{sum(s.get('total_tests', 0) for s in submissions.values())}"
-                }
-            })
+            user_service._user_results[clean_email].insert(0, result_doc)
+        if mongodb.results is not None:
+            try:
+                mongodb.results.insert_one(dict(result_doc))
+            except Exception as e:
+                logger.warning(f"Error persisting result to MongoDB: {e}")
 
         # Log activity
+        act_entry = {
+            "id": f"act_{secrets.token_hex(4)}",
+            "user_email": clean_email,
+            "type": "assessment_completed",
+            "title": f"Submitted: {attempt['assessment_title']}",
+            "description": f"Achieved score of {total_score}/{max_score} ({percentage}%).",
+            "timestamp": "Just now",
+            "score": total_score,
+            "icon": "check-circle",
+            "created_at": datetime.now(timezone.utc)
+        }
         if clean_email in user_service._user_activity:
-            user_service._user_activity[clean_email].insert(0, {
-                "id": f"act_{secrets.token_hex(4)}",
-                "type": "assessment_completed",
-                "title": f"Submitted: {attempt['assessment_title']}",
-                "description": f"Achieved score of {total_score}/{max_score} ({percentage}%).",
-                "timestamp": "Just now",
-                "score": total_score,
-                "icon": "check-circle"
-            })
+            user_service._user_activity[clean_email].insert(0, act_entry)
+        if mongodb.activity is not None:
+            try:
+                mongodb.activity.insert_one(dict(act_entry))
+            except Exception as e:
+                logger.warning(f"Error persisting activity to MongoDB: {e}")
 
         return {
             "completed": True,
@@ -1048,6 +1155,16 @@ class ExamService:
             "timestamp": now_iso
         }
         attempt["proctor_events"].append(event_entry)
+
+        if mongodb.assessment_attempts is not None:
+            try:
+                mongodb.assessment_attempts.update_one(
+                    {"attempt_id": attempt_id},
+                    {"$push": {"proctor_events": event_entry}}
+                )
+            except Exception as e:
+                logger.warning(f"Error logging proctor event to MongoDB: {e}")
+
         count = len(attempt["proctor_events"])
         logger.warning(f"Proctor Event on {attempt_id} ({clean_email}): {event_type} - {details} (Total: {count})")
         return True, count, None

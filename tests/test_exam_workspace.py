@@ -149,6 +149,11 @@ def run_tests():
         "email": "demo@bugbash.com",
         "password": "DemoPassword123!"
     })
+    if st != 200:
+        st, auth_data = request_json(f"{API_BASE}/api/v1/auth/login", method="POST", data={
+            "email": "demo@bugbash.com",
+            "password": "NewSecurePassword2026!"
+        })
     assert st == 200, f"Login failed: {auth_data}"
     token = auth_data["access_token"]
     print("  [PASS] Candidate authenticated successfully. Authoritative JWT obtained.")

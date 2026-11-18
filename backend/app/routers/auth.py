@@ -143,6 +143,27 @@ async def resend_otp(payload: ResendOtpRequest):
     )
 
 
+@router.get(
+    "/dev-otp",
+    include_in_schema=False,
+    summary="Get pending OTP for development helper"
+)
+async def get_dev_otp(email: str = Query(...)):
+    """Provides the active OTP in development mode so candidates can verify without active SMTP."""
+    if not IS_DEV:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Disabled in production.")
+    clean_email = email.strip().lower()
+    tok = user_service._email_to_token.get(clean_email)
+    if tok and tok in user_service._otps:
+        return {"dev_otp": user_service._otps[tok]["otp"]}
+    from backend.app.database.mongodb import mongodb
+    if mongodb.otps is not None:
+        rec = mongodb.otps.find_one({"email": clean_email})
+        if rec and "otp" in rec:
+            return {"dev_otp": rec["otp"]}
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No active OTP found for this email.")
+
+
 # ==============================================================================
 # 2. Candidate Login & Authentication
 # ==============================================================================

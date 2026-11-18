@@ -12,7 +12,10 @@ class UserProfileResponse(BaseModel):
     phone_number: Optional[str] = None
     role: str = "candidate"
     is_verified: bool = True
+    account_status: str = "Active"
     created_at: str
+    avatar_url: Optional[str] = None
+    bio: Optional[str] = None
     college_name: Optional[str] = None
     degree_major: Optional[str] = None
     graduation_year: Optional[str] = None
@@ -21,6 +24,63 @@ class UserProfileResponse(BaseModel):
 class UpdateProfileRequest(BaseModel):
     full_name: str = Field(..., min_length=2, max_length=100, description="Legal full name")
     phone_number: str = Field(..., min_length=7, max_length=25, description="Contact phone number")
+    bio: Optional[str] = Field(None, max_length=500, description="Short candidate biography")
+    college_name: Optional[str] = None
+    degree_major: Optional[str] = None
+    graduation_year: Optional[str] = None
+
+
+class ProfilePictureRequest(BaseModel):
+    avatar_data: str = Field(..., description="Base64 encoded image or avatar data URI")
+
+
+class UserAppearancePreferences(BaseModel):
+    theme: str = "dark"  # dark, light, system
+    font_size: str = "medium"
+    high_contrast: bool = False
+
+
+class UserNotificationPreferences(BaseModel):
+    assessment_notifications: bool = True
+    deadline_reminders: bool = True
+    result_notifications: bool = True
+    practice_recommendations: bool = True
+    security_alerts: bool = True  # Always True by policy
+
+
+class UserLearningPreferences(BaseModel):
+    preferred_languages: List[str] = ["Python", "JavaScript", "C++"]
+    preferred_difficulty: str = "Medium"
+    learning_interests: List[str] = ["Data Structures", "Algorithms", "System Design"]
+    practice_topics: List[str] = ["Dynamic Programming", "Sliding Window", "Graph Algorithms"]
+
+
+class UserPreferencesModel(BaseModel):
+    appearance: UserAppearancePreferences = Field(default_factory=UserAppearancePreferences)
+    notifications: UserNotificationPreferences = Field(default_factory=UserNotificationPreferences)
+    learning: UserLearningPreferences = Field(default_factory=UserLearningPreferences)
+
+
+class ActiveSessionItem(BaseModel):
+    session_id: str
+    device: str
+    browser: str
+    os_name: str
+    ip_address: str
+    is_current: bool = False
+    last_active: str
+    location: str = "Local Network"
+
+
+class SessionsResponse(BaseModel):
+    sessions: List[ActiveSessionItem]
+    current_session_id: str
+
+
+class AccountDeletionRequest(BaseModel):
+    confirm_password: str = Field(..., min_length=1, description="Current password for verification")
+    reason: Optional[str] = None
+    confirmation_phrase: str = Field(..., description="Must match 'DELETE MY ACCOUNT'")
 
 
 class ChangePasswordRequest(BaseModel):

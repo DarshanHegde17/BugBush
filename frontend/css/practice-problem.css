@@ -1,0 +1,302 @@
+/* ==========================================================================
+   BugBash - Practice Problem Solver Stylesheet
+   Primary Brand Accent: #ff6b35
+   Split-screen coding workspace with Monaco editor, test runner,
+   console output, and ML feedback insights.
+   ========================================================================== */
+
+/* Workspace Container */
+.solver-workspace {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--bg-primary, #0c0e14);
+}
+
+/* Solver Header Navigation */
+.solver-header {
+    height: 56px;
+    background: var(--surface-color, #131722);
+    border-bottom: 1px solid var(--border-color, #232a3b);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    flex-shrink: 0;
+    z-index: 10;
+}
+
+.solver-header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.back-to-practice-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-secondary, #94a3b8);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.back-to-practice-btn:hover {
+    color: #ff6b35;
+}
+
+.solver-problem-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary, #ffffff);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.solver-header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Main Split View */
+.solver-main-split {
+    display: grid;
+    grid-template-columns: 45% 55%;
+    flex: 1;
+    overflow: hidden;
+}
+
+@media (max-width: 900px) {
+    .solver-main-split {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1.2fr;
+    }
+}
+
+/* Left Panel: Problem Description */
+.solver-left-panel {
+    border-right: 1px solid var(--border-color, #232a3b);
+    overflow-y: auto;
+    padding: 24px;
+    background: var(--card-bg, #10141f);
+}
+
+.problem-header-block {
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-color, #232a3b);
+}
+
+.problem-title-large {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text-primary, #ffffff);
+    margin-bottom: 10px;
+}
+
+.problem-badges-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.problem-description-content {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--text-secondary, #cbd5e1);
+}
+
+.problem-section-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary, #ffffff);
+    margin: 20px 0 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.sample-case-box {
+    background: var(--input-bg, #090c13);
+    border: 1px solid var(--border-color, #232a3b);
+    border-radius: 8px;
+    padding: 14px;
+    margin-bottom: 14px;
+    font-family: 'Fira Code', 'Consolas', monospace;
+    font-size: 13px;
+}
+
+.sample-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted, #94a3b8);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+}
+
+.sample-code {
+    background: rgba(255, 255, 255, 0.04);
+    padding: 8px 12px;
+    border-radius: 6px;
+    color: #e2e8f0;
+    margin-bottom: 10px;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+/* Right Panel: Editor & Runner */
+.solver-right-panel {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--bg-primary, #0c0e14);
+}
+
+.editor-toolbar {
+    height: 48px;
+    background: var(--surface-color, #131722);
+    border-bottom: 1px solid var(--border-color, #232a3b);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    flex-shrink: 0;
+}
+
+.editor-toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.language-dropdown {
+    background: var(--input-bg, #090c13);
+    border: 1px solid var(--border-color, #232a3b);
+    color: var(--text-primary, #ffffff);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.editor-toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Monaco Container */
+.monaco-editor-container {
+    flex: 1;
+    min-height: 250px;
+    position: relative;
+    background: #1e1e1e;
+}
+
+.code-textarea-fallback {
+    width: 100%;
+    height: 100%;
+    background: #121620;
+    color: #e2e8f0;
+    font-family: 'Fira Code', 'Consolas', monospace;
+    font-size: 14px;
+    padding: 16px;
+    border: none;
+    resize: none;
+    outline: none;
+    line-height: 1.5;
+}
+
+/* Bottom Output Drawer */
+.solver-bottom-drawer {
+    height: 240px;
+    background: var(--card-bg, #10141f);
+    border-top: 1px solid var(--border-color, #232a3b);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+
+.drawer-tabs {
+    height: 38px;
+    background: var(--surface-color, #131722);
+    border-bottom: 1px solid var(--border-color, #232a3b);
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    gap: 8px;
+}
+
+.drawer-tab-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted, #94a3b8);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.drawer-tab-btn.active {
+    background: rgba(255, 107, 53, 0.15);
+    color: #ff6b35;
+}
+
+.drawer-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 14px 18px;
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+}
+
+/* ML Insights Card */
+.ml-insight-box {
+    background: rgba(255, 107, 53, 0.05);
+    border: 1px solid rgba(255, 107, 53, 0.25);
+    border-radius: 8px;
+    padding: 14px;
+    margin-bottom: 10px;
+}
+
+.ml-insight-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.ml-metric-item {
+    background: var(--input-bg, #090c13);
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color, #232a3b);
+}
+
+.ml-metric-label {
+    font-size: 11px;
+    color: var(--text-muted, #94a3b8);
+}
+
+.ml-metric-val {
+    font-size: 13px;
+    font-weight: 700;
+    color: #ff6b35;
+    margin-top: 2px;
+}
+
+.ml-tips-list {
+    font-size: 12px;
+    color: var(--text-secondary, #cbd5e1);
+    padding-left: 18px;
+    margin: 8px 0 0;
+}

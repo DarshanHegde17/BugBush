@@ -13,7 +13,11 @@ from backend.app.schemas.dashboard import (
     StartAssessmentResponse,
     ResultItem,
     ActivityItem,
-    PracticeProblemItem
+    PracticeProblemItem,
+    ProfilePictureRequest,
+    UserPreferencesModel,
+    SessionsResponse,
+    AccountDeletionRequest
 )
 from backend.app.services.user_service import user_service
 
@@ -78,7 +82,11 @@ async def update_my_profile(
     success, updated_profile, err = user_service.update_user_profile(
         email=current_user["email"],
         full_name=payload.full_name,
-        phone_number=payload.phone_number
+        phone_number=payload.phone_number,
+        bio=payload.bio,
+        college_name=payload.college_name,
+        degree_major=payload.degree_major,
+        graduation_year=payload.graduation_year
     )
 
     if not success:
@@ -110,6 +118,93 @@ async def change_my_password(
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=msg or "Unable to change password.")
 
     return SimpleStatusResponse(status="success", message=msg)
+
+
+@router.post(
+    "/me/profile-picture",
+    response_model=SimpleStatusResponse,
+    summary="Upload and update user profile avatar",
+    description="Updates user profile avatar picture."
+)
+async def update_my_avatar(
+    payload: ProfilePictureRequest,
+    current_user: dict = Depends(get_current_user)
+):
+    success, avatar_url, err = user_service.update_profile_picture(current_user["email"], payload.avatar_data)
+    if not success:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=err or "Unable to update profile picture.")
+    return SimpleStatusResponse(status="success", message="Profile picture updated successfully.")
+
+
+@router.get(
+    "/me/preferences",
+    response_model=UserPreferencesModel,
+    summary="Get user appearance, notification, and learning preferences"
+)
+async def get_my_preferences(current_user: dict = Depends(get_current_user)):
+    return user_service.get_user_preferences(current_user["email"])
+
+
+@router.put(
+    "/me/preferences",
+    response_model=UserPreferencesModel,
+    summary="Update appearance, notification, and learning preferences"
+)
+async def update_my_preferences(
+    payload: UserPreferencesModel,
+    current_user: dict = Depends(get_current_user)
+):
+    success, updated, err = user_service.update_user_preferences(current_user["email"], payload.dict())
+    if not success:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=err or "Unable to save preferences.")
+    return updated
+
+
+@router.get(
+    "/me/sessions",
+    response_model=SessionsResponse,
+    summary="Get active session list"
+)
+async def get_my_sessions(current_user: dict = Depends(get_current_user)):
+    return user_service.get_user_sessions(current_user["email"])
+
+
+@router.post(
+    "/me/logout-other-sessions",
+    response_model=SimpleStatusResponse,
+    summary="Logout from all other active sessions"
+)
+async def logout_other_sessions(current_user: dict = Depends(get_current_user)):
+    success, msg = user_service.logout_other_sessions(current_user["email"])
+    return SimpleStatusResponse(status="success", message=msg)
+
+
+@router.post(
+    "/me/account-deletion-request",
+    response_model=SimpleStatusResponse,
+    summary="Submit account deletion request"
+)
+async def request_account_deletion(
+    payload: AccountDeletionRequest,
+    current_user: dict = Depends(get_current_user)
+):
+    success, msg = user_service.request_account_deletion(
+        email=current_user["email"],
+        confirm_password=payload.confirm_password,
+        reason=payload.reason,
+        phrase=payload.confirmation_phrase
+    )
+    if not success:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=msg)
+    return SimpleStatusResponse(status="success", message=msg)
+
+
+@router.get(
+    "/me/download-data",
+    summary="Export all personal data as JSON"
+)
+async def export_my_data(current_user: dict = Depends(get_current_user)):
+    return user_service.get_personal_data_export(current_user["email"])
 
 
 # ==============================================================================

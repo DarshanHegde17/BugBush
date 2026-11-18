@@ -5,7 +5,8 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 from backend.app.routers.auth import router as auth_router
-from backend.app.routers.users import router as users_router, practice_router, assessments_router
+from backend.app.routers.users import router as users_router, assessments_router
+from backend.app.routers.practice import router as practice_router
 from backend.app.routers.exam import (
     attempts_router,
     questions_router,
@@ -77,6 +78,19 @@ def serve_user_assessments():
 @app.get("/user/profile", include_in_schema=False)
 def serve_user_profile():
     return FileResponse(os.path.join(frontend_dir, "user", "profile.html"))
+
+@app.get("/user/settings", include_in_schema=False)
+def serve_user_settings():
+    return FileResponse(os.path.join(frontend_dir, "user", "settings.html"))
+
+@app.get("/user/practice", include_in_schema=False)
+def serve_user_practice():
+    return FileResponse(os.path.join(frontend_dir, "user", "practice.html"))
+
+@app.get("/user/practice/problem/{problem_id}", include_in_schema=False)
+@app.get("/user/practice-problem", include_in_schema=False)
+def serve_user_practice_problem(problem_id: str = ""):
+    return FileResponse(os.path.join(frontend_dir, "user", "practice-problem.html"))
 
 @app.get("/user/assessment/exam", include_in_schema=False)
 @app.get("/user/assessment/exam/{attempt_id}", include_in_schema=False)

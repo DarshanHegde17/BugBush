@@ -40,6 +40,12 @@
             USERS_ACTIVITY: '/users/me/activity',
             USERS_PROFILE: '/users/me/profile',
             USERS_CHANGE_PASSWORD: '/users/me/change-password',
+            USERS_PREFERENCES: '/users/me/preferences',
+            USERS_SESSIONS: '/users/me/sessions',
+            USERS_LOGOUT_OTHER: '/users/me/logout-other-sessions',
+            USERS_DELETE_ACCOUNT: '/users/me/account-deletion-request',
+            USERS_DOWNLOAD_DATA: '/users/me/download-data',
+            USERS_AVATAR: '/users/me/profile-picture',
             PRACTICE_PROBLEMS: '/practice/problems'
         },
 

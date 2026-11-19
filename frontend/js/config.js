@@ -46,6 +46,9 @@
             USERS_DELETE_ACCOUNT: '/users/me/account-deletion-request',
             USERS_DOWNLOAD_DATA: '/users/me/download-data',
             USERS_AVATAR: '/users/me/profile-picture',
+            ADMIN_AUTH_LOGIN: '/admin/auth/login',
+            ADMIN_AUTH_LOGOUT: '/admin/auth/logout',
+            ADMIN_AUTH_ME: '/admin/auth/me',
             PRACTICE_PROBLEMS: '/practice/problems'
         },
 

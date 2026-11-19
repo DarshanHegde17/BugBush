@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BugBash Admin Portal - Dedicated administrative login for assessment management, platform operations, and candidate evaluation.">
+    <title>Admin Portal Login | BugBash Assessment Platform</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../assets/icons/favicon.png">
+    <link rel="shortcut icon" href="../assets/icons/favicon.ico">
+
+    <!-- Early Theme Script -->
+    <script src="../js/theme.js"></script>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../css/admin-login.css?v=2.0">
+</head>
+<body>
+
+    <div class="admin-auth-container">
+        
+        <!-- ====================================================================
+             1. Left Panel: Administrative Enterprise Branding & Security Specs
+             ==================================================================== -->
+        <aside class="admin-auth-left" aria-label="BugBash Admin Platform Highlights">
+            <div class="admin-branding-inner">
+                
+                <!-- Brand Header -->
+                <div class="admin-brand-header">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <a href="../index.html" class="admin-brand-logo-wrap" aria-label="BugBash Home">
+                            <img src="../assets/images/bugbash-logo.png?v=1.1" alt="BugBash" class="admin-logo-img" height="46" width="95" style="height: 46px !important; max-height: 46px !important; width: auto !important; max-width: 160px !important; object-fit: contain !important; display: inline-block !important; vertical-align: middle !important;">
+                        </a>
+                        <span class="admin-portal-badge">Admin Portal</span>
+                    </div>
+
+                    <h1 class="admin-heading">
+                        Admin <span class="highlight">Portal</span>
+                    </h1>
+                    <p class="admin-desc">
+                        Manage coding assessments, users, and platform operations from one secure workspace.
+                    </p>
+                </div>
+
+                <!-- 4 Key Enterprise Security Features -->
+                <div class="admin-features-stack">
+                    <!-- Feature 1 -->
+                    <div class="admin-feature-card">
+                        <div class="admin-feature-icon" aria-hidden="true">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="14" width="7" height="7"></rect>
+                                <rect x="3" y="14" width="7" height="7"></rect>
+                            </svg>
+                        </div>
+                        <div class="admin-feature-content">
+                            <h3>Privileged Assessment Operations</h3>
+                            <p>Configure institutional test banks, dynamic scoring rules, and challenge rubrics.</p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="admin-feature-card">
+                        <div class="admin-feature-icon" aria-hidden="true">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            </svg>
+                        </div>
+                        <div class="admin-feature-content">
+                            <h3>Role-Based Access Control</h3>
+                            <p>Strict least-privilege scoping across Organization, College, and Company scopes.</p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="admin-feature-card">
+                        <div class="admin-feature-icon" aria-hidden="true">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M23 12a11.05 11.05 0 0 0-22 0zm-5 0a6 6 0 1 1-12 0 6 6 0 0 1 12 0z"></path>
+                                <circle cx="12" cy="12" r="1"></circle>
+                            </svg>
+                        </div>
+                        <div class="admin-feature-content">
+                            <h3>Live Examination Supervision</h3>
+                            <p>Real-time candidate telemetry, proctoring alert streams, and focus-lock audits.</p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 4 -->
+                    <div class="admin-feature-card">
+                        <div class="admin-feature-icon" aria-hidden="true">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="admin-feature-content">
+                            <h3>Cryptographic Audit Trails</h3>
+                            <p>Immutable logging of test evaluations, scorecard approvals, and credential status.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Bottom Security Footer -->
+            <div class="admin-trust-footer">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <span>Restricted Enterprise Gateway &bull; 256-Bit TLS &bull; Multi-Factor Authentication Ready</span>
+            </div>
+        </aside>
+
+        <!-- ====================================================================
+             2. Right Panel: Admin Authentication Form
+             ==================================================================== -->
+        <main class="admin-auth-right" aria-label="Admin Sign In Portal">
+            
+            <!-- Top Utility Bar -->
+            <div class="admin-auth-topbar">
+                <a href="../index.html" class="back-site-link" title="Return to Main Website">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    <span>Back to Main Website</span>
+                </a>
+
+                <!-- Theme Toggle Button -->
+                <button type="button" class="theme-toggle-btn theme-toggle" id="theme-toggle-btn" aria-label="Toggle theme" title="Toggle theme">
+                    <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="icon-moon" width="18" height="18" style="display:none;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Form Center Box -->
+            <div class="admin-form-box">
+                
+                <header class="admin-form-header">
+                    <span class="admin-badge-indicator">Administrative Gateway</span>
+                    <h2 class="admin-title-main">Welcome Back, Admin</h2>
+                    <p class="admin-subtitle">Sign in with your administrative credentials to manage platform assessments and candidate evaluations.</p>
+                </header>
+
+                <!-- Security Notice -->
+                <div class="admin-security-notice">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                    <span>Authorized Personnel Only: All access attempts, IP addresses, and session activities are audited.</span>
+                </div>
+
+                <!-- Alert Message Banner -->
+                <div id="adminLoginAlert" class="admin-alert-banner" role="alert">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    <div id="adminAlertContent" style="font-weight: 600;"></div>
+                </div>
+
+                <!-- Admin Login Form -->
+                <form id="adminLoginForm" novalidate>
+                    
+                    <!-- Email Address -->
+                    <div class="admin-form-group">
+                        <label for="adminEmail" class="admin-label">
+                            <span>Admin Email Address</span>
+                        </label>
+                        <div class="admin-input-wrap">
+                            <svg class="input-lead-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                            <input type="email" id="adminEmail" class="admin-input" required autocomplete="email" placeholder="admin@bugbash.com">
+                        </div>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="admin-form-group">
+                        <label for="adminPassword" class="admin-label">
+                            <span>Password</span>
+                        </label>
+                        <div class="admin-input-wrap">
+                            <svg class="input-lead-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            <input type="password" id="adminPassword" class="admin-input" required autocomplete="current-password" placeholder="Enter administrator password">
+                            <button type="button" class="admin-toggle-pwd" id="toggleAdminPassword" title="Show password" aria-label="Show password">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Options Row: Remember Me & Forgot Password -->
+                    <div class="admin-options-row">
+                        <label class="admin-checkbox-label">
+                            <input type="checkbox" id="adminRememberMe">
+                            <span>Remember this device</span>
+                        </label>
+
+                        <button type="button" class="admin-forgot-btn" id="adminForgotPasswordBtn">
+                            Forgot Password?
+                        </button>
+                    </div>
+
+                    <!-- Sign In Button -->
+                    <button type="submit" class="admin-submit-btn" id="adminSubmitBtn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                            <polyline points="10 17 15 12 10 7"></polyline>
+                            <line x1="15" y1="12" x2="3" y2="12"></line>
+                        </svg>
+                        <span>Sign In to Admin Portal</span>
+                    </button>
+                </form>
+
+                <div class="admin-footer-note">
+                    Looking for student or candidate assessments? <a href="../login.html" style="color: #ff6b35; text-decoration: none; font-weight: 600;">Go to Candidate Login</a>
+                </div>
+
+            </div>
+
+            <!-- Bottom Copyright -->
+            <div style="text-align: center; font-size: 12px; color: var(--text-muted); margin-top: 24px;">
+                &copy; 2026 BugBash Platform Inc. All rights reserved.
+            </div>
+
+        </main>
+    </div>
+
+    <!-- ========================================================================
+         Admin Credential Recovery Modal
+         ======================================================================== -->
+    <div class="admin-modal-overlay" id="adminRecoveryModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="admin-modal-box">
+            <div class="admin-modal-header">
+                <h3 class="admin-modal-title" id="modalTitle">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                    <span>Administrative Password Recovery</span>
+                </h3>
+                <button type="button" class="admin-modal-close" id="closeRecoveryModalBtn" aria-label="Close modal">&times;</button>
+            </div>
+
+            <div class="admin-modal-body">
+                <p style="margin-bottom: 12px;">
+                    To protect institutional exam integrity and assessment confidentialities, self-service password recovery is disabled for administrative accounts.
+                </p>
+                <p>
+                    Please contact your organization's <strong>Super Administrator</strong> or platform security coordinator to request credential renewal through the secure Administrative Governance console.
+                </p>
+            </div>
+
+            <div class="admin-modal-footer">
+                <button type="button" class="admin-submit-btn" id="ackRecoveryModalBtn" style="width: auto; padding: 8px 18px; font-size: 13px;">
+                    Understood
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/config.js"></script>
+    <script src="../js/admin-login.js"></script>
+</body>
+</html>

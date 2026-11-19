@@ -54,6 +54,21 @@ class UserService:
                 "graduation_year": "2026",
                 "created_at": datetime(2026, 1, 15, 10, 0, tzinfo=timezone.utc),
                 "updated_at": datetime.now(timezone.utc)
+            },
+            "admin@bugbash.com": {
+                "id": "usr_admin_01",
+                "full_name": "BugBash System Administrator",
+                "name": "BugBash System Administrator",
+                "email": "admin@bugbash.com",
+                "phone_number": "+1 (555) 987-6543",
+                "password_hash": PasswordResetService.hash_password("AdminSecure2026!"),
+                "password": PasswordResetService.hash_password("AdminSecure2026!"),
+                "is_verified": True,
+                "role": "admin",
+                "account_status": "Active",
+                "organization_name": "BugBash Global Assessment Operations",
+                "created_at": datetime(2026, 1, 10, 8, 0, tzinfo=timezone.utc),
+                "updated_at": datetime.now(timezone.utc)
             }
         }
 

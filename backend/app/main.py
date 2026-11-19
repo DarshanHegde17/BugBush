@@ -5,6 +5,7 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 from backend.app.routers.auth import router as auth_router
+from backend.app.routers.admin_auth import router as admin_auth_router
 from backend.app.routers.users import router as users_router, assessments_router
 from backend.app.routers.practice import router as practice_router
 from backend.app.routers.exam import (
@@ -30,6 +31,7 @@ app.add_middleware(
 
 # Include API Routers
 app.include_router(auth_router, prefix="/api/v1/auth", tags=["Authentication"])
+app.include_router(admin_auth_router, prefix="/api/v1/admin/auth", tags=["Admin Authentication"])
 app.include_router(users_router, prefix="/api/v1/users", tags=["Users & Dashboard"])
 app.include_router(assessments_router, prefix="/api/v1/assessments", tags=["Assessments Execution"])
 app.include_router(practice_router, prefix="/api/v1/practice", tags=["Practice Coding"])
@@ -100,6 +102,18 @@ def serve_exam_attempt(attempt_id: str = ""):
     if os.path.exists(exam_file):
         return FileResponse(exam_file)
     return FileResponse(os.path.join(frontend_dir, "user", "assessments.html"))
+
+
+@app.get("/admin/login", include_in_schema=False)
+def serve_admin_login():
+    return FileResponse(os.path.join(frontend_dir, "admin", "login.html"))
+
+@app.get("/admin/dashboard", include_in_schema=False)
+def serve_admin_dashboard():
+    dashboard_file = os.path.join(frontend_dir, "admin", "dashboard.html")
+    if os.path.exists(dashboard_file):
+        return FileResponse(dashboard_file)
+    return FileResponse(os.path.join(frontend_dir, "admin", "login.html"))
 
 
 # Mount frontend static files

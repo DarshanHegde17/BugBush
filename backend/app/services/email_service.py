@@ -86,6 +86,24 @@ class EmailService:
         Sends an automated 6-digit OTP verification email with BugBash styling.
         Runs asynchronously to prevent blocking FastAPI worker threads.
         """
+        # Always output prominent terminal banner if SMTP is not configured
+        if not self.is_configured:
+            logger.warning(
+                f"\n=======================================================\n"
+                f" [BUGBASH OTP VERIFICATION HELPER]\n"
+                f" Target Email: {to_email}\n"
+                f" 6-Digit OTP Code: >>> {otp_code} <<<\n"
+                f" Status: Development/Local Mode (SMTP not configured)\n"
+                f" To receive real emails, set SMTP_USER and SMTP_PASSWORD in .env\n"
+                f"=======================================================\n"
+            )
+            print(
+                f"\n=======================================================\n"
+                f" >>> BUGBASH OTP CODE FOR {to_email}: {otp_code} <<<\n"
+                f"=======================================================\n",
+                flush=True
+            )
+
         subject = f"{otp_code} is your BugBash verification code"
 
         plain_body = f"""Hello {candidate_name},

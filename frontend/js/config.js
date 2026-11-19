@@ -49,6 +49,11 @@
             ADMIN_AUTH_LOGIN: '/admin/auth/login',
             ADMIN_AUTH_LOGOUT: '/admin/auth/logout',
             ADMIN_AUTH_ME: '/admin/auth/me',
+            ADMIN_DASHBOARD_STATS: '/admin/dashboard/statistics',
+            ADMIN_DASHBOARD_ANALYTICS: '/admin/dashboard/analytics',
+            ADMIN_DASHBOARD_ACTIVITY: '/admin/dashboard/recent-activity',
+            ADMIN_PERMISSIONS: '/admin/permissions',
+            ADMIN_CHANGE_PASSWORD: '/admin/change-password',
             PRACTICE_PROBLEMS: '/practice/problems'
         },
 

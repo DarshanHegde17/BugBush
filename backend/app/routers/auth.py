@@ -63,12 +63,14 @@ async def register_user(payload: RegisterRequest):
         candidate_name=payload.full_name
     ))
 
+    allow_dev_otp = IS_DEV or (not email_service.is_configured)
+
     return RegisterResponse(
         status="success",
         message="Account created successfully. A 6-digit verification code has been sent to your email.",
         email=user_record["email"],
         verification_token=token,
-        dev_otp=otp if IS_DEV else None
+        dev_otp=otp if allow_dev_otp else None
     )
 
 
@@ -136,10 +138,12 @@ async def resend_otp(payload: ResendOtpRequest):
             candidate_name="Candidate"
         ))
 
+    allow_dev_otp = IS_DEV or (not email_service.is_configured)
+
     return ResendOtpResponse(
         status="success",
         message="A new verification code has been dispatched to your email.",
-        dev_otp=new_otp if IS_DEV else None
+        dev_otp=new_otp if allow_dev_otp else None
     )
 
 
@@ -150,7 +154,8 @@ async def resend_otp(payload: ResendOtpRequest):
 )
 async def get_dev_otp(email: str = Query(...)):
     """Provides the active OTP in development mode so candidates can verify without active SMTP."""
-    if not IS_DEV:
+    allow_dev_otp = IS_DEV or (not email_service.is_configured)
+    if not allow_dev_otp:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Disabled in production.")
     clean_email = email.strip().lower()
     tok = user_service._email_to_token.get(clean_email)

@@ -49,6 +49,8 @@
             ADMIN_AUTH_LOGIN: '/admin/auth/login',
             ADMIN_AUTH_LOGOUT: '/admin/auth/logout',
             ADMIN_AUTH_ME: '/admin/auth/me',
+            ADMIN_AUTH_INVITATION: '/admin/auth/invitation',
+            ADMIN_AUTH_ACTIVATE: '/admin/auth/activate',
             ADMIN_DASHBOARD_STATS: '/admin/dashboard/statistics',
             ADMIN_DASHBOARD_ANALYTICS: '/admin/dashboard/analytics',
             ADMIN_DASHBOARD_ACTIVITY: '/admin/dashboard/recent-activity',
@@ -100,6 +102,8 @@
             SUPER_ADMIN_DASHBOARD_ML_ANALYTICS: '/super-admin/dashboard/ml-analytics',
             SUPER_ADMIN_PLATFORM_HEALTH: '/super-admin/platform/health',
             SUPER_ADMIN_PLATFORM_ACTIVITY: '/super-admin/platform/activity',
+            SUPER_ADMIN_ADMINS: '/super-admin/admins',
+            SUPER_ADMIN_ADMINS_INVITE: '/super-admin/admins/invite',
             PRACTICE_PROBLEMS: '/practice/problems'
         },
 

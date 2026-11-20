@@ -7,6 +7,12 @@ from backend.app.schemas.admin_auth import (
     AdminUserInfo,
     AdminStatusResponse
 )
+from backend.app.schemas.super_admin_admins import (
+    InvitationDetailsResponse,
+    AcceptInvitationRequest,
+    AdminStatusActionResponse
+)
+from backend.app.services.super_admin_admins_service import super_admin_admins_service
 from backend.app.services.admin_auth_service import admin_auth_service, AUTHORIZED_ADMIN_ROLES
 from backend.app.services.user_service import user_service
 
@@ -132,3 +138,29 @@ async def admin_logout(authorization: Optional[str] = Header(None)):
         status="success",
         message="Successfully signed out of the Admin Portal."
     )
+
+
+# ==============================================================================
+# Invitation Verification & Activation Endpoints
+# ==============================================================================
+@router.get(
+    "/invitation",
+    response_model=InvitationDetailsResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Validate administrator invitation token",
+    description="Validates that the invitation link is active, unexpired, and retrieves admin basic metadata."
+)
+async def verify_invitation(token: str):
+    return super_admin_admins_service.verify_invitation_token(token)
+
+
+@router.post(
+    "/activate",
+    response_model=AdminStatusActionResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Accept administrator invitation and establish credentials",
+    description="Verifies OTP, establishes password, transitions account status to Active, and marks invitation as Accepted."
+)
+async def accept_invitation(payload: AcceptInvitationRequest, request: Request):
+    client_ip = request.client.host if request.client else ""
+    return super_admin_admins_service.accept_invitation(payload=payload, client_ip=client_ip)

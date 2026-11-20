@@ -68,6 +68,7 @@ class AdminAuthService:
         
         # Revoked session tokens
         self._revoked_tokens: Set[str] = set()
+        self._revoked_emails: Dict[str, datetime] = {}
 
         # Audit activity store
         self._audit_logs: List[dict] = []
@@ -247,6 +248,21 @@ class AdminAuthService:
                 403
             )
 
+        if "pending" in status_clean:
+            self.record_audit_event(
+                "login_pending_invitation",
+                clean_email,
+                client_ip_clean,
+                "Attempted login with pending administrative invitation",
+                success=False
+            )
+            return (
+                False,
+                None,
+                "Your administrative invitation has not been accepted yet. Please follow the instructions sent to your email.",
+                403
+            )
+
         if status_clean in ("suspended", "locked", "blocked"):
             self.record_audit_event(
                 "login_suspended_account",
@@ -335,7 +351,18 @@ class AdminAuthService:
             if not email or not role or role not in AUTHORIZED_ADMIN_ROLES:
                 return None
 
-            user = user_service._get_user_doc(email.lower())
+            clean_email = email.strip().lower()
+            revoked_at = self._revoked_emails.get(clean_email)
+            if revoked_at:
+                iat = payload.get("iat")
+                if iat:
+                    token_iat = datetime.fromtimestamp(iat, tz=timezone.utc)
+                    if token_iat <= revoked_at:
+                        return None
+                else:
+                    return None
+
+            user = user_service._get_user_doc(clean_email)
             if not user:
                 return None
 
@@ -344,7 +371,8 @@ class AdminAuthService:
                 return None
 
             account_status = user.get("account_status") or user.get("status") or "Active"
-            if str(account_status).strip().lower() in ("inactive", "suspended", "locked"):
+            status_clean = str(account_status).strip().lower()
+            if status_clean in ("inactive", "suspended", "locked", "deactivated", "disabled") or "pending" in status_clean:
                 return None
 
             permissions = ROLE_PERMISSIONS.get(user_role, ["assessments:manage"])
@@ -367,6 +395,12 @@ class AdminAuthService:
         """Revokes an active administrative token upon sign out."""
         if token:
             self._revoked_tokens.add(token)
+
+    def revoke_user_sessions(self, email: str):
+        """Invalidates all current sessions for an administrative user."""
+        if email:
+            clean = email.strip().lower()
+            self._revoked_emails[clean] = datetime.now(timezone.utc)
 
 
 admin_auth_service = AdminAuthService()

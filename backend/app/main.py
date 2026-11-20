@@ -16,6 +16,7 @@ from backend.app.routers.super_admin_dashboard import (
     dashboard_router as super_admin_dashboard_router,
     platform_router as super_admin_platform_router
 )
+from backend.app.routers.super_admin_admins import router as super_admin_admins_router
 from backend.app.routers.admin_dashboard import router as admin_dashboard_router
 from backend.app.routers.admin_assessments import router as admin_assessments_router
 from backend.app.routers.admin_candidates import router as admin_candidates_router, groups_router as admin_groups_router
@@ -58,6 +59,7 @@ app.include_router(admin_auth_router, prefix="/api/v1/admin/auth", tags=["Admin 
 app.include_router(super_admin_auth_router, prefix="/api/v1/super-admin/auth", tags=["Super Admin Authentication"])
 app.include_router(super_admin_dashboard_router, prefix="/api/v1/super-admin/dashboard", tags=["Super Admin Dashboard"])
 app.include_router(super_admin_platform_router, prefix="/api/v1/super-admin/platform", tags=["Super Admin Platform"])
+app.include_router(super_admin_admins_router, prefix="/api/v1/super-admin/admins", tags=["Super Admin Admin Management"])
 app.include_router(admin_dashboard_router, prefix="/api/v1/admin", tags=["Admin Dashboard"])
 app.include_router(admin_assessments_router, prefix="/api/v1/admin/assessments", tags=["Admin Assessment Management"])
 app.include_router(admin_candidates_router, prefix="/api/v1/admin/candidates", tags=["Admin Candidates Management"])

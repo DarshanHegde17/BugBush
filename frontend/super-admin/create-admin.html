@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BugBash Super Admin - Create and Invite Administrator.">
+    <title>Create Administrator | BugBash Control Center</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../assets/icons/favicon.png">
+    <link rel="shortcut icon" href="../assets/icons/favicon.ico">
+
+    <!-- Early Theme Initialization -->
+    <script src="../js/theme.js"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../css/super-admin-dashboard.css?v=2.3">
+    <link rel="stylesheet" href="../css/super-admin-admins.css?v=1.0">
+</head>
+<body>
+
+    <div class="sa-app-layout">
+        
+        <!-- Super Admin Sidebar -->
+        <aside class="sa-sidebar" id="saSidebar">
+            <div class="sa-sidebar-header">
+                <a href="/super-admin/dashboard" class="sa-brand">
+                    <img src="../assets/images/bugbash-logo.png?v=1.1" alt="BugBash" height="34" width="70" style="height: 34px !important; width: auto !important; object-fit: contain;">
+                    <span class="sa-brand-badge-pill">SUPER ADMIN</span>
+                </a>
+            </div>
+
+            <nav class="sa-sidebar-scroll">
+                <div class="sa-menu-group">
+                    <span class="sa-menu-title">Core Operations</span>
+                    <a href="/super-admin/dashboard" class="sa-nav-item">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg></span>
+                        <span>Overview</span>
+                    </a>
+                    <a href="/super-admin/admins" class="sa-nav-item active">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></span>
+                        <span>Admin Management</span>
+                    </a>
+                    <a href="/super-admin/users" class="sa-nav-item">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></span>
+                        <span>User Management</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="sa-main-wrap">
+            
+            <header class="sa-topbar">
+                <div class="sa-topbar-left">
+                    <a href="/super-admin/admins" class="sa-forgot-link" style="display:flex; align-items:center; gap:6px;">
+                        &larr; Back to Administrators Directory
+                    </a>
+                </div>
+
+                <div class="sa-topbar-right">
+                    <button type="button" class="sa-icon-btn theme-toggle" id="theme-toggle-btn" aria-label="Toggle theme">
+                        <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle></svg>
+                    </button>
+                    <button type="button" class="sa-icon-btn" id="saLogoutBtn" title="Sign Out">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    </button>
+                </div>
+            </header>
+
+            <main class="sa-content-body">
+                
+                <div class="sa-form-container">
+                    
+                    <div class="sa-form-card">
+                        
+                        <div class="sa-form-header">
+                            <h1 class="sa-form-title">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="8.5" cy="7" r="4"></circle>
+                                    <line x1="20" y1="8" x2="20" y2="14"></line>
+                                    <line x1="23" y1="11" x2="17" y2="11"></line>
+                                </svg>
+                                Create &amp; Invite Administrator
+                            </h1>
+                            <p class="sa-form-desc">
+                                Provision a new platform administrator. The designated individual will receive an invitation link and single-use verification code to establish their own credentials.
+                            </p>
+                        </div>
+
+                        <!-- Security Notice Box -->
+                        <div class="sa-notice-box security">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0; color:#8b5cf6;">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            <div>
+                                <strong>Zero-Knowledge Credential Security:</strong>
+                                Super Admins never create, view, or transmit passwords. An expiring, single-use cryptographic invitation link with 6-digit OTP is issued directly to the administrator's verified email.
+                            </div>
+                        </div>
+
+                        <!-- Form Error Alert -->
+                        <div id="formAlert" class="sa-notice-box" style="display:none; background:rgba(239, 68, 68, 0.1); border-color:rgba(239, 68, 68, 0.3); color:#fca5a5;"></div>
+
+                        <form id="createAdminForm">
+                            
+                            <div class="sa-form-grid">
+                                
+                                <div class="sa-form-group">
+                                    <label class="sa-label" for="adminFullName">
+                                        Responsible Person's Full Name <span class="req">*</span>
+                                    </label>
+                                    <input type="text" class="sa-input" id="adminFullName" placeholder="e.g. Dr. Eleanor Vance" required>
+                                    <span class="sa-helper-text">Official name of the responsible administrator.</span>
+                                </div>
+
+                                <div class="sa-form-group">
+                                    <label class="sa-label" for="adminEmail">
+                                        Official / Personal Email Address <span class="req">*</span>
+                                    </label>
+                                    <input type="email" class="sa-input" id="adminEmail" placeholder="e.g. eleanor.vance@company.com" required>
+                                    <span class="sa-helper-text">Must be unique across the entire BugBash platform.</span>
+                                </div>
+
+                            </div>
+
+                            <div class="sa-form-grid" style="margin-top: 16px;">
+                                
+                                <div class="sa-form-group">
+                                    <label class="sa-label" for="adminRole">
+                                        Administrative Role &amp; Clearance <span class="req">*</span>
+                                    </label>
+                                    <select class="sa-input" id="adminRole" required>
+                                        <option value="admin" selected>Admin (Assessments, questions, submissions, results)</option>
+                                        <option value="organization_admin">Organization Admin (Multi-tenant governance, candidate roster)</option>
+                                        <option value="college_admin">College Admin (Campus drives, student cohort tracking)</option>
+                                        <option value="company_admin">Company Admin (Hiring pipeline, technical interviews)</option>
+                                    </select>
+                                    <span class="sa-helper-text">Role determines default scope and operational capabilities.</span>
+                                </div>
+
+                                <div class="sa-form-group">
+                                    <label class="sa-label" for="adminPhone">
+                                        Contact Phone Number
+                                    </label>
+                                    <input type="text" class="sa-input" id="adminPhone" placeholder="e.g. +1 (555) 234-5678">
+                                    <span class="sa-helper-text">Optional emergency security contact number.</span>
+                                </div>
+
+                            </div>
+
+                            <div class="sa-form-grid full" style="margin-top: 16px;">
+                                
+                                <div class="sa-form-group">
+                                    <label class="sa-label" for="adminOrgName">
+                                        Organization / Department / Campus Name
+                                    </label>
+                                    <input type="text" class="sa-input" id="adminOrgName" value="BugBash Global Assessment Operations">
+                                    <span class="sa-helper-text">Identifies the organizational boundary or institutional tenant.</span>
+                                </div>
+
+                                <div class="sa-form-group">
+                                    <label class="sa-label" for="adminDescription">
+                                        Administrative Scope &amp; Responsibilities
+                                    </label>
+                                    <textarea class="sa-textarea" id="adminDescription" rows="3" placeholder="Specify responsibilities, assessment cohorts managed, or special operational scopes..."></textarea>
+                                    <span class="sa-helper-text">Visible in the Super Admin directory audit records.</span>
+                                </div>
+
+                            </div>
+
+                            <div class="sa-form-actions">
+                                <a href="/super-admin/admins" class="sa-btn-secondary">Cancel</a>
+                                <button type="submit" class="sa-btn-primary" id="createAdminSubmitBtn">
+                                    Create &amp; Send Invitation
+                                </button>
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </main>
+
+        </div>
+
+    </div>
+
+    <!-- Success Invitation Modal -->
+    <div class="sa-modal-backdrop" id="inviteSuccessModal">
+        <div class="sa-modal" style="max-width: 580px;">
+            <div class="sa-modal-header">
+                <div class="sa-modal-title" style="display:flex; align-items:center; gap:8px; color:#10b981;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    Invitation Issued Successfully
+                </div>
+                <button type="button" class="sa-modal-close" id="modalCloseBtn">&times;</button>
+            </div>
+            <div class="sa-modal-body">
+                An invitation record has been created for <strong id="inviteRecipientText"></strong>.
+                <br><br>
+                Share the secure invitation link below with the administrator. They will use this link along with the 6-digit verification code to establish their password and activate their account.
+
+                <!-- Copy Link Box -->
+                <div class="sa-copy-box">
+                    <span class="sa-copy-text" id="inviteUrlText"></span>
+                    <button type="button" class="sa-copy-btn" id="copyUrlBtn">Copy Link</button>
+                </div>
+
+                <!-- Dev Verification Code Box -->
+                <div style="background:var(--surface-color); border:1px solid var(--border-color); border-radius:8px; padding:12px 16px; margin-top:14px; display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <div style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Development OTP Code</div>
+                        <div style="font-size:1.15rem; font-weight:800; font-family:var(--font-mono); color:#ff6b35;" id="devOtpVal">------</div>
+                    </div>
+                    <span class="sa-badge pending">Pending Activation</span>
+                </div>
+            </div>
+            <div class="sa-modal-footer">
+                <button type="button" class="sa-btn-primary" id="modalDoneBtn">Return to Admins Directory</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/config.js"></script>
+    <script src="../js/super-admin-create-admin.js"></script>
+</body>
+</html>

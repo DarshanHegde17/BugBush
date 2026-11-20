@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BugBash Admin Portal - Accept Administrative Invitation & Establish Credentials.">
+    <title>Accept Admin Invitation | BugBash</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../assets/icons/favicon.png">
+    <link rel="shortcut icon" href="../assets/icons/favicon.ico">
+
+    <!-- Early Theme Initialization -->
+    <script src="../js/theme.js"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../css/admin-accept-invitation.css?v=1.0">
+</head>
+<body>
+
+    <div class="inv-container">
+        
+        <div class="inv-card">
+            
+            <div class="inv-brand">
+                <a href="/admin/login">
+                    <img src="../assets/images/bugbash-logo.png?v=1.1" alt="BugBash" height="38" style="height: 38px; width: auto; object-fit: contain;">
+                </a>
+                <span class="inv-brand-badge">Administrative Invitation</span>
+                <h1 class="inv-title">Activate Admin Account</h1>
+                <p class="inv-subtitle">Verify your identity and set your secure password.</p>
+            </div>
+
+            <!-- Loading State -->
+            <div id="invCardLoading" style="text-align: center; padding: 36px 0; color: var(--text-muted);">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 12px;">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation: spin 1s linear infinite;">
+                        <line x1="12" y1="2" x2="12" y2="6"></line>
+                        <line x1="12" y1="18" x2="12" y2="22"></line>
+                        <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
+                        <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line>
+                        <line x1="2" y1="12" x2="6" y2="12"></line>
+                        <line x1="18" y1="12" x2="22" y2="12"></line>
+                        <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line>
+                        <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
+                    </svg>
+                    <span>Validating invitation credentials...</span>
+                </div>
+            </div>
+
+            <!-- Error State -->
+            <div id="invCardError" style="display: none;">
+                <div class="inv-alert error" style="margin-bottom: 20px;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    <div id="invErrorMessage">
+                        This invitation link is invalid or has expired.
+                    </div>
+                </div>
+                <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 24px;">
+                    Administrative invitations are single-use and expire within 7 days. If you require access, please reach out to your platform Super Administrator to request a fresh invitation link.
+                </p>
+                <a href="/admin/login" class="inv-btn-submit" style="display:block; text-align:center; text-decoration:none;">
+                    Go to Admin Sign In
+                </a>
+            </div>
+
+            <!-- Form State -->
+            <div id="invCardForm" style="display: none;">
+                
+                <!-- Recipient Info Summary -->
+                <div class="inv-meta-card">
+                    <div class="inv-meta-row">
+                        <span class="inv-meta-label">Invited Admin:</span>
+                        <span class="inv-meta-val" id="invRecipientName">Administrator</span>
+                    </div>
+                    <div class="inv-meta-row">
+                        <span class="inv-meta-label">Email Account:</span>
+                        <span class="inv-meta-val" id="invRecipientEmail">admin@example.com</span>
+                    </div>
+                    <div class="inv-meta-row">
+                        <span class="inv-meta-label">Assigned Role:</span>
+                        <span class="inv-meta-val" id="invRecipientRole">ADMIN</span>
+                    </div>
+                    <div class="inv-meta-row">
+                        <span class="inv-meta-label">Organization:</span>
+                        <span class="inv-meta-val" id="invRecipientOrg">BugBash Operations</span>
+                    </div>
+                </div>
+
+                <div id="invAlertBox" class="inv-alert error" style="display: none; margin-bottom: 16px;"></div>
+
+                <form id="acceptInvitationForm" class="inv-form">
+                    
+                    <div class="inv-group">
+                        <label class="inv-label" for="invOtpInput">
+                            6-Digit Verification OTP
+                        </label>
+                        <input type="text" class="inv-input inv-otp-input" id="invOtpInput" maxlength="6" placeholder="000000" autocomplete="one-time-code" required>
+                        <span style="font-size: 0.75rem; color: var(--text-muted); text-align: center;">
+                            Enter the 6-digit verification code provided in your invitation message.
+                        </span>
+                    </div>
+
+                    <div class="inv-group">
+                        <label class="inv-label" for="invPasswordInput">
+                            Establish New Password
+                        </label>
+                        <input type="password" class="inv-input" id="invPasswordInput" placeholder="Minimum 8 characters" required>
+                        
+                        <div class="inv-strength-meter">
+                            <div class="inv-strength-bar" id="invStrengthBar"></div>
+                        </div>
+
+                        <div class="inv-rules-list">
+                            <span class="inv-rule-item" id="ruleLength">&bull; Minimum 8 characters</span>
+                            <span class="inv-rule-item" id="ruleUpper">&bull; At least one uppercase letter</span>
+                            <span class="inv-rule-item" id="ruleLower">&bull; At least one lowercase letter</span>
+                            <span class="inv-rule-item" id="ruleNumber">&bull; At least one number or symbol</span>
+                        </div>
+                    </div>
+
+                    <div class="inv-group">
+                        <label class="inv-label" for="invConfirmPasswordInput">
+                            Confirm New Password
+                        </label>
+                        <input type="password" class="inv-input" id="invConfirmPasswordInput" placeholder="Repeat your password" required>
+                    </div>
+
+                    <button type="submit" class="inv-btn-submit" id="invSubmitBtn">
+                        Activate &amp; Sign In
+                    </button>
+
+                </form>
+
+            </div>
+
+            <!-- Success State -->
+            <div id="invCardSuccess" style="display: none; text-align: center;">
+                <div style="width: 56px; height: 56px; border-radius: 50%; background: rgba(16, 185, 129, 0.15); border: 2px solid #10b981; color: #10b981; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </div>
+                <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin-bottom: 8px;">
+                    Account Activated!
+                </h2>
+                <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 24px;">
+                    Your administrator account has been established and activated. You can now access the BugBash Admin Portal using your email and newly created password.
+                </p>
+                <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 20px;">
+                    Redirecting to Admin Login in <strong id="redirectCountdown" style="color: var(--primary-color);">3</strong> seconds...
+                </div>
+                <a href="/admin/login" class="inv-btn-submit" style="display: inline-block; text-decoration: none; padding: 12px 28px;">
+                    Sign In to Admin Portal Now
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/config.js"></script>
+    <script src="../js/admin-accept-invitation.js"></script>
+</body>
+</html>

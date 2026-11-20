@@ -74,6 +74,9 @@
             ADMIN_ML_FEEDBACK: '/admin/ml-insights/feedback',
             ADMIN_ML_MODELS: '/admin/ml-insights/models',
             ADMIN_ML_MODELS_PERF: '/admin/ml-insights/models/performance',
+            ADMIN_NOTIFICATIONS: '/admin/notifications',
+            ADMIN_NOTIFICATIONS_STATS: '/admin/notifications/statistics',
+            ADMIN_NOTIFICATION_TEMPLATES: '/admin/notification-templates',
             PRACTICE_PROBLEMS: '/practice/problems'
         },
 

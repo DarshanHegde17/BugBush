@@ -17,6 +17,7 @@ from backend.app.routers.admin_candidates import router as admin_candidates_rout
 from backend.app.routers.admin_submissions import router as admin_submissions_router
 from backend.app.routers.admin_results import router as admin_results_router
 from backend.app.routers.admin_ml_insights import router as admin_ml_insights_router
+from backend.app.routers.admin_notifications import router as admin_notifications_router, templates_router as admin_templates_router
 from backend.app.routers.users import router as users_router, assessments_router
 from backend.app.routers.practice import router as practice_router
 from backend.app.routers.exam import (
@@ -50,6 +51,8 @@ app.include_router(admin_groups_router, prefix="/api/v1/admin/candidate-groups",
 app.include_router(admin_submissions_router, prefix="/api/v1/admin/submissions", tags=["Admin Submissions Management"])
 app.include_router(admin_results_router, prefix="/api/v1/admin/results", tags=["Admin Results & Analytics"])
 app.include_router(admin_ml_insights_router, prefix="/api/v1/admin/ml-insights", tags=["Admin ML Insights"])
+app.include_router(admin_notifications_router, prefix="/api/v1/admin/notifications", tags=["Admin Notifications Management"])
+app.include_router(admin_templates_router, prefix="/api/v1/admin/notification-templates", tags=["Admin Notification Templates"])
 app.include_router(users_router, prefix="/api/v1/users", tags=["Users & Dashboard"])
 app.include_router(assessments_router, prefix="/api/v1/assessments", tags=["Assessments Execution"])
 app.include_router(practice_router, prefix="/api/v1/practice", tags=["Practice Coding"])

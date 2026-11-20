@@ -1,0 +1,125 @@
+/**
+ * BugBash - Admin Notification Details CSS
+ * Telemetry progress meters, recipient delivery log table, and live message preview.
+ */
+
+.details-overview-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+@media (max-width: 992px) {
+    .details-overview-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Delivery Progress Meters */
+.progress-card {
+    background: var(--notif-bg-card);
+    border: 1px solid var(--notif-border);
+    border-radius: 14px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.progress-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.delivery-bar-multi {
+    height: 12px;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.2);
+    display: flex;
+    overflow: hidden;
+}
+
+.bar-segment {
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+.bar-segment.delivered { background: var(--notif-success); }
+.bar-segment.pending { background: var(--notif-warning); }
+.bar-segment.failed { background: var(--notif-danger); }
+
+.delivery-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.legend-dot.delivered { background: var(--notif-success); }
+.legend-dot.pending { background: var(--notif-warning); }
+.legend-dot.failed { background: var(--notif-danger); }
+.legend-dot.read { background: var(--notif-purple); }
+
+/* Recipient Telemetry Log Table */
+.recipients-log-card {
+    background: var(--notif-bg-card);
+    border: 1px solid var(--notif-border);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.log-table-header {
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    border-bottom: 1px solid var(--notif-border);
+}
+
+.log-search-input {
+    padding: 8px 12px;
+    font-size: 12px;
+    border-radius: 6px;
+    border: 1px solid var(--notif-border);
+    background: var(--bg-surface, rgba(255, 255, 255, 0.04));
+    color: var(--text-primary);
+    outline: none;
+    min-width: 200px;
+}
+
+.status-badge-mini {
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.status-badge-mini.delivered { background: var(--notif-success-subtle); color: var(--notif-success); }
+.status-badge-mini.pending { background: var(--notif-warning-subtle); color: var(--notif-warning); }
+.status-badge-mini.failed { background: var(--notif-danger-subtle); color: var(--notif-danger); }
+.status-badge-mini.read { background: var(--notif-purple-subtle); color: var(--notif-purple); }
+.status-badge-mini.unread { background: rgba(148, 163, 184, 0.15); color: #94a3b8; }

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BugBash Admin &bull; Create Notification</title>
+    <meta name="description" content="Compose and broadcast candidate notifications, configure target audience rules, insert variables, and preview rendering in real time.">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff6b35'><path d='M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9'/><path d='M13.73 21a2 2 0 0 1-3.46 0'/></svg>">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/css/admin-dashboard.css">
+    <link rel="stylesheet" href="/css/assessments.css">
+    <link rel="stylesheet" href="/css/notifications.css">
+    <link rel="stylesheet" href="/css/notification-form.css">
+</head>
+<body id="adminCreateNotificationPage">
+    <div class="app-container">
+        
+        <!-- Sidebar Navigation (Notifications Active) -->
+        <aside class="admin-sidebar" id="adminSidebar">
+            <div class="sidebar-header">
+                <a href="/admin/dashboard" class="brand-wrapper">
+                    <div class="brand-logo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <div class="brand-text">
+                        <span>BugBash</span>
+                        <span class="admin-tag">ADMIN</span>
+                    </div>
+                </a>
+            </div>
+
+            <ul class="sidebar-menu">
+                <li class="menu-category">Operations</li>
+                <li class="nav-item">
+                    <a href="/admin/dashboard" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+                        <span class="nav-text">Overview</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/questions" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                        <span class="nav-text">Question Bank</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/assessments" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                        <span class="nav-text">Assessments</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/candidates" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        <span class="nav-text">Students &amp; Candidates</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/submissions" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                        <span class="nav-text">Submissions</span>
+                    </a>
+                </li>
+                <li class="menu-category">Intelligence</li>
+                <li class="nav-item">
+                    <a href="/admin/results" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                        <span class="nav-text">Results &amp; Analytics</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/ml-insights" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                        <span class="nav-text">ML Insights</span>
+                    </a>
+                </li>
+                <li class="menu-category">Communications</li>
+                <li class="nav-item active">
+                    <a href="/admin/notifications" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                        <span class="nav-text">Notifications</span>
+                    </a>
+                </li>
+                <li class="menu-category">System</li>
+                <li class="nav-item">
+                    <a href="/admin/profile" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        <span class="nav-text">My Profile</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/settings" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                        <span class="nav-text">Settings</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <button type="button" class="btn-logout" onclick="localStorage.removeItem('bugbash_admin_token'); window.location.href='/admin/login';">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    <span class="nav-text">Log Out</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Wrapper -->
+        <div class="main-wrapper">
+            <header class="admin-topbar">
+                <div class="topbar-left">
+                    <a href="/admin/notifications" style="display:inline-flex; align-items:center; gap:6px; color:var(--text-secondary); text-decoration:none; font-size:13px; font-weight:600;">
+                        &larr; Back to Notifications
+                    </a>
+                </div>
+                <div class="topbar-right">
+                    <button type="button" class="topbar-btn" id="themeToggleBtn" aria-label="Toggle Theme" onclick="document.documentElement.setAttribute('data-theme', document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line></svg>
+                    </button>
+                    <div class="admin-user-pill">
+                        <div class="user-avatar-mini">A</div>
+                        <span class="user-name">Admin</span>
+                    </div>
+                </div>
+            </header>
+
+            <main class="admin-main-content">
+                <!-- Composer Header -->
+                <div class="notif-header">
+                    <div class="notif-header-title">
+                        <h1 id="composerPageTitle">Create Notification</h1>
+                        <p>Configure candidate targeting, notification payload, delivery channels, and scheduled dispatches.</p>
+                    </div>
+                    <div class="notif-header-actions">
+                        <button type="button" id="btnSaveDraft" class="btn-secondary-notif">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                            Save Draft
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 2-Column Composer Layout -->
+                <div class="notif-composer-grid">
+                    
+                    <!-- Left: Composer Form -->
+                    <form id="notificationComposerForm" class="composer-form-card">
+                        
+                        <!-- Template Preload Bar -->
+                        <div class="form-group">
+                            <label class="form-label" for="notifTemplateSelect">
+                                Load from Template (Optional):
+                            </label>
+                            <select id="notifTemplateSelect" class="form-select">
+                                <option value="">-- Choose a predefined template (optional) --</option>
+                            </select>
+                            <span class="form-helper">Pre-fills subject, category, and variable tags automatically.</span>
+                        </div>
+
+                        <!-- Section 1: Content -->
+                        <div>
+                            <div class="composer-section-header">
+                                <h3>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                                    1. Message Content
+                                </h3>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="notifTitle">
+                                    Notification Title / Subject <span class="req">*</span>
+                                </label>
+                                <input type="text" id="notifTitle" class="form-input" placeholder="e.g. Assessment Reminder: Final Coding Evaluation" required>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                                <div class="form-group">
+                                    <label class="form-label" for="notifCategory">Category</label>
+                                    <select id="notifCategory" class="form-select">
+                                        <option value="General Announcement">General Announcement</option>
+                                        <option value="New Assessment">New Assessment</option>
+                                        <option value="Assessment Reminder">Assessment Reminder</option>
+                                        <option value="Deadline Alert">Deadline Alert</option>
+                                        <option value="Result Publication">Result Publication</option>
+                                        <option value="System Announcement">System Announcement</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="notifPriority">Priority Tier</label>
+                                    <select id="notifPriority" class="form-select">
+                                        <option value="Low">Low</option>
+                                        <option value="Normal" selected>Normal</option>
+                                        <option value="High">High</option>
+                                        <option value="Urgent">Urgent</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="notifMessage">
+                                    Message Body <span class="req">*</span>
+                                </label>
+                                <textarea id="notifMessage" class="form-textarea" placeholder="Dear {{candidate_name}}, you are invited to complete {{assessment_name}}..." required></textarea>
+                                
+                                <!-- Dynamic Variable Chips -->
+                                <div class="variable-helper-bar">
+                                    <span class="variable-helper-label">Insert Dynamic Variable:</span>
+                                    <span class="var-chip" data-var="{{candidate_name}}">+ candidate_name</span>
+                                    <span class="var-chip" data-var="{{assessment_name}}">+ assessment_name</span>
+                                    <span class="var-chip" data-var="{{due_date}}">+ due_date</span>
+                                    <span class="var-chip" data-var="{{score}}">+ score</span>
+                                    <span class="var-chip" data-var="{{result_link}}">+ result_link</span>
+                                    <span class="var-chip" data-var="{{assessment_link}}">+ assessment_link</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="notifActionUrl">Action URL (Optional)</label>
+                                <input type="url" id="notifActionUrl" class="form-input" placeholder="e.g. https://bugbash.dev/user/assessments">
+                                <span class="form-helper">Optional button link embedded in in-app banners and emails.</span>
+                            </div>
+                        </div>
+
+                        <!-- Section 2: Delivery Channels -->
+                        <div>
+                            <div class="composer-section-header">
+                                <h3>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                                    2. Delivery Channels
+                                </h3>
+                            </div>
+
+                            <div class="channel-selector-grid">
+                                <label class="radio-card active">
+                                    <input type="radio" name="deliveryChannel" value="in_app" checked>
+                                    <span class="radio-card-title">&#128227; In-App Toast</span>
+                                    <span class="radio-card-desc">Delivered to candidate portal dashboard</span>
+                                </label>
+                                <label class="radio-card">
+                                    <input type="radio" name="deliveryChannel" value="email">
+                                    <span class="radio-card-title">&#9993; Email</span>
+                                    <span class="radio-card-desc">Dispatched to verified candidate email</span>
+                                </label>
+                                <label class="radio-card">
+                                    <input type="radio" name="deliveryChannel" value="in_app_and_email">
+                                    <span class="radio-card-title">&#9889; In-App &amp; Email</span>
+                                    <span class="radio-card-desc">Multi-channel delivery for urgent alerts</span>
+                                </label>
+                                <div class="radio-card disabled" title="Requires Twilio / SMS Gateway integration">
+                                    <span class="radio-card-title" style="color: var(--text-secondary);">&#128241; SMS</span>
+                                    <span class="radio-card-desc">Provider setup required</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 3: Target Audience -->
+                        <div>
+                            <div class="composer-section-header">
+                                <h3>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                                    3. Target Audience
+                                </h3>
+                            </div>
+
+                            <div class="audience-selector-grid">
+                                <label class="radio-card active">
+                                    <input type="radio" name="targetAudience" value="all_candidates" checked>
+                                    <span class="radio-card-title">All Candidates</span>
+                                    <span class="radio-card-desc">All registered BugBash candidates</span>
+                                </label>
+                                <label class="radio-card">
+                                    <input type="radio" name="targetAudience" value="candidate_groups">
+                                    <span class="radio-card-title">Candidate Groups</span>
+                                    <span class="radio-card-desc">Specific classes or cohort groups</span>
+                                </label>
+                                <label class="radio-card">
+                                    <input type="radio" name="targetAudience" value="specific_assessment">
+                                    <span class="radio-card-title">Assessment Enrolled</span>
+                                    <span class="radio-card-desc">Participants assigned to an assessment</span>
+                                </label>
+                                <label class="radio-card">
+                                    <input type="radio" name="targetAudience" value="individual_candidates">
+                                    <span class="radio-card-title">Individual</span>
+                                    <span class="radio-card-desc">Targeted individual candidate emails</span>
+                                </label>
+                            </div>
+
+                            <div id="audienceTargetIdsGroup" class="form-group" style="display: none; margin-top: 14px;">
+                                <label class="form-label" id="audienceTargetIdsLabel" for="notifTargetIds">
+                                    Target IDs (Comma separated):
+                                </label>
+                                <input type="text" id="notifTargetIds" class="form-input" placeholder="e.g. grp_batch_2026, grp_tier1">
+                                <span class="form-helper" id="audienceTargetIdsHelper">Enter IDs or emails separated by commas.</span>
+                            </div>
+                        </div>
+
+                        <!-- Section 4: Dispatch Schedule -->
+                        <div>
+                            <div class="composer-section-header">
+                                <h3>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                    4. Dispatch Schedule
+                                </h3>
+                            </div>
+
+                            <div style="display: flex; gap: 16px; margin-bottom: 14px;">
+                                <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer;">
+                                    <input type="radio" name="deliveryOption" value="send_now" checked>
+                                    <strong>Send Immediately</strong>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer;">
+                                    <input type="radio" name="deliveryOption" value="schedule_later">
+                                    <strong>Schedule for Later</strong>
+                                </label>
+                            </div>
+
+                            <div id="scheduleDatetimeGroup" class="form-group" style="display: none;">
+                                <label class="form-label" for="notifScheduledAt">Delivery Date &amp; Time:</label>
+                                <input type="datetime-local" id="notifScheduledAt" class="form-input">
+                                <span class="form-helper">Dispatches automatically at the configured time.</span>
+                            </div>
+                        </div>
+
+                        <!-- Action Submit -->
+                        <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 10px;">
+                            <a href="/admin/notifications" class="btn-secondary-notif">Cancel</a>
+                            <button type="submit" id="btnSubmitNotification" class="btn-primary-notif">
+                                Send Immediately
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Right: Live Estimation & Split-Screen Preview -->
+                    <div class="composer-preview-sidebar">
+                        
+                        <!-- Dynamic Recipient Estimation Card -->
+                        <div class="estimation-card">
+                            <span class="notif-metric-label">&#128101; Targeted Audience</span>
+                            <div class="estimation-counter-box">
+                                <span class="estimation-count" id="estimatedRecipientsCount">0</span>
+                                <span class="estimation-count-label">Candidates</span>
+                            </div>
+                            <p class="estimation-summary-text" id="audienceSummaryText">
+                                Calculating audience estimation...
+                            </p>
+                        </div>
+
+                        <!-- Split-Screen Live Preview Frame -->
+                        <div class="preview-card">
+                            <div class="preview-header-tabs">
+                                <button type="button" class="preview-tab-btn active" data-tab="inapp">
+                                    &#128227; In-App Banner
+                                </button>
+                                <button type="button" class="preview-tab-btn" data-tab="email">
+                                    &#9993; Email Preview
+                                </button>
+                            </div>
+
+                            <div class="preview-body-container">
+                                <!-- In-App Toast Tab -->
+                                <div id="inAppPreviewTab" class="inapp-preview-card">
+                                    <div class="inapp-preview-header">
+                                        <h4 class="inapp-preview-title" id="inAppPreviewTitle">Notification Title</h4>
+                                        <span class="notif-pill category" style="font-size: 10px;">Just Now</span>
+                                    </div>
+                                    <div class="inapp-preview-msg" id="inAppPreviewMsg">
+                                        Your notification message preview will appear here in real time.
+                                    </div>
+                                    <a href="#" id="inAppPreviewBtn" class="inapp-preview-btn" style="display: none;" target="_blank">
+                                        Open Action &rarr;
+                                    </a>
+                                </div>
+
+                                <!-- Email Mock Tab -->
+                                <div id="emailPreviewTab" class="email-mock-frame" style="display: none;">
+                                    <div class="email-mock-header">
+                                        <div><strong>From:</strong> notifications@bugbash.dev</div>
+                                        <div><strong>To:</strong> Alex Morgan &lt;alex@university.edu&gt;</div>
+                                        <div class="email-mock-subject" id="emailMockSubject">Notification Subject</div>
+                                    </div>
+                                    <div class="email-mock-content" id="emailMockBody">
+                                        Notification message content.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/config.js"></script>
+    <script src="/js/notification-form.js"></script>
+</body>
+</html>

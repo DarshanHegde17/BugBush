@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BugBash Admin &bull; Notification Settings</title>
+    <meta name="description" content="Configure personal administrator notification channels, assessment alerts, submission updates, and system broadcasts.">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff6b35'><path d='M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9'/><path d='M13.73 21a2 2 0 0 1-3.46 0'/></svg>">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/css/admin-dashboard.css">
+    <link rel="stylesheet" href="/css/assessments.css">
+    <link rel="stylesheet" href="/css/admin-profile.css">
+    <link rel="stylesheet" href="/css/admin-notification-settings.css">
+</head>
+<body id="adminNotificationSettingsPage">
+    <div class="app-container">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="admin-sidebar" id="adminSidebar">
+            <div class="sidebar-header">
+                <a href="/admin/dashboard" class="brand-wrapper">
+                    <div class="brand-logo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <div class="brand-text">
+                        <span>BugBash</span>
+                        <span class="admin-tag">ADMIN</span>
+                    </div>
+                </a>
+            </div>
+
+            <ul class="sidebar-menu">
+                <li class="menu-category">Operations</li>
+                <li class="nav-item">
+                    <a href="/admin/dashboard" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+                        <span class="nav-text">Overview</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/questions" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                        <span class="nav-text">Question Bank</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/assessments" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                        <span class="nav-text">Assessments</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/candidates" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+                        <span class="nav-text">Students &amp; Candidates</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/submissions" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                        <span class="nav-text">Submissions</span>
+                    </a>
+                </li>
+                <li class="menu-category">Intelligence</li>
+                <li class="nav-item">
+                    <a href="/admin/results" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                        <span class="nav-text">Results &amp; Analytics</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/ml-insights" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                        <span class="nav-text">ML Insights</span>
+                    </a>
+                </li>
+                <li class="menu-category">Communications</li>
+                <li class="nav-item">
+                    <a href="/admin/notifications" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                        <span class="nav-text">Notifications</span>
+                    </a>
+                </li>
+                <li class="menu-category">System</li>
+                <li class="nav-item">
+                    <a href="/admin/profile" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        <span class="nav-text">My Profile</span>
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a href="/admin/settings" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                        <span class="nav-text">Settings</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <button type="button" class="btn-logout" onclick="localStorage.removeItem('bugbash_admin_token'); window.location.href='/admin/login';">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    <span class="nav-text">Log Out</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Wrapper -->
+        <div class="main-wrapper">
+            <header class="admin-topbar">
+                <div class="topbar-left">
+                    <span class="page-title-badge">Personal Notification Preferences</span>
+                </div>
+                <div class="topbar-right">
+                    <button type="button" class="topbar-btn" id="themeToggleBtn" aria-label="Toggle Theme" onclick="document.documentElement.setAttribute('data-theme', document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line></svg>
+                    </button>
+                    <div class="admin-user-pill">
+                        <div class="user-avatar-mini">A</div>
+                        <span class="user-name">Admin</span>
+                    </div>
+                </div>
+            </header>
+
+            <main class="admin-main-content">
+                
+                <!-- Header & Navigation Bar -->
+                <div class="notif-header">
+                    <div class="notif-header-title">
+                        <h1>Notification Preferences</h1>
+                        <p>Configure which platform events and operational notifications are delivered to your administrative account.</p>
+                    </div>
+                    <div class="profile-nav-tabs">
+                        <a href="/admin/profile" class="profile-nav-link">&#128100; Profile</a>
+                        <a href="/admin/settings" class="profile-nav-link">&#9881; Preferences</a>
+                        <a href="/admin/security-settings" class="profile-nav-link">&#128274; Security &amp; Sessions</a>
+                    </div>
+                </div>
+
+                <form id="adminNotificationSettingsForm" style="display: flex; flex-direction: column; gap: 24px;">
+                    
+                    <!-- Section 1: Delivery Channels -->
+                    <div class="profile-card">
+                        <div class="profile-card-header">
+                            <h3 class="profile-card-title">&#128227; Delivery Channels</h3>
+                            <span class="form-helper">Select where you receive personal administrator notifications</span>
+                        </div>
+
+                        <div class="notif-prefs-list">
+                            <div class="pref-row-card">
+                                <div class="pref-info">
+                                    <h4>&#128187; In-App Dashboard Notifications</h4>
+                                    <p>Display live alerts and bell notifications inside the Admin Portal.</p>
+                                </div>
+                                <label class="switch-wrapper">
+                                    <input type="checkbox" id="notifPrefInApp" checked>
+                                    <span class="switch-slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="pref-row-card">
+                                <div class="pref-info">
+                                    <h4>&#9993; Email Digest &amp; Instant Alerts</h4>
+                                    <p>Send notifications directly to your verified administrator email.</p>
+                                </div>
+                                <label class="switch-wrapper">
+                                    <input type="checkbox" id="notifPrefEmail" checked>
+                                    <span class="switch-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 2: Platform Event Categories -->
+                    <div class="profile-card">
+                        <div class="profile-card-header">
+                            <h3 class="profile-card-title">&#9881; Platform Event Triggers</h3>
+                            <span class="form-helper">Customize triggers that send you notifications</span>
+                        </div>
+
+                        <div class="notif-prefs-list">
+                            <div class="pref-row-card">
+                                <div class="pref-info">
+                                    <h4>Assessment Updates</h4>
+                                    <p>Alerts when exams or coding assessments are created, published, or concluded.</p>
+                                </div>
+                                <label class="switch-wrapper">
+                                    <input type="checkbox" id="notifPrefAssessment" checked>
+                                    <span class="switch-slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="pref-row-card">
+                                <div class="pref-info">
+                                    <h4>Candidate Activity</h4>
+                                    <p>Notifications when candidates enroll, start assessments, or accept exam invites.</p>
+                                </div>
+                                <label class="switch-wrapper">
+                                    <input type="checkbox" id="notifPrefCandidate" checked>
+                                    <span class="switch-slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="pref-row-card">
+                                <div class="pref-info">
+                                    <h4>Coding Submissions</h4>
+                                    <p>Alerts when candidates submit code solutions requiring automated or manual review.</p>
+                                </div>
+                                <label class="switch-wrapper">
+                                    <input type="checkbox" id="notifPrefSubmission" checked>
+                                    <span class="switch-slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="pref-row-card">
+                                <div class="pref-info">
+                                    <h4>Result Publication</h4>
+                                    <p>Alerts when final assessment scores and rankings are calculated and finalized.</p>
+                                </div>
+                                <label class="switch-wrapper">
+                                    <input type="checkbox" id="notifPrefResult" checked>
+                                    <span class="switch-slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="pref-row-card">
+                                <div class="pref-info">
+                                    <h4>Machine Learning Code Analysis</h4>
+                                    <p>Telemetry alerts when ML evaluation completes algorithmic and complexity scoring.</p>
+                                </div>
+                                <label class="switch-wrapper">
+                                    <input type="checkbox" id="notifPrefML" checked>
+                                    <span class="switch-slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="pref-row-card">
+                                <div class="pref-info">
+                                    <h4>
+                                        Security &amp; Account Alerts
+                                        <span class="policy-badge">Required</span>
+                                    </h4>
+                                    <p>Critical security events, unusual login locations, and credential modifications.</p>
+                                </div>
+                                <label class="switch-wrapper">
+                                    <input type="checkbox" id="notifPrefSecurity" checked disabled>
+                                    <span class="switch-slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="pref-row-card">
+                                <div class="pref-info">
+                                    <h4>System &amp; Sandbox Infrastructure Announcements</h4>
+                                    <p>Scheduled sandbox maintenance windows and platform service status alerts.</p>
+                                </div>
+                                <label class="switch-wrapper">
+                                    <input type="checkbox" id="notifPrefSystem" checked>
+                                    <span class="switch-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end; gap: 12px;">
+                        <button type="submit" class="btn-primary-notif">Save Notification Preferences</button>
+                    </div>
+
+                </form>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/config.js"></script>
+    <script src="/js/admin-notification-settings.js"></script>
+</body>
+</html>

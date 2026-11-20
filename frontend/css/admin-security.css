@@ -1,0 +1,167 @@
+/**
+ * BugBash - Admin Security Settings CSS
+ * Password change complexity validation, active device sessions table,
+ * and security audit feed styling.
+ */
+
+/* Password Input With Show/Hide Icon */
+.password-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-input-wrapper .form-input {
+    padding-right: 42px;
+}
+
+.password-toggle-btn {
+    position: absolute;
+    right: 10px;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    transition: color 0.2s ease;
+}
+
+.password-toggle-btn:hover {
+    color: var(--prof-primary);
+}
+
+/* Password Strength Indicator */
+.strength-meter-container {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.strength-meter-bar {
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    display: flex;
+}
+
+.strength-segment {
+    height: 100%;
+    width: 0%;
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.strength-text {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    display: flex;
+    justify-content: space-between;
+}
+
+.password-rules-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-top: 8px;
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+.rule-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.rule-item.valid {
+    color: var(--prof-success);
+}
+
+.rule-item.valid svg {
+    color: var(--prof-success);
+}
+
+/* Active Device Sessions List */
+.sessions-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.session-card-item {
+    border: 1px solid var(--prof-border);
+    border-radius: 10px;
+    padding: 16px;
+    background: var(--bg-surface, rgba(255, 255, 255, 0.02));
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.session-info-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.session-device-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: var(--prof-primary-subtle);
+    color: var(--prof-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.session-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 2px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.session-current-tag {
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    background: var(--prof-success-subtle);
+    color: var(--prof-success);
+}
+
+.session-meta {
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+/* Security Activity Feed */
+.security-feed-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.feed-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 14px;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--prof-border);
+    font-size: 12px;
+}

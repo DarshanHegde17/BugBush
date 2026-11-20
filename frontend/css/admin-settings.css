@@ -1,0 +1,77 @@
+/**
+ * BugBash - Admin Preferences & Regional Settings CSS
+ * Modern styling for Theme selector, regional controls, and dashboard view defaults.
+ */
+
+.theme-options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-top: 8px;
+}
+
+.theme-option-card {
+    position: relative;
+    border: 2px solid var(--prof-border);
+    border-radius: 12px;
+    padding: 16px;
+    background: var(--bg-surface, rgba(255, 255, 255, 0.02));
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+}
+
+.theme-option-card input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.theme-option-card.active, .theme-option-card:has(input[type="radio"]:checked) {
+    border-color: var(--prof-primary);
+    background: var(--prof-primary-subtle);
+}
+
+.theme-preview-box {
+    width: 100%;
+    height: 70px;
+    border-radius: 8px;
+    border: 1px solid var(--prof-border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.theme-preview-box.dark {
+    background: #0f1218;
+}
+
+.theme-preview-box.dark .preview-bar {
+    height: 14px;
+    background: #181d28;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.theme-preview-box.light {
+    background: #f8fafc;
+}
+
+.theme-preview-box.light .preview-bar {
+    height: 14px;
+    background: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.theme-preview-box.system {
+    background: linear-gradient(135deg, #0f1218 50%, #f8fafc 50%);
+}
+
+.theme-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+}

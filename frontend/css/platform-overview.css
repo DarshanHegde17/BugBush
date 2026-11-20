@@ -1,0 +1,148 @@
+/* ==========================================================================
+   BugBash - Super Admin Platform Overview Stylesheet
+   Infrastructure node diagnostics, queue telemetry & cluster health
+   ========================================================================== */
+
+@import url('super-admin-dashboard.css');
+
+.sa-platform-container {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+
+.sa-infra-header-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.sa-infra-summary-group {
+    display: flex;
+    gap: 28px;
+    flex-wrap: wrap;
+}
+
+.sa-infra-stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sa-infra-stat-label {
+    font-size: 0.775rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.sa-infra-stat-val {
+    font-size: 1.5rem;
+    font-weight: 800;
+    font-family: var(--font-mono);
+    color: var(--text-primary);
+}
+
+.sa-nodes-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.sa-node-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.sa-node-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sa-node-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sa-node-metrics-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    background: var(--surface-color);
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.sa-node-metric-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.sa-node-metric-cell .label {
+    font-size: 0.725rem;
+    color: var(--text-muted);
+}
+
+.sa-node-metric-cell .val {
+    font-size: 0.95rem;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    color: var(--text-primary);
+}
+
+.sa-incident-feed {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.sa-incident-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+.sa-incident-table th {
+    text-align: left;
+    padding: 10px 14px;
+    background: var(--surface-color);
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.sa-incident-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-secondary);
+}
+
+@media (max-width: 900px) {
+    .sa-nodes-grid {
+        grid-template-columns: 1fr;
+    }
+}

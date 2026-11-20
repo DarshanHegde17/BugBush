@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BugBash Admin &bull; Dashboard Preferences</title>
+    <meta name="description" content="Configure visual themes, language, timezone, date formats, and default views for the BugBash Admin Portal.">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff6b35'><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/css/admin-dashboard.css">
+    <link rel="stylesheet" href="/css/assessments.css">
+    <link rel="stylesheet" href="/css/admin-profile.css">
+    <link rel="stylesheet" href="/css/admin-settings.css">
+</head>
+<body id="adminSettingsPage">
+    <div class="app-container">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="admin-sidebar" id="adminSidebar">
+            <div class="sidebar-header">
+                <a href="/admin/dashboard" class="brand-wrapper">
+                    <div class="brand-logo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <div class="brand-text">
+                        <span>BugBash</span>
+                        <span class="admin-tag">ADMIN</span>
+                    </div>
+                </a>
+            </div>
+
+            <ul class="sidebar-menu">
+                <li class="menu-category">Operations</li>
+                <li class="nav-item">
+                    <a href="/admin/dashboard" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+                        <span class="nav-text">Overview</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/questions" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                        <span class="nav-text">Question Bank</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/assessments" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                        <span class="nav-text">Assessments</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/candidates" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+                        <span class="nav-text">Students &amp; Candidates</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/submissions" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                        <span class="nav-text">Submissions</span>
+                    </a>
+                </li>
+                <li class="menu-category">Intelligence</li>
+                <li class="nav-item">
+                    <a href="/admin/results" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                        <span class="nav-text">Results &amp; Analytics</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/ml-insights" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                        <span class="nav-text">ML Insights</span>
+                    </a>
+                </li>
+                <li class="menu-category">Communications</li>
+                <li class="nav-item">
+                    <a href="/admin/notifications" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                        <span class="nav-text">Notifications</span>
+                    </a>
+                </li>
+                <li class="menu-category">System</li>
+                <li class="nav-item">
+                    <a href="/admin/profile" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        <span class="nav-text">My Profile</span>
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a href="/admin/settings" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                        <span class="nav-text">Settings</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <button type="button" class="btn-logout" onclick="localStorage.removeItem('bugbash_admin_token'); window.location.href='/admin/login';">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    <span class="nav-text">Log Out</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Wrapper -->
+        <div class="main-wrapper">
+            <header class="admin-topbar">
+                <div class="topbar-left">
+                    <span class="page-title-badge">Preferences &amp; Display Configuration</span>
+                </div>
+                <div class="topbar-right">
+                    <button type="button" class="topbar-btn" id="themeToggleBtn" aria-label="Toggle Theme" onclick="document.documentElement.setAttribute('data-theme', document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line></svg>
+                    </button>
+                    <div class="admin-user-pill">
+                        <div class="user-avatar-mini">A</div>
+                        <span class="user-name">Admin</span>
+                    </div>
+                </div>
+            </header>
+
+            <main class="admin-main-content">
+                
+                <!-- Settings Header & Navigation Bar -->
+                <div class="notif-header">
+                    <div class="notif-header-title">
+                        <h1>Dashboard Preferences</h1>
+                        <p>Customize portal theme, interface language, timezone, date presentation, and navigation defaults.</p>
+                    </div>
+                    <div class="profile-nav-tabs">
+                        <a href="/admin/profile" class="profile-nav-link">&#128100; Profile</a>
+                        <a href="/admin/security-settings" class="profile-nav-link">&#128274; Security &amp; Sessions</a>
+                        <a href="/admin/notification-settings" class="profile-nav-link">&#128227; Notifications</a>
+                    </div>
+                </div>
+
+                <form id="adminSettingsForm" style="display: flex; flex-direction: column; gap: 24px;">
+                    
+                    <!-- Section 1: Visual Theme -->
+                    <div class="profile-card">
+                        <div class="profile-card-header">
+                            <h3 class="profile-card-title">&#127912; Appearance Theme</h3>
+                            <span class="form-helper">Select your preferred color mode</span>
+                        </div>
+
+                        <div class="theme-options-grid">
+                            <label class="theme-option-card">
+                                <input type="radio" name="prefTheme" value="dark">
+                                <div class="theme-preview-box dark">
+                                    <div class="preview-bar"></div>
+                                </div>
+                                <span class="theme-title">Dark Theme</span>
+                            </label>
+
+                            <label class="theme-option-card">
+                                <input type="radio" name="prefTheme" value="light">
+                                <div class="theme-preview-box light">
+                                    <div class="preview-bar"></div>
+                                </div>
+                                <span class="theme-title">Light Theme</span>
+                            </label>
+
+                            <label class="theme-option-card">
+                                <input type="radio" name="prefTheme" value="system">
+                                <div class="theme-preview-box system">
+                                    <div class="preview-bar"></div>
+                                </div>
+                                <span class="theme-title">Sync With System</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Section 2: Regional & Timezone -->
+                    <div class="profile-card">
+                        <div class="profile-card-header">
+                            <h3 class="profile-card-title">&#127760; Regional &amp; Localization</h3>
+                            <span class="form-helper">Configure timezones and formatting conventions</span>
+                        </div>
+
+                        <div class="form-grid-2col">
+                            <div class="form-group">
+                                <label class="form-label" for="prefLanguage">Dashboard Language</label>
+                                <select id="prefLanguage" class="form-select">
+                                    <option value="en">English (United States)</option>
+                                    <option value="es">Español (Spanish)</option>
+                                    <option value="fr">Français (French)</option>
+                                    <option value="de">Deutsch (German)</option>
+                                    <option value="hi">हिन्दी (Hindi)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="prefTimezone">Timezone</label>
+                                <select id="prefTimezone" class="form-select">
+                                    <option value="UTC">UTC (Coordinated Universal Time)</option>
+                                    <option value="America/New_York">Eastern Time (US &amp; Canada)</option>
+                                    <option value="America/Chicago">Central Time (US &amp; Canada)</option>
+                                    <option value="America/Los_Angeles">Pacific Time (US &amp; Canada)</option>
+                                    <option value="Europe/London">London (GMT/BST)</option>
+                                    <option value="Asia/Kolkata">India Standard Time (IST)</option>
+                                    <option value="Asia/Tokyo">Tokyo (JST)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="prefDateFormat">Date Format</label>
+                                <select id="prefDateFormat" class="form-select">
+                                    <option value="MMM DD, YYYY">MMM DD, YYYY (e.g. Nov 20, 2026)</option>
+                                    <option value="YYYY-MM-DD">YYYY-MM-DD (e.g. 2026-11-20)</option>
+                                    <option value="MM/DD/YYYY">MM/DD/YYYY (e.g. 11/20/2026)</option>
+                                    <option value="DD/MM/YYYY">DD/MM/YYYY (e.g. 20/11/2026)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="prefPageSize">Default Table Page Size</label>
+                                <select id="prefPageSize" class="form-select">
+                                    <option value="10">10 rows per page</option>
+                                    <option value="20" selected>20 rows per page</option>
+                                    <option value="50">50 rows per page</option>
+                                    <option value="100">100 rows per page</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="prefDefaultView">Default Landing View</label>
+                            <select id="prefDefaultView" class="form-select">
+                                <option value="overview">Executive Overview Dashboard</option>
+                                <option value="assessments">Assessment Management</option>
+                                <option value="submissions">Submissions Live Stream</option>
+                                <option value="results">Results &amp; Analytics Directory</option>
+                                <option value="ml-insights">ML Insights Telemetry</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end; gap: 12px;">
+                        <button type="submit" class="btn-primary-notif">Save Preferences</button>
+                    </div>
+
+                </form>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/config.js"></script>
+    <script src="/js/admin-settings.js"></script>
+</body>
+</html>

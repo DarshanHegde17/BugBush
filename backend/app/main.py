@@ -11,6 +11,11 @@ from fastapi.staticfiles import StaticFiles
 
 from backend.app.routers.auth import router as auth_router
 from backend.app.routers.admin_auth import router as admin_auth_router
+from backend.app.routers.super_admin_auth import router as super_admin_auth_router
+from backend.app.routers.super_admin_dashboard import (
+    dashboard_router as super_admin_dashboard_router,
+    platform_router as super_admin_platform_router
+)
 from backend.app.routers.admin_dashboard import router as admin_dashboard_router
 from backend.app.routers.admin_assessments import router as admin_assessments_router
 from backend.app.routers.admin_candidates import router as admin_candidates_router, groups_router as admin_groups_router
@@ -18,6 +23,12 @@ from backend.app.routers.admin_submissions import router as admin_submissions_ro
 from backend.app.routers.admin_results import router as admin_results_router
 from backend.app.routers.admin_ml_insights import router as admin_ml_insights_router
 from backend.app.routers.admin_notifications import router as admin_notifications_router, templates_router as admin_templates_router
+from backend.app.routers.admin_profile import (
+    router as admin_profile_router,
+    security_router as admin_security_router,
+    preferences_router as admin_preferences_router,
+    notification_prefs_router as admin_notification_prefs_router
+)
 from backend.app.routers.users import router as users_router, assessments_router
 from backend.app.routers.practice import router as practice_router
 from backend.app.routers.exam import (
@@ -44,6 +55,9 @@ app.add_middleware(
 # Include API Routers
 app.include_router(auth_router, prefix="/api/v1/auth", tags=["Authentication"])
 app.include_router(admin_auth_router, prefix="/api/v1/admin/auth", tags=["Admin Authentication"])
+app.include_router(super_admin_auth_router, prefix="/api/v1/super-admin/auth", tags=["Super Admin Authentication"])
+app.include_router(super_admin_dashboard_router, prefix="/api/v1/super-admin/dashboard", tags=["Super Admin Dashboard"])
+app.include_router(super_admin_platform_router, prefix="/api/v1/super-admin/platform", tags=["Super Admin Platform"])
 app.include_router(admin_dashboard_router, prefix="/api/v1/admin", tags=["Admin Dashboard"])
 app.include_router(admin_assessments_router, prefix="/api/v1/admin/assessments", tags=["Admin Assessment Management"])
 app.include_router(admin_candidates_router, prefix="/api/v1/admin/candidates", tags=["Admin Candidates Management"])
@@ -53,6 +67,10 @@ app.include_router(admin_results_router, prefix="/api/v1/admin/results", tags=["
 app.include_router(admin_ml_insights_router, prefix="/api/v1/admin/ml-insights", tags=["Admin ML Insights"])
 app.include_router(admin_notifications_router, prefix="/api/v1/admin/notifications", tags=["Admin Notifications Management"])
 app.include_router(admin_templates_router, prefix="/api/v1/admin/notification-templates", tags=["Admin Notification Templates"])
+app.include_router(admin_profile_router, prefix="/api/v1/admin/profile", tags=["Admin Profile"])
+app.include_router(admin_security_router, prefix="/api/v1/admin/security", tags=["Admin Security"])
+app.include_router(admin_preferences_router, prefix="/api/v1/admin/preferences", tags=["Admin Preferences"])
+app.include_router(admin_notification_prefs_router, prefix="/api/v1/admin/notification-preferences", tags=["Admin Notification Preferences"])
 app.include_router(users_router, prefix="/api/v1/users", tags=["Users & Dashboard"])
 app.include_router(assessments_router, prefix="/api/v1/assessments", tags=["Assessments Execution"])
 app.include_router(practice_router, prefix="/api/v1/practice", tags=["Practice Coding"])
@@ -152,6 +170,53 @@ def serve_admin_page(page: str):
         return FileResponse(target)
     # Default fallback to dashboard if file not found
     return FileResponse(os.path.join(frontend_dir, "admin", "dashboard.html"))
+
+
+# Super Admin HTML Clean URL Handlers
+@app.get("/super-admin/login", include_in_schema=False)
+def serve_super_admin_login():
+    return FileResponse(os.path.join(frontend_dir, "super-admin", "login.html"))
+
+@app.get("/super-admin/dashboard", include_in_schema=False)
+def serve_super_admin_dashboard():
+    target = os.path.join(frontend_dir, "super-admin", "dashboard.html")
+    if os.path.exists(target):
+        return FileResponse(target)
+    return FileResponse(os.path.join(frontend_dir, "super-admin", "login.html"))
+
+@app.get("/super-admin/platform-overview", include_in_schema=False)
+def serve_super_admin_platform_overview():
+    target = os.path.join(frontend_dir, "super-admin", "platform-overview.html")
+    if os.path.exists(target):
+        return FileResponse(target)
+    return FileResponse(os.path.join(frontend_dir, "super-admin", "dashboard.html"))
+
+@app.get("/super-admin/system-activity", include_in_schema=False)
+def serve_super_admin_system_activity():
+    target = os.path.join(frontend_dir, "super-admin", "system-activity.html")
+    if os.path.exists(target):
+        return FileResponse(target)
+    return FileResponse(os.path.join(frontend_dir, "super-admin", "dashboard.html"))
+
+@app.get("/super-admin/forgot-password", include_in_schema=False)
+def serve_super_admin_forgot_password():
+    return FileResponse(os.path.join(frontend_dir, "super-admin", "forgot-password.html"))
+
+@app.get("/super-admin/verify-otp", include_in_schema=False)
+def serve_super_admin_verify_otp():
+    return FileResponse(os.path.join(frontend_dir, "super-admin", "verify-otp.html"))
+
+@app.get("/super-admin/reset-password", include_in_schema=False)
+def serve_super_admin_reset_password():
+    return FileResponse(os.path.join(frontend_dir, "super-admin", "reset-password.html"))
+
+@app.get("/super-admin/{page}", include_in_schema=False)
+def serve_super_admin_page(page: str):
+    filename = page if page.endswith(".html") else f"{page}.html"
+    target = os.path.join(frontend_dir, "super-admin", filename)
+    if os.path.exists(target):
+        return FileResponse(target)
+    return FileResponse(os.path.join(frontend_dir, "super-admin", "login.html"))
 
 
 # Mount frontend static files

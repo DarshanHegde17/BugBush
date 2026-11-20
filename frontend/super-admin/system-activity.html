@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BugBash Super Admin - System Activity Stream & Platform Event Audit.">
+    <title>System Activity Stream | BugBash Control Center</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../assets/icons/favicon.png">
+    <link rel="shortcut icon" href="../assets/icons/favicon.ico">
+
+    <!-- Early Theme Initialization -->
+    <script src="../js/theme.js"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../css/system-activity.css?v=2.3">
+</head>
+<body>
+
+    <div class="sa-app-layout">
+        
+        <!-- Super Admin Sidebar -->
+        <aside class="sa-sidebar" id="saSidebar">
+            <div class="sa-sidebar-header">
+                <a href="/super-admin/dashboard" class="sa-brand">
+                    <img src="../assets/images/bugbash-logo.png?v=1.1" alt="BugBash" height="34" width="70" style="height: 34px !important; width: auto !important; object-fit: contain;">
+                    <span class="sa-brand-badge-pill">SUPER ADMIN</span>
+                </a>
+            </div>
+
+            <nav class="sa-sidebar-scroll">
+                <div class="sa-menu-group">
+                    <span class="sa-menu-title">Core Operations</span>
+                    <a href="/super-admin/dashboard" class="sa-nav-item">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg></span>
+                        <span>Overview</span>
+                    </a>
+                    <a href="/super-admin/admins" class="sa-nav-item">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg></span>
+                        <span>Admin Management</span>
+                    </a>
+                    <a href="/super-admin/users" class="sa-nav-item">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></span>
+                        <span>User Management</span>
+                    </a>
+                </div>
+
+                <div class="sa-menu-group">
+                    <span class="sa-menu-title">System &amp; Governance</span>
+                    <a href="/super-admin/audit-logs" class="sa-nav-item">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg></span>
+                        <span>Audit Logs</span>
+                    </a>
+                    <a href="/super-admin/system-activity" class="sa-nav-item active">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></span>
+                        <span>System Activity</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="sa-main-wrap">
+            <header class="sa-topbar">
+                <div class="sa-topbar-left">
+                    <a href="/super-admin/dashboard" class="sa-forgot-link" style="display:flex; align-items:center; gap:6px;">
+                        &larr; Return to Dashboard
+                    </a>
+                </div>
+            </header>
+
+            <main class="sa-content-body">
+                
+                <div class="sa-page-header">
+                    <div class="sa-page-title">
+                        <h1>System Activity Stream</h1>
+                        <p>Complete historical activity records, administrative operations, and security alerts.</p>
+                    </div>
+                </div>
+
+                <div class="sa-activity-page-layout">
+                    
+                    <!-- Search & Filter Toolbar -->
+                    <div class="sa-activity-toolbar">
+                        <div class="sa-search-box">
+                            <span class="sa-search-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                </svg>
+                            </span>
+                            <input type="text" class="sa-search-input" id="activitySearchInput" placeholder="Filter by actor, action or detail...">
+                        </div>
+
+                        <div class="sa-activity-filters">
+                            <button type="button" class="sa-act-filter-pill sa-cat-pill active" data-category="all">All</button>
+                            <button type="button" class="sa-act-filter-pill sa-cat-pill" data-category="security">Security</button>
+                            <button type="button" class="sa-act-filter-pill sa-cat-pill" data-category="admin">Admin</button>
+                            <button type="button" class="sa-act-filter-pill sa-cat-pill" data-category="users">Users</button>
+                            <button type="button" class="sa-act-filter-pill sa-cat-pill" data-category="assessments">Assessments</button>
+                            <button type="button" class="sa-act-filter-pill sa-cat-pill" data-category="submissions">Submissions</button>
+                        </div>
+                    </div>
+
+                    <!-- Full Activity Table -->
+                    <div class="sa-activity-table-card">
+                        <table class="sa-act-full-table">
+                            <thead>
+                                <tr>
+                                    <th>Event Description</th>
+                                    <th>Actor / Identity</th>
+                                    <th>Category</th>
+                                    <th>Operation Details</th>
+                                    <th>Timestamp</th>
+                                </tr>
+                            </thead>
+                            <tbody id="activityTableBody">
+                                <!-- Populated via system-activity.js -->
+                            </tbody>
+                        </table>
+
+                        <div class="sa-pagination-bar">
+                            <span id="totalRecordsText">Loading records...</span>
+                            <div class="sa-page-nav-btns">
+                                <button type="button" class="sa-page-btn" id="prevPageBtn" disabled>&larr; Previous</button>
+                                <span id="currentPageNumber" style="display:flex; align-items:center; padding:0 8px; font-weight:600;">Page 1</span>
+                                <button type="button" class="sa-page-btn" id="nextPageBtn">Next &rarr;</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </main>
+        </div>
+
+    </div>
+
+    <!-- Configuration & Scripts -->
+    <script src="../js/config.js"></script>
+    <script src="../js/system-activity.js"></script>
+</body>
+</html>

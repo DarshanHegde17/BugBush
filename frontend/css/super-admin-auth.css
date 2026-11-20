@@ -1,0 +1,255 @@
+/* ==========================================================================
+   BugBash - Super Admin Auth Stylesheet
+   Used by: forgot-password.html, verify-otp.html, reset-password.html
+   Includes: OTP 6-box layout, Password strength meter & validation checklist
+   ========================================================================== */
+
+@import url('super-admin-login.css');
+
+/* ==========================================================================
+   OTP Digit Input Grid
+   ========================================================================== */
+.sa-otp-grid {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 20px 0 10px;
+}
+
+.sa-otp-input {
+    width: 52px;
+    height: 60px;
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    color: var(--text-primary);
+    background-color: var(--input-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    outline: none;
+    transition: all 0.18s ease;
+}
+
+.sa-otp-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px var(--primary-light);
+    transform: translateY(-2px);
+}
+
+.sa-otp-input.filled {
+    border-color: var(--primary-color);
+    background: rgba(255, 107, 53, 0.05);
+}
+
+.sa-otp-input.is-invalid {
+    border-color: var(--error);
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+}
+
+/* OTP Resend Timer Section */
+.sa-resend-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 12px 0 20px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.sa-resend-btn {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 4px;
+    transition: color 0.15s ease;
+}
+
+.sa-resend-btn:disabled {
+    color: var(--text-muted);
+    cursor: not-allowed;
+    text-decoration: none;
+}
+
+.sa-resend-btn:not(:disabled):hover {
+    color: var(--primary-hover);
+    text-decoration: underline;
+}
+
+/* Masked Email Badge */
+.sa-masked-email-card {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.sa-masked-email-card .icon {
+    color: var(--primary-color);
+    display: flex;
+}
+
+.sa-masked-email-card .email-text {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* ==========================================================================
+   Password Strength Meter & Complexity Checklist
+   ========================================================================== */
+.sa-pw-strength-wrap {
+    margin-top: 6px;
+}
+
+.sa-pw-meter-bar {
+    width: 100%;
+    height: 6px;
+    background: var(--surface-color);
+    border-radius: 9999px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid var(--border-color);
+}
+
+.sa-pw-meter-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 9999px;
+    transition: width 0.25s ease, background-color 0.25s ease;
+}
+
+.sa-pw-meter-fill.weak {
+    width: 25%;
+    background-color: var(--error);
+}
+
+.sa-pw-meter-fill.medium {
+    width: 60%;
+    background-color: var(--warning);
+}
+
+.sa-pw-meter-fill.strong {
+    width: 100%;
+    background-color: var(--success);
+}
+
+.sa-pw-strength-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.775rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+.sa-checklist {
+    list-style: none;
+    margin: 12px 0 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.sa-checklist-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    transition: color 0.15s ease;
+}
+
+.sa-checklist-item.valid {
+    color: var(--success);
+}
+
+.sa-checklist-item .status-icon {
+    width: 14px;
+    height: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1.5px solid currentColor;
+}
+
+.sa-checklist-item.valid .status-icon {
+    background-color: var(--success);
+    color: #ffffff;
+    border-color: var(--success);
+}
+
+/* ==========================================================================
+   Success State Card
+   ========================================================================== */
+.sa-success-card {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 30px 20px;
+    gap: 16px;
+}
+
+.sa-success-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(16, 185, 129, 0.15);
+    border: 2px solid var(--success);
+    color: var(--success);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+}
+
+.sa-success-card h3 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.sa-success-card p {
+    font-size: 0.925rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    max-width: 380px;
+}
+
+/* Dev helper banner */
+.sa-dev-banner {
+    display: none;
+    margin-top: 16px;
+    padding: 12px 14px;
+    background: rgba(139, 92, 246, 0.12);
+    border: 1px dashed rgba(139, 92, 246, 0.4);
+    border-radius: 8px;
+    font-size: 0.8rem;
+    color: #c4b5fd;
+    line-height: 1.4;
+}
+
+.sa-dev-banner code {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: #ffffff;
+}
+
+.sa-dev-banner a {
+    color: #fcd34d;
+    text-decoration: underline;
+    font-weight: 600;
+}

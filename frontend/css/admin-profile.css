@@ -1,0 +1,279 @@
+/**
+ * BugBash - Enterprise Admin Profile CSS
+ * Modern, responsive, dark/light theme compatible styling for the Administrator Profile page.
+ */
+
+:root {
+    --prof-primary: #ff6b35;
+    --prof-primary-hover: #e0531f;
+    --prof-primary-subtle: rgba(255, 107, 53, 0.12);
+    --prof-success: #10b981;
+    --prof-success-subtle: rgba(16, 185, 129, 0.12);
+    --prof-warning: #f59e0b;
+    --prof-danger: #ef4444;
+    --prof-info: #3b82f6;
+    --prof-info-subtle: rgba(59, 130, 246, 0.12);
+    --prof-bg-card: rgba(255, 255, 255, 0.03);
+    --prof-border: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="light"] {
+    --prof-bg-card: #ffffff;
+    --prof-border: #e2e8f0;
+    --prof-primary-subtle: rgba(255, 107, 53, 0.08);
+}
+
+/* ==============================================================================
+   1. Profile Hero & Avatar Banner
+   ============================================================================== */
+.profile-hero-card {
+    background: var(--prof-bg-card);
+    border: 1px solid var(--prof-border);
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    flex-wrap: wrap;
+    position: relative;
+    overflow: hidden;
+}
+
+.profile-hero-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #ff6b35, #ff8c5a, #3b82f6);
+}
+
+.profile-avatar-wrapper {
+    position: relative;
+    width: 104px;
+    height: 104px;
+    flex-shrink: 0;
+}
+
+.profile-avatar-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--prof-primary);
+    background: #181d28;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 38px;
+    font-weight: 800;
+    color: var(--prof-primary);
+}
+
+.profile-avatar-btn {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--prof-primary);
+    border: 2px solid var(--bg-surface, #11141c);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.profile-avatar-btn:hover {
+    background: var(--prof-primary-hover);
+    transform: scale(1.08);
+}
+
+.profile-hero-info {
+    flex: 1;
+    min-width: 240px;
+}
+
+.profile-hero-name {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 0 0 6px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.profile-hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.profile-pill {
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.profile-pill.role {
+    background: var(--prof-primary-subtle);
+    color: var(--prof-primary);
+    border: 1px solid rgba(255, 107, 53, 0.3);
+}
+
+.profile-pill.status {
+    background: var(--prof-success-subtle);
+    color: var(--prof-success);
+}
+
+.profile-hero-org {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.profile-nav-tabs {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.profile-nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.15);
+    border: 1px solid var(--prof-border);
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.profile-nav-link:hover {
+    border-color: var(--prof-primary);
+    color: var(--prof-primary);
+}
+
+/* ==============================================================================
+   2. Profile Details Grid & Form
+   ============================================================================== */
+.profile-content-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+}
+
+@media (max-width: 992px) {
+    .profile-content-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.profile-card {
+    background: var(--prof-bg-card);
+    border: 1px solid var(--prof-border);
+    border-radius: 14px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.profile-card-header {
+    border-bottom: 1px solid var(--prof-border);
+    padding-bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.profile-card-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.form-grid-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+@media (max-width: 600px) {
+    .form-grid-2col {
+        grid-template-columns: 1fr;
+    }
+}
+
+.read-only-badge {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.15);
+}
+
+/* Permissions & Roles Chips */
+.permissions-chips-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 6px;
+}
+
+.perm-chip {
+    padding: 4px 10px;
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--prof-border);
+    color: var(--text-secondary);
+}
+
+/* Toast & Confirmation Alerts */
+.profile-toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    padding: 14px 20px;
+    border-radius: 10px;
+    background: #1e293b;
+    border: 1px solid var(--prof-border);
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    display: none;
+    align-items: center;
+    gap: 10px;
+    z-index: 2000;
+}
+
+.profile-toast.active {
+    display: flex;
+}
+
+.profile-toast.success { border-color: var(--prof-success); }
+.profile-toast.error { border-color: var(--prof-danger); }

@@ -1,0 +1,241 @@
+/**
+ * BugBash - Admin Result Details & Scorecard CSS
+ * Styling for individual evaluation results, breakdown metrics, and question performance.
+ */
+
+:root {
+    --detail-primary: #ff6b35;
+    --detail-success: #10b981;
+    --detail-danger: #ef4444;
+    --detail-warning: #f59e0b;
+    --detail-card-bg: rgba(255, 255, 255, 0.03);
+    --detail-border: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="light"] {
+    --detail-card-bg: #ffffff;
+    --detail-border: #e2e8f0;
+}
+
+/* ==============================================================================
+   1. Scorecard Hero Banner
+   ============================================================================== */
+.scorecard-hero {
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.08) 0%, rgba(0, 0, 0, 0) 100%);
+    border: 1px solid var(--detail-border);
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.scorecard-candidate-info {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.scorecard-avatar-large {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(255, 107, 53, 0.2);
+    color: #ff6b35;
+    font-size: 24px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #ff6b35;
+}
+
+.scorecard-avatar-large img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.scorecard-title-meta h1 {
+    font-size: 22px;
+    font-weight: 800;
+    margin: 0 0 6px 0;
+    color: var(--text-primary);
+}
+
+.scorecard-subline {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.scorecard-subline span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Big Score Pill */
+.scorecard-score-pill {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: var(--detail-card-bg);
+    border: 1px solid var(--detail-border);
+    border-radius: 12px;
+    padding: 16px 24px;
+}
+
+.score-big-num {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+}
+
+.score-big-num .points {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text-primary);
+    line-height: 1;
+}
+
+.score-big-num .pct {
+    font-size: 13px;
+    color: #10b981;
+    font-weight: 700;
+    margin-top: 4px;
+}
+
+.score-grade-badge {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 800;
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+/* ==============================================================================
+   2. Evaluation Breakdown Panel
+   ============================================================================== */
+.breakdown-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.breakdown-item-card {
+    background: var(--detail-card-bg);
+    border: 1px solid var(--detail-border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.breakdown-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--text-secondary);
+    letter-spacing: 0.5px;
+}
+
+.breakdown-val {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* ==============================================================================
+   3. Feedback & Remarks Box
+   ============================================================================== */
+.feedback-box {
+    background: var(--detail-card-bg);
+    border: 1px solid var(--detail-border);
+    border-left: 4px solid var(--detail-primary);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+}
+
+.feedback-box h3 {
+    font-size: 14px;
+    font-weight: 700;
+    margin: 0 0 6px 0;
+    color: var(--detail-primary);
+}
+
+.feedback-box p {
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 0;
+    color: var(--text-primary);
+}
+
+/* ==============================================================================
+   4. Question-by-Question Performance Table
+   ============================================================================== */
+.questions-card {
+    background: var(--detail-card-bg);
+    border: 1px solid var(--detail-border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 24px;
+}
+
+.card-title-bar {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--detail-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-title-bar h2 {
+    font-size: 15px;
+    font-weight: 700;
+    margin: 0;
+    color: var(--text-primary);
+}
+
+.question-row-badge {
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.question-row-badge.easy { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+.question-row-badge.medium { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+.question-row-badge.hard { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+
+.test-case-ratio {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+}
+
+.test-case-ratio .passed { color: #10b981; }
+.test-case-ratio .failed { color: #ef4444; }

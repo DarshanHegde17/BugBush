@@ -119,7 +119,10 @@ async def create_assessment(
     current_admin: dict = Depends(get_current_admin)
 ):
     try:
-        created = admin_assessment_service.create_assessment(payload.dict(), current_admin)
+        created = admin_assessment_service.create_assessment(
+            payload.model_dump() if hasattr(payload, "model_dump") else payload.dict(),
+            current_admin
+        )
         return {
             "status": "success",
             "message": f"Assessment '{created.get('title')}' created successfully in Draft mode.",
@@ -166,9 +169,10 @@ async def update_assessment(
     current_admin: dict = Depends(get_current_admin)
 ):
     try:
+        payload_data = payload.model_dump(exclude_unset=True) if hasattr(payload, "model_dump") else payload.dict(exclude_unset=True)
         updated = admin_assessment_service.update_assessment(
             assessment_id=assessment_id,
-            payload=payload.dict(exclude_unset=True),
+            payload=payload_data,
             admin_user=current_admin
         )
         return {

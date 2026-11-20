@@ -62,6 +62,9 @@
             ADMIN_CANDIDATES_INVITATIONS: '/admin/candidates/invitations',
             ADMIN_SUBMISSIONS: '/admin/submissions',
             ADMIN_SUBMISSIONS_STATS: '/admin/submissions/statistics',
+            ADMIN_RESULTS: '/admin/results',
+            ADMIN_RESULTS_STATS: '/admin/results/statistics',
+            ADMIN_RESULTS_EXPORT: '/admin/results/export',
             PRACTICE_PROBLEMS: '/practice/problems'
         },
 

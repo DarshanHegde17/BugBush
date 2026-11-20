@@ -1,0 +1,410 @@
+/* ==============================================================================
+   BugBash - Enterprise Admin Submission Details Stylesheet
+   ============================================================================== */
+
+.submission-details-header {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
+    padding: 1.75rem;
+    margin-bottom: 1.75rem;
+    box-shadow: var(--shadow-card);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+}
+
+.sub-header-left {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.sub-header-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--bg-surface-elevated);
+    border: 2px solid var(--primary-orange);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.35rem;
+    color: var(--primary-orange);
+    flex-shrink: 0;
+}
+
+.sub-header-info h2 {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 0 0 0.35rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.sub-id-badge {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 600;
+    background: var(--primary-orange-light);
+    color: var(--primary-orange);
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-sm);
+}
+
+.sub-meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.sub-meta-row span {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.sub-header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.score-display-card {
+    text-align: right;
+    padding-right: 1rem;
+    border-right: 1px solid var(--border-subtle);
+}
+
+.score-display-card .score-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.score-display-card .score-num {
+    font-size: 1.85rem;
+    font-weight: 800;
+    font-family: var(--font-mono);
+    color: var(--primary-orange);
+    line-height: 1.1;
+}
+
+.sub-header-actions {
+    display: flex;
+    gap: 0.6rem;
+}
+
+.btn-header-action {
+    padding: 0.6rem 1.15rem;
+    border-radius: var(--radius-md);
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    transition: all var(--transition-fast);
+}
+
+.btn-header-action.primary {
+    background: var(--primary-orange);
+    border: 1px solid var(--primary-orange);
+    color: #ffffff;
+}
+
+.btn-header-action.primary:hover {
+    background: var(--primary-orange-hover);
+    box-shadow: 0 0 15px var(--primary-orange-glow);
+}
+
+.btn-header-action.secondary {
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+}
+
+.btn-header-action.secondary:hover {
+    border-color: var(--border-focus);
+    color: var(--primary-orange);
+}
+
+/* ------------------------------------------------------------------------------
+   Execution Telemetry Grid (4 Cards)
+   ------------------------------------------------------------------------------ */
+.execution-telemetry-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.75rem;
+}
+
+.telemetry-mini-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.25rem;
+    box-shadow: var(--shadow-card);
+}
+
+.telemetry-mini-card .t-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 0.35rem;
+}
+
+.telemetry-mini-card .t-val {
+    font-size: 1.35rem;
+    font-weight: 800;
+    font-family: var(--font-mono);
+    color: var(--text-primary);
+}
+
+/* ------------------------------------------------------------------------------
+   Main Layout: 2 Columns (Content & Sidebar)
+   ------------------------------------------------------------------------------ */
+.sub-details-grid {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 1.75rem;
+}
+
+@media (max-width: 1024px) {
+    .sub-details-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.sub-card-panel {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-card);
+    margin-bottom: 1.75rem;
+    overflow: hidden;
+}
+
+.sub-panel-header {
+    padding: 1.25rem 1.5rem;
+    background: var(--bg-surface-elevated);
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.sub-panel-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 0;
+}
+
+.sub-panel-body {
+    padding: 1.5rem;
+}
+
+/* ------------------------------------------------------------------------------
+   Test Case Results Table (Safe Display)
+   ------------------------------------------------------------------------------ */
+.security-callout-box {
+    background: rgba(59, 130, 246, 0.08);
+    border: 1px solid rgba(59, 130, 246, 0.25);
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1rem;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.82rem;
+    color: #93c5fd;
+}
+
+.test-cases-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+.test-cases-table th {
+    padding: 0.75rem 1rem;
+    background: var(--bg-surface-elevated);
+    color: var(--text-muted);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.test-cases-table td {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--border-subtle);
+    vertical-align: middle;
+}
+
+.badge-visibility {
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.badge-visibility.public {
+    background: rgba(16, 185, 129, 0.12);
+    color: #34d399;
+}
+
+.badge-visibility.hidden {
+    background: rgba(156, 163, 175, 0.15);
+    color: #9ca3af;
+}
+
+/* ------------------------------------------------------------------------------
+   ML Pipeline Visualizer (8 Stages)
+   ------------------------------------------------------------------------------ */
+.ml-pipeline-stepper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    position: relative;
+    padding-left: 1rem;
+}
+
+.ml-pipeline-stepper::before {
+    content: "";
+    position: absolute;
+    left: 23px;
+    top: 12px;
+    bottom: 12px;
+    width: 2px;
+    background: var(--border-subtle);
+}
+
+.ml-step-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    position: relative;
+}
+
+.ml-step-circle {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--bg-surface-elevated);
+    border: 2px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--text-muted);
+    z-index: 1;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.ml-step-item.completed .ml-step-circle {
+    background: var(--success-green);
+    border-color: var(--success-green);
+    color: #ffffff;
+}
+
+.ml-step-item.in_progress .ml-step-circle {
+    background: var(--warning-yellow);
+    border-color: var(--warning-yellow);
+    color: #000000;
+    animation: pulse 1.5s infinite;
+}
+
+.ml-step-item.failed .ml-step-circle {
+    background: var(--danger-red);
+    border-color: var(--danger-red);
+    color: #ffffff;
+}
+
+.ml-step-content {
+    flex: 1;
+}
+
+.ml-step-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.ml-step-details {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 0.15rem;
+}
+
+/* Algorithmic Analysis Card */
+.ml-metric-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid var(--border-subtle);
+    font-size: 0.85rem;
+}
+
+.ml-metric-row:last-child {
+    border-bottom: none;
+}
+
+.ml-metric-label {
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.ml-metric-value {
+    color: var(--text-primary);
+    font-weight: 700;
+    font-family: var(--font-mono);
+}
+
+.concept-chips-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+}
+
+.concept-chip {
+    padding: 0.2rem 0.6rem;
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.ai-feedback-quote {
+    margin-top: 1rem;
+    background: rgba(255, 107, 53, 0.08);
+    border-left: 3px solid var(--primary-orange);
+    padding: 0.85rem 1rem;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    line-height: 1.5;
+}

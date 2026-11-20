@@ -457,11 +457,30 @@ class AdminCandidateService:
             })
 
         # Sort activity chronologically descending
+        def _get_ts_sort_key(item):
+            ts = item.get("timestamp")
+            if not ts:
+                return ""
+            if isinstance(ts, datetime):
+                return ts.isoformat()
+            return str(ts)
+
         activity_items = sorted(
             activity_items,
-            key=lambda x: x.get("timestamp") or datetime.min.replace(tzinfo=timezone.utc),
+            key=_get_ts_sort_key,
             reverse=True
         )
+
+        # Clean recent results to ensure all ObjectIds are converted to strings
+        clean_recent_results = []
+        for r in all_results[:5]:
+            r_copy = {}
+            for k, v in r.items():
+                if type(v).__name__ == "ObjectId":
+                    r_copy[k] = str(v)
+                else:
+                    r_copy[k] = v
+            clean_recent_results.append(r_copy)
 
         return {
             "id": uid,
@@ -496,7 +515,7 @@ class AdminCandidateService:
                 "completion_rate": completion_rate,
                 "passed_assessments": passed_count,
                 "failed_assessments": failed_count,
-                "recent_results": all_results[:5]
+                "recent_results": clean_recent_results
             },
             "activity": activity_items[:25]
         }
@@ -589,6 +608,7 @@ class AdminCandidateService:
             "message": f"Candidate '{user.get('email')}' has been suspended successfully.",
             "candidate_id": cid,
             "account_status": "Suspended",
+            "is_suspended": True,
             "suspension_reason": clean_reason
         }
 
@@ -627,7 +647,8 @@ class AdminCandidateService:
             "status": "success",
             "message": f"Candidate '{user.get('email')}' has been reactivated successfully.",
             "candidate_id": cid,
-            "account_status": "Active"
+            "account_status": "Active",
+            "is_suspended": False
         }
 
     # ==========================================================================
@@ -834,6 +855,7 @@ class AdminCandidateService:
         return {
             "status": "success",
             "message": f"Added {added_count} candidates to group '{group.get('name')}'.",
+            "added_count": added_count,
             "total_members": len(current_members)
         }
 
@@ -1305,6 +1327,7 @@ class AdminCandidateService:
         admin_assessment_service.assign_candidates(
             assessment_id=assessment_id,
             candidate_emails=[email],
+            cohort_names=None,
             deadline=deadline,
             admin_user=admin_user
         )

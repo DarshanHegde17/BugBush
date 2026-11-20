@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BugBash Admin &bull; Submissions Management</title>
+    <meta name="description" content="BugBash Administrator interface for monitoring candidate coding and MCQ submissions, test-case telemetry, and manual reviews.">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff6b35'><path d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/></svg>">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/css/admin-dashboard.css">
+    <link rel="stylesheet" href="/css/assessments.css">
+    <link rel="stylesheet" href="/css/submissions.css">
+</head>
+<body id="adminSubmissionsPage">
+    <div class="app-container">
+        
+        <!-- ================================================================
+             1. Sidebar Navigation (Submissions Active)
+             ================================================================ -->
+        <aside class="admin-sidebar" id="adminSidebar">
+            <div class="sidebar-header">
+                <a href="/admin/dashboard" class="brand-wrapper">
+                    <div class="brand-logo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <div class="brand-text">
+                        <span>BugBash</span>
+                        <span class="admin-tag">ADMIN</span>
+                    </div>
+                </a>
+                <button type="button" class="sidebar-toggle-btn" id="sidebarToggleBtn" aria-label="Toggle Sidebar Navigation">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <ul class="sidebar-menu">
+                <li class="menu-category">Operations</li>
+                
+                <li class="nav-item">
+                    <a href="/admin/dashboard" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="9"></rect>
+                            <rect x="14" y="3" width="7" height="5"></rect>
+                            <rect x="14" y="12" width="7" height="9"></rect>
+                            <rect x="3" y="16" width="7" height="5"></rect>
+                        </svg>
+                        <span class="nav-text">Overview</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/admin/questions" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                        <span class="nav-text">Question Bank</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/admin/assessments" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                        <span class="nav-text">Assessments</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/admin/candidates" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                        <span class="nav-text">Students &amp; Candidates</span>
+                    </a>
+                </li>
+
+                <li class="nav-item active">
+                    <a href="/admin/submissions" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="16 18 22 12 16 6"></polyline>
+                            <polyline points="8 6 2 12 8 18"></polyline>
+                        </svg>
+                        <span class="nav-text">Submissions</span>
+                    </a>
+                </li>
+
+                <li class="menu-category">Intelligence</li>
+
+                <li class="nav-item">
+                    <a href="/admin/results" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="20" x2="18" y2="10"></line>
+                            <line x1="12" y1="20" x2="12" y2="4"></line>
+                            <line x1="6" y1="20" x2="6" y2="14"></line>
+                        </svg>
+                        <span class="nav-text">Results &amp; Analytics</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/admin/ml-insights" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                        </svg>
+                        <span class="nav-text">ML Insights</span>
+                    </a>
+                </li>
+
+                <li class="menu-category">System</li>
+
+                <li class="nav-item">
+                    <a href="/admin/profile" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <span class="nav-text">My Profile</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/admin/settings" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                        </svg>
+                        <span class="nav-text">Settings</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <button type="button" class="btn-logout" id="adminLogoutBtn" onclick="localStorage.removeItem('bugbash_admin_token'); window.location.href='/admin/login';">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    <span>Sign Out</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- ================================================================
+             2. Main Application Workspace
+             ================================================================ -->
+        <div class="main-content">
+            
+            <!-- Top Navigation Header -->
+            <header class="top-navbar">
+                <div class="navbar-left">
+                    <button type="button" class="mobile-menu-btn" id="mobileMenuBtn">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="3" y1="12" x2="21" y2="12"></line>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <line x1="3" y1="18" x2="21" y2="18"></line>
+                        </svg>
+                    </button>
+                    <div class="page-title-box">
+                        <h1 class="page-main-title">Submissions Management</h1>
+                        <p class="page-sub-title">Inspect candidate coding and MCQ attempts, evaluate test-case telemetry, and review flagged solutions.</p>
+                    </div>
+                </div>
+
+                <div class="navbar-right">
+                    <!-- Theme Toggle -->
+                    <button type="button" class="btn-icon-nav" id="themeToggleBtn" aria-label="Toggle Theme" onclick="document.documentElement.setAttribute('data-theme', document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark')">
+                        <svg class="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                    </button>
+
+                    <!-- Admin Profile Quick Pill -->
+                    <div class="admin-user-pill">
+                        <div class="user-avatar-small">A</div>
+                        <span class="user-name-small">Admin</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Workspace Body -->
+            <main class="page-body">
+
+                <!-- 1. Summary Cards Grid (6 Metric Counters) -->
+                <section class="submissions-summary-grid">
+                    <div class="submission-stat-card">
+                        <div class="stat-icon-wrapper total">
+                            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-label">Total Submissions</div>
+                            <div class="stat-value" id="statTotalSubmissions">0</div>
+                        </div>
+                    </div>
+
+                    <div class="submission-stat-card">
+                        <div class="stat-icon-wrapper success">
+                            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-label">Successful</div>
+                            <div class="stat-value" id="statSuccessfulSubmissions">0</div>
+                        </div>
+                    </div>
+
+                    <div class="submission-stat-card">
+                        <div class="stat-icon-wrapper failed">
+                            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="15" y1="9" x2="9" y2="15"></line>
+                                <line x1="9" y1="9" x2="15" y2="15"></line>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-label">Failed</div>
+                            <div class="stat-value" id="statFailedSubmissions">0</div>
+                        </div>
+                    </div>
+
+                    <div class="submission-stat-card">
+                        <div class="stat-icon-wrapper pending">
+                            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-label">Pending Eval</div>
+                            <div class="stat-value" id="statPendingEvaluation">0</div>
+                        </div>
+                    </div>
+
+                    <div class="submission-stat-card">
+                        <div class="stat-icon-wrapper review">
+                            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-label">Manual Reviews</div>
+                            <div class="stat-value" id="statManualReviews">0</div>
+                        </div>
+                    </div>
+
+                    <div class="submission-stat-card">
+                        <div class="stat-icon-wrapper error">
+                            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+                                <line x1="12" y1="8" x2="12" y2="12"></line>
+                                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-label">Evaluation Errors</div>
+                            <div class="stat-value" id="statEvaluationErrors">0</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. Search & Multi-Filter Control Panel -->
+                <section class="submissions-filter-panel">
+                    <div class="filter-row-primary">
+                        <div class="filter-search-box">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                            <input type="text" class="filter-search-input" id="submissionSearchInput" placeholder="Search by Submission ID, candidate name/email, assessment, or question...">
+                        </div>
+
+                        <div class="filter-selects-group">
+                            <select class="filter-select" id="filterAssessment" aria-label="Filter by Assessment">
+                                <option value="all">All Assessments</option>
+                            </select>
+
+                            <select class="filter-select" id="filterLanguage" aria-label="Filter by Language">
+                                <option value="all">All Languages</option>
+                                <option value="Python">Python</option>
+                                <option value="Java">Java</option>
+                                <option value="C++">C++</option>
+                                <option value="JavaScript">JavaScript</option>
+                                <option value="Go">Go</option>
+                            </select>
+
+                            <select class="filter-select" id="filterType" aria-label="Filter by Question Type">
+                                <option value="all">All Types</option>
+                                <option value="coding">Coding Problems</option>
+                                <option value="mcq">MCQ Questions</option>
+                            </select>
+
+                            <select class="filter-select" id="filterStatus" aria-label="Filter by Evaluation Status">
+                                <option value="all">All Statuses</option>
+                                <option value="successful">Successful (Accepted)</option>
+                                <option value="failed">Failed (Wrong Answer / TLE)</option>
+                                <option value="pending">Pending Evaluation</option>
+                                <option value="error">Evaluation Errors (Syntax/Sandbox)</option>
+                            </select>
+
+                            <select class="filter-select" id="filterReview" aria-label="Filter by Review Status">
+                                <option value="all">All Review States</option>
+                                <option value="pending_review">Needs Manual Review</option>
+                                <option value="reviewed">Already Reviewed</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="filter-row-secondary">
+                        <div class="date-filter-group">
+                            <span>From:</span>
+                            <input type="date" class="date-input" id="filterStartDate">
+                            <span>To:</span>
+                            <input type="date" class="date-input" id="filterEndDate">
+                        </div>
+
+                        <button type="button" class="btn-filter-reset" id="btnResetFilters">
+                            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <polyline points="1 4 1 10 7 10"></polyline>
+                                <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                            </svg>
+                            <span>Clear Filters</span>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- 3. Submissions Table Card -->
+                <section class="submissions-table-card">
+                    <div class="table-responsive">
+                        <table class="submissions-table">
+                            <thead>
+                                <tr>
+                                    <th data-sort="submission_id">Submission ID</th>
+                                    <th data-sort="candidate_name">Candidate</th>
+                                    <th data-sort="assessment_title">Assessment</th>
+                                    <th data-sort="question_title">Question</th>
+                                    <th data-sort="language">Language</th>
+                                    <th data-sort="submitted_at">Submitted At</th>
+                                    <th class="no-sort">Tests Passed</th>
+                                    <th data-sort="score">Score</th>
+                                    <th data-sort="evaluation_status">Status</th>
+                                    <th class="no-sort" style="text-align: right;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="submissionsTableBody">
+                                <!-- Populated dynamically by submissions.js -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination Footer -->
+                    <div class="table-pagination-footer">
+                        <div class="pagination-info" id="paginationInfoText">
+                            Loading submissions...
+                        </div>
+                        <div class="pagination-controls">
+                            <button type="button" class="btn-page-nav" id="btnPrevPage" disabled>
+                                &larr; Previous
+                            </button>
+                            <button type="button" class="btn-page-nav" id="btnNextPage" disabled>
+                                Next &rarr;
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- ================================================================
+         Modals: Quick Code Inspection & Evaluation History
+         ================================================================ -->
+    <!-- Quick Code Modal -->
+    <div class="submission-modal-backdrop" id="quickCodeModal">
+        <div class="submission-modal-card">
+            <div class="modal-header-bar">
+                <div class="modal-title-wrap">
+                    <h3 id="codeModalTitle">Submission Code</h3>
+                    <div class="modal-subtitle" id="codeModalSubtitle">Language: Python</div>
+                </div>
+                <button type="button" class="modal-close-btn" id="btnCloseCodeModal" aria-label="Close Modal">&times;</button>
+            </div>
+            <div class="modal-body-content">
+                <div class="code-viewer-container">
+                    <div class="code-viewer-toolbar">
+                        <span class="code-lang-label" id="codeLangBadge">PYTHON</span>
+                        <button type="button" class="btn-copy-code" id="btnCopyModalCode">Copy Code</button>
+                    </div>
+                    <pre class="code-pre-block"><code id="codeModalContent">// Loading source code...</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Evaluation History Modal -->
+    <div class="submission-modal-backdrop" id="historyModal">
+        <div class="submission-modal-card">
+            <div class="modal-header-bar">
+                <div class="modal-title-wrap">
+                    <h3 id="historyModalTitle">Evaluation History &amp; Audit</h3>
+                    <div class="modal-subtitle">Immutable timeline of automated runs and manual reviews</div>
+                </div>
+                <button type="button" class="modal-close-btn" id="btnCloseHistoryModal" aria-label="Close Modal">&times;</button>
+            </div>
+            <div class="modal-body-content">
+                <div class="history-timeline-list" id="historyTimelineList">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/config.js"></script>
+    <script src="/js/submissions.js"></script>
+</body>
+</html>

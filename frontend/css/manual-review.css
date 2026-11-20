@@ -1,0 +1,253 @@
+/* ==============================================================================
+   BugBash - Enterprise Admin Manual Review Workspace Stylesheet
+   ============================================================================== */
+
+.manual-review-layout {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 1.75rem;
+    align-items: start;
+}
+
+@media (max-width: 1024px) {
+    .manual-review-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+.review-left-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.review-right-column {
+    position: sticky;
+    top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Submission Overview Card */
+.review-sub-info-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-card);
+}
+
+.review-header-flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.review-header-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+/* Review Action Card */
+.review-action-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
+    padding: 1.75rem;
+    box-shadow: var(--shadow-card);
+}
+
+.review-card-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 0 0 1.25rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.score-adjustment-box {
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.score-compare-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.score-digit-group {
+    text-align: center;
+}
+
+.score-digit-group .lbl {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.score-digit-group .val {
+    font-size: 1.75rem;
+    font-weight: 800;
+    font-family: var(--font-mono);
+    color: var(--text-primary);
+}
+
+.score-digit-group .val.highlight {
+    color: var(--primary-orange);
+}
+
+.score-arrow-icon {
+    color: var(--text-muted);
+}
+
+.form-group-review {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1.25rem;
+}
+
+.form-group-review label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+.form-group-review label .req {
+    color: var(--danger-red);
+}
+
+.input-review-text,
+.select-review,
+.textarea-review {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    font-family: var(--font-sans);
+    transition: all var(--transition-fast);
+}
+
+.textarea-review {
+    min-height: 120px;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+.input-review-text:focus,
+.select-review:focus,
+.textarea-review:focus {
+    outline: none;
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px var(--primary-orange-light);
+}
+
+.review-toggle-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    user-select: none;
+}
+
+.review-toggle-row input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary-orange);
+    cursor: pointer;
+}
+
+.review-toggle-row span {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
+.btn-submit-review {
+    width: 100%;
+    padding: 0.85rem;
+    background: var(--primary-orange);
+    border: none;
+    border-radius: var(--radius-md);
+    color: #ffffff;
+    font-size: 0.95rem;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all var(--transition-fast);
+}
+
+.btn-submit-review:hover {
+    background: var(--primary-orange-hover);
+    box-shadow: 0 0 20px var(--primary-orange-glow);
+}
+
+.btn-submit-review:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-secondary-reeval {
+    width: 100%;
+    margin-top: 0.75rem;
+    padding: 0.75rem;
+    background: transparent;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    transition: all var(--transition-fast);
+}
+
+.btn-secondary-reeval:hover {
+    color: var(--warning-yellow);
+    border-color: var(--warning-yellow);
+    background: var(--warning-yellow-bg);
+}
+
+/* Previous Review Box */
+.prev-review-box {
+    background: var(--bg-surface-elevated);
+    border-left: 3px solid var(--purple-accent);
+    padding: 1rem;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    font-size: 0.85rem;
+}
+
+.prev-review-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.35rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.prev-review-notes {
+    color: var(--text-secondary);
+    line-height: 1.4;
+}

@@ -100,6 +100,17 @@ class MongoDB:
             except Exception as e:
                 logger.debug(f"Candidate groups/invitations index: {e}")
 
+            # Submissions & Manual Reviews
+            try:
+                self.db.submissions.create_index([("id", ASCENDING)], unique=True, background=True)
+                self.db.submissions.create_index([("candidate_email", ASCENDING)], background=True)
+                self.db.submissions.create_index([("assessment_id", ASCENDING)], background=True)
+                self.db.submissions.create_index([("submitted_at", ASCENDING)], background=True)
+                self.db.submissions.create_index([("evaluation_status", ASCENDING)], background=True)
+                self.db.manual_reviews.create_index([("submission_id", ASCENDING)], background=True)
+            except Exception as e:
+                logger.debug(f"Submissions index: {e}")
+
         except Exception as e:
             logger.warning(f"Error creating MongoDB indexes: {e}")
 
@@ -179,6 +190,14 @@ class MongoDB:
     @property
     def candidate_invitations(self) -> Optional[Collection]:
         return self.db.candidate_invitations if (self.is_connected and self.db is not None) else None
+
+    @property
+    def submissions(self) -> Optional[Collection]:
+        return self.db.submissions if (self.is_connected and self.db is not None) else None
+
+    @property
+    def manual_reviews(self) -> Optional[Collection]:
+        return self.db.manual_reviews if (self.is_connected and self.db is not None) else None
 
     def __getattr__(self, name: str) -> Optional[Collection]:
         if self.is_connected and self.db is not None:

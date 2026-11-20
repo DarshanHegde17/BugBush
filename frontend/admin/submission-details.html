@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BugBash Admin &bull; Submission Details</title>
+    <meta name="description" content="Detailed candidate submission inspection, execution telemetry, 8-stage ML evaluation pipeline, and test-case results.">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff6b35'><path d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/></svg>">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/css/admin-dashboard.css">
+    <link rel="stylesheet" href="/css/assessments.css">
+    <link rel="stylesheet" href="/css/submissions.css">
+    <link rel="stylesheet" href="/css/submission-details.css">
+</head>
+<body id="adminSubmissionDetailsPage">
+    <div class="app-container">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="admin-sidebar" id="adminSidebar">
+            <div class="sidebar-header">
+                <a href="/admin/dashboard" class="brand-wrapper">
+                    <div class="brand-logo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <div class="brand-text">
+                        <span>BugBash</span>
+                        <span class="admin-tag">ADMIN</span>
+                    </div>
+                </a>
+                <button type="button" class="sidebar-toggle-btn" id="sidebarToggleBtn" aria-label="Toggle Sidebar Navigation">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <ul class="sidebar-menu">
+                <li class="menu-category">Operations</li>
+                <li class="nav-item">
+                    <a href="/admin/dashboard" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+                        <span class="nav-text">Overview</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/questions" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                        <span class="nav-text">Question Bank</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/assessments" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                        <span class="nav-text">Assessments</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/candidates" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+                        <span class="nav-text">Students &amp; Candidates</span>
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a href="/admin/submissions" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                        <span class="nav-text">Submissions</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <button type="button" class="btn-logout" onclick="localStorage.removeItem('bugbash_admin_token'); window.location.href='/admin/login';">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    <span>Sign Out</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <div class="main-content">
+            
+            <!-- Top Navbar -->
+            <header class="top-navbar">
+                <div class="navbar-left">
+                    <a href="/admin/submissions" class="btn-header-action secondary" style="padding:0.4rem 0.8rem; font-size:0.8rem;">
+                        &larr; Back to Submissions
+                    </a>
+                </div>
+                <div class="navbar-right">
+                    <button type="button" class="btn-icon-nav" id="themeToggleBtn" aria-label="Toggle Theme" onclick="document.documentElement.setAttribute('data-theme', document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line></svg>
+                    </button>
+                    <div class="admin-user-pill">
+                        <div class="user-avatar-small">A</div>
+                        <span class="user-name-small">Admin</span>
+                    </div>
+                </div>
+            </header>
+
+            <main class="page-body" id="submissionDetailsContent">
+
+                <!-- 1. Submission Details Header Card -->
+                <section class="submission-details-header">
+                    <div class="sub-header-left">
+                        <div class="sub-header-avatar" id="headerAvatar">AM</div>
+                        <div class="sub-header-info">
+                            <h2>
+                                <span id="headerCandidateName">Alexander Morgan</span>
+                                <span class="sub-id-badge" id="headerSubId">sub_code_01</span>
+                            </h2>
+                            <div class="sub-meta-row">
+                                <span id="headerCandidateEmail">demo@bugbash.com</span>
+                                <span>&bull;</span>
+                                <span id="headerAssessmentTitle">Data Structures &amp; Algorithmic Logic Test</span>
+                                <span>&bull;</span>
+                                <span id="headerQuestionTitle" style="font-weight:600; color:var(--text-primary);">Two Sum</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sub-header-right">
+                        <div class="score-display-card">
+                            <div class="score-label">Score Awarded</div>
+                            <div class="score-num" id="headerScoreValue">25/25</div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="font-size:0.75rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:0.25rem;">Status</div>
+                            <span class="status-pill accepted" id="headerStatusBadge">Accepted</span>
+                        </div>
+                        <div class="sub-header-actions">
+                            <a href="/admin/manual-review" class="btn-header-action primary" id="btnGoToReview">
+                                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                <span>Review Submission</span>
+                            </a>
+                            <button type="button" class="btn-header-action secondary" id="btnRequestReeval">
+                                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                                <span>Re-Evaluate</span>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. Execution Telemetry Mini-Cards (4 Cards) -->
+                <section class="execution-telemetry-row">
+                    <div class="telemetry-mini-card">
+                        <div class="t-label">Test Cases Passed</div>
+                        <div class="t-val" id="telTotalTests">5/5</div>
+                    </div>
+                    <div class="telemetry-mini-card">
+                        <div class="t-label">Execution Time</div>
+                        <div class="t-val" id="telExecTime">28.4 ms</div>
+                    </div>
+                    <div class="telemetry-mini-card">
+                        <div class="t-label">Memory Usage</div>
+                        <div class="t-val" id="telMemory">1.4 MB</div>
+                    </div>
+                    <div class="telemetry-mini-card">
+                        <div class="t-label">Compilation Status</div>
+                        <div class="t-val" id="telCompilation">Success</div>
+                    </div>
+                </section>
+
+                <!-- 3. Two-Column Detailed Layout -->
+                <div class="sub-details-grid">
+                    
+                    <!-- Left Column: Code, Test Cases, Question Specs -->
+                    <div class="sub-details-main">
+                        
+                        <!-- Submitted Code Viewer -->
+                        <div class="sub-card-panel">
+                            <div class="sub-panel-header">
+                                <h3 class="sub-panel-title">
+                                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                                    <span>Submitted Source Code</span>
+                                </h3>
+                                <div style="display:flex; align-items:center; gap:0.5rem;">
+                                    <span class="badge-lang" id="codeViewerLang">PYTHON</span>
+                                    <button type="button" class="btn-copy-code" id="btnCopySubmissionCode">Copy Code</button>
+                                </div>
+                            </div>
+                            <div class="code-viewer-container" style="border:none; border-radius:0;">
+                                <pre class="code-pre-block"><code id="codeViewerPre">// Loading submitted source code...</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Test Case Results Table -->
+                        <div class="sub-card-panel">
+                            <div class="sub-panel-header">
+                                <h3 class="sub-panel-title">
+                                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                                    <span>Test Case Execution Results</span>
+                                </h3>
+                            </div>
+                            <div class="sub-panel-body">
+                                <div class="security-callout-box">
+                                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                                    <span>Security Enforcement: In compliance with BugBash assessment integrity standards, hidden test case inputs and expected outputs are securely masked.</span>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="test-cases-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Case ID</th>
+                                                <th>Visibility</th>
+                                                <th>Status</th>
+                                                <th>Runtime</th>
+                                                <th>Memory</th>
+                                                <th>Error Category</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="testCasesTableBody">
+                                            <!-- Populated dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Question Specifications Card -->
+                        <div class="sub-card-panel">
+                            <div class="sub-panel-header">
+                                <h3 class="sub-panel-title">
+                                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                                    <span>Problem Specification</span>
+                                </h3>
+                            </div>
+                            <div class="sub-panel-body">
+                                <div class="ml-metric-row">
+                                    <span class="ml-metric-label">Question Title:</span>
+                                    <span class="ml-metric-value" id="qSpecTitle">Two Sum - Optimized Hash Map</span>
+                                </div>
+                                <div class="ml-metric-row">
+                                    <span class="ml-metric-label">Difficulty:</span>
+                                    <span class="ml-metric-value" id="qSpecDifficulty">Easy</span>
+                                </div>
+                                <div class="ml-metric-row">
+                                    <span class="ml-metric-label">Maximum Points:</span>
+                                    <span class="ml-metric-value" id="qSpecPoints">25 pts</span>
+                                </div>
+                                <div class="ml-metric-row">
+                                    <span class="ml-metric-label">Permitted Languages:</span>
+                                    <span class="ml-metric-value" id="qSpecLanguages">Python, Java, C++, JavaScript, Go</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Right Column: ML Pipeline, Algorithmic Analysis, Manual Review, History -->
+                    <div class="sub-details-sidebar">
+                        
+                        <!-- 8-Stage ML Pipeline Card -->
+                        <div class="sub-card-panel">
+                            <div class="sub-panel-header">
+                                <h3 class="sub-panel-title">
+                                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                                    <span>ML Evaluation Pipeline</span>
+                                </h3>
+                            </div>
+                            <div class="sub-panel-body">
+                                <div class="ml-pipeline-stepper" id="mlPipelineStepper">
+                                    <!-- Populated dynamically (8 stages) -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Algorithmic Insights Card -->
+                        <div class="sub-card-panel">
+                            <div class="sub-panel-header">
+                                <h3 class="sub-panel-title">
+                                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+                                    <span>Algorithmic Analysis</span>
+                                </h3>
+                            </div>
+                            <div class="sub-panel-body">
+                                <div class="ml-metric-row">
+                                    <span class="ml-metric-label">Detected Approach:</span>
+                                    <span class="ml-metric-value" id="mlAlgoApproach">Single-Pass Hash Map</span>
+                                </div>
+                                <div class="ml-metric-row">
+                                    <span class="ml-metric-label">Time Complexity:</span>
+                                    <span class="ml-metric-value" id="mlTimeComplexity">O(n)</span>
+                                </div>
+                                <div class="ml-metric-row">
+                                    <span class="ml-metric-label">Space Complexity:</span>
+                                    <span class="ml-metric-value" id="mlSpaceComplexity">O(n)</span>
+                                </div>
+                                <div class="ml-metric-row">
+                                    <span class="ml-metric-label">Evaluation Confidence:</span>
+                                    <span class="ml-metric-value" id="mlConfidenceScore">98%</span>
+                                </div>
+                                <div style="margin-top:0.75rem;">
+                                    <div class="ml-metric-label">Recognized Concepts:</div>
+                                    <div class="concept-chips-wrap" id="mlConceptChips">
+                                        <!-- Populated dynamically -->
+                                    </div>
+                                </div>
+                                <div class="ai-feedback-quote" id="mlAiFeedback">
+                                    Synthesizing pedagogical insights...
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Manual Review State Card -->
+                        <div class="sub-card-panel">
+                            <div class="sub-panel-header">
+                                <h3 class="sub-panel-title">
+                                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path></svg>
+                                    <span>Manual Review Status</span>
+                                </h3>
+                            </div>
+                            <div class="sub-panel-body" id="manualReviewSummaryBox">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Evaluation History Timeline Card -->
+                        <div class="sub-card-panel">
+                            <div class="sub-panel-header">
+                                <h3 class="sub-panel-title">
+                                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                    <span>Evaluation History</span>
+                                </h3>
+                            </div>
+                            <div class="sub-panel-body">
+                                <div class="history-timeline-list" id="evalHistoryTimelineList">
+                                    <!-- Populated dynamically -->
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Re-Evaluation Request Modal -->
+    <div class="submission-modal-backdrop" id="reevalModal">
+        <div class="submission-modal-card" style="max-width: 520px;">
+            <div class="modal-header-bar">
+                <div class="modal-title-wrap">
+                    <h3>Request Automated Re-Evaluation</h3>
+                    <div class="modal-subtitle">Re-run test-case execution &amp; ML pipeline in sandbox</div>
+                </div>
+            </div>
+            <div class="modal-body-content">
+                <p style="font-size:0.875rem; color:var(--text-secondary); margin-bottom:1rem;">
+                    Re-evaluating will re-execute the submitted code in an isolated sandbox container, re-evaluate against unit tests, and re-compute algorithmic complexity. Previous evaluations remain logged.
+                </p>
+                <div class="form-group-review">
+                    <label for="reevalReasonInput">Reason for Re-Evaluation <span style="color:var(--danger-red);">*</span></label>
+                    <input type="text" class="input-review-text" id="reevalReasonInput" placeholder="e.g. Infrastructure watchdog timeout dispute, test-case update">
+                </div>
+                <div style="display:flex; justify-content:flex-end; gap:0.75rem; margin-top:1.5rem;">
+                    <button type="button" class="btn-header-action secondary" id="btnCancelReeval">Cancel</button>
+                    <button type="button" class="btn-header-action primary" id="btnConfirmReeval">Trigger Re-Evaluation</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/config.js"></script>
+    <script src="/js/submission-details.js"></script>
+</body>
+</html>

@@ -60,6 +60,8 @@
             ADMIN_CANDIDATE_GROUPS: '/admin/candidate-groups',
             ADMIN_CANDIDATES_IMPORT: '/admin/candidates/import',
             ADMIN_CANDIDATES_INVITATIONS: '/admin/candidates/invitations',
+            ADMIN_SUBMISSIONS: '/admin/submissions',
+            ADMIN_SUBMISSIONS_STATS: '/admin/submissions/statistics',
             PRACTICE_PROBLEMS: '/practice/problems'
         },
 

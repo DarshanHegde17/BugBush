@@ -152,7 +152,7 @@ async def import_candidates(
     current_admin: dict = Depends(get_current_admin)
 ):
     try:
-        raw_rows = [r.dict() if hasattr(r, "dict") else r.model_dump() for r in payload.rows]
+        raw_rows = [r.model_dump() if hasattr(r, "model_dump") else r.dict() for r in payload.rows]
         return admin_candidate_service.import_candidates(
             rows=raw_rows,
             send_invitations=payload.send_invitations,
@@ -196,7 +196,7 @@ async def update_candidate(
     current_admin: dict = Depends(get_current_admin)
 ):
     try:
-        data = payload.dict(exclude_unset=True) if hasattr(payload, "dict") else payload.model_dump(exclude_unset=True)
+        data = payload.model_dump(exclude_unset=True) if hasattr(payload, "model_dump") else payload.dict(exclude_unset=True)
         return admin_candidate_service.update_candidate(candidate_id, data, current_admin)
     except KeyError as ke:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(ke))
@@ -328,7 +328,7 @@ async def create_candidate_group(
     current_admin: dict = Depends(get_current_admin)
 ):
     try:
-        data = payload.dict() if hasattr(payload, "dict") else payload.model_dump()
+        data = payload.model_dump() if hasattr(payload, "model_dump") else payload.dict()
         return admin_candidate_service.create_group(data, current_admin)
     except ValueError as ve:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(ve))
@@ -347,7 +347,7 @@ async def update_candidate_group(
     current_admin: dict = Depends(get_current_admin)
 ):
     try:
-        data = payload.dict(exclude_unset=True) if hasattr(payload, "dict") else payload.model_dump(exclude_unset=True)
+        data = payload.model_dump(exclude_unset=True) if hasattr(payload, "model_dump") else payload.dict(exclude_unset=True)
         return admin_candidate_service.update_group(group_id, data, current_admin)
     except KeyError as ke:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(ke))

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BugBash Admin &bull; Manual Review Workspace</title>
+    <meta name="description" content="Dedicated administrative review workspace for inspecting candidate code, adjusting scores, and logging internal evaluation notes.">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff6b35'><path d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/></svg>">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/css/admin-dashboard.css">
+    <link rel="stylesheet" href="/css/assessments.css">
+    <link rel="stylesheet" href="/css/submissions.css">
+    <link rel="stylesheet" href="/css/manual-review.css">
+</head>
+<body id="adminManualReviewPage">
+    <div class="app-container">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="admin-sidebar" id="adminSidebar">
+            <div class="sidebar-header">
+                <a href="/admin/dashboard" class="brand-wrapper">
+                    <div class="brand-logo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <div class="brand-text">
+                        <span>BugBash</span>
+                        <span class="admin-tag">ADMIN</span>
+                    </div>
+                </a>
+                <button type="button" class="sidebar-toggle-btn" id="sidebarToggleBtn" aria-label="Toggle Sidebar Navigation">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                </button>
+            </div>
+
+            <ul class="sidebar-menu">
+                <li class="menu-category">Operations</li>
+                <li class="nav-item">
+                    <a href="/admin/dashboard" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+                        <span class="nav-text">Overview</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/questions" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                        <span class="nav-text">Question Bank</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/assessments" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                        <span class="nav-text">Assessments</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/candidates" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+                        <span class="nav-text">Students &amp; Candidates</span>
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a href="/admin/submissions" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                        <span class="nav-text">Submissions</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <button type="button" class="btn-logout" onclick="localStorage.removeItem('bugbash_admin_token'); window.location.href='/admin/login';">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    <span>Sign Out</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <div class="main-content">
+            
+            <!-- Top Navbar -->
+            <header class="top-navbar">
+                <div class="navbar-left">
+                    <a href="/admin/submissions" class="btn-filter-reset" style="padding:0.4rem 0.85rem;">
+                        &larr; Back to Submissions
+                    </a>
+                </div>
+                <div class="navbar-right">
+                    <button type="button" class="btn-icon-nav" id="themeToggleBtn" aria-label="Toggle Theme" onclick="document.documentElement.setAttribute('data-theme', document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line></svg>
+                    </button>
+                    <div class="admin-user-pill">
+                        <div class="user-avatar-small">A</div>
+                        <span class="user-name-small">Admin</span>
+                    </div>
+                </div>
+            </header>
+
+            <main class="page-body" id="manualReviewContainer">
+
+                <div class="manual-review-layout">
+                    
+                    <!-- Left Column: Source Code Inspection, Execution Telemetry, ML Insights -->
+                    <div class="review-left-column">
+                        
+                        <!-- Header Overview Box -->
+                        <div class="review-sub-info-card">
+                            <div class="review-header-flex">
+                                <div>
+                                    <h2 class="review-header-title" id="reviewCandidateName">Candidate Review</h2>
+                                    <div style="font-size:0.82rem; color:var(--text-muted); margin-top:0.2rem;">
+                                        <span id="reviewCandidateEmail">candidate@bugbash.com</span> &bull; 
+                                        <span id="reviewSubIdText" class="col-sub-id" style="font-size:0.82rem;">sub_000</span>
+                                    </div>
+                                </div>
+                                <div style="text-align:right;">
+                                    <div style="font-size:0.75rem; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Assessment</div>
+                                    <div style="font-weight:700; color:var(--text-primary); font-size:0.9rem;" id="reviewAssessmentTitle">Assessment</div>
+                                </div>
+                            </div>
+
+                            <div style="padding-top:0.75rem; border-top:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center;">
+                                <div style="font-size:0.85rem; color:var(--text-secondary);">
+                                    Target Problem: <strong id="reviewQuestionTitle" style="color:var(--text-primary);">Question</strong>
+                                </div>
+                                <div style="font-size:0.85rem; font-family:var(--font-mono); color:var(--primary-orange); font-weight:700;" id="reviewTestCasesSummary">
+                                    0/0 Test Cases Passed
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Code Viewer Panel -->
+                        <div class="sub-card-panel" style="margin-bottom:0;">
+                            <div class="sub-panel-header">
+                                <h3 class="sub-panel-title">
+                                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                                    <span>Submitted Code (Read-Only)</span>
+                                </h3>
+                                <div style="display:flex; align-items:center; gap:0.5rem;">
+                                    <span class="badge-lang" id="reviewCodeLang">PYTHON</span>
+                                    <button type="button" class="btn-copy-code" id="btnCopyReviewCode">Copy Code</button>
+                                </div>
+                            </div>
+                            <div class="code-viewer-container" style="border:none; border-radius:0;">
+                                <pre class="code-pre-block"><code id="reviewCodePre">// Loading source code...</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- ML Analysis Signals Box -->
+                        <div class="sub-card-panel" style="margin-bottom:0;">
+                            <div class="sub-panel-header">
+                                <h3 class="sub-panel-title">
+                                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+                                    <span>ML Evaluator Signals &amp; Feedback</span>
+                                </h3>
+                            </div>
+                            <div class="sub-panel-body">
+                                <div style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.5rem;">
+                                    Approach Recognized: <strong id="reviewMlAlgo" style="color:var(--text-primary); font-family:var(--font-mono);">Analysis pending</strong>
+                                </div>
+                                <div class="ai-feedback-quote" id="reviewMlFeedback" style="margin-top:0.5rem;">
+                                    Synthesizing pedagogical signals...
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Right Column: Interactive Review Console -->
+                    <div class="review-right-column">
+                        
+                        <div class="review-action-card">
+                            <h3 class="review-card-title">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                <span>Review Action Console</span>
+                            </h3>
+
+                            <!-- Score Comparison Box -->
+                            <div class="score-adjustment-box">
+                                <div class="score-compare-row">
+                                    <div class="score-digit-group">
+                                        <div class="lbl">Original Score</div>
+                                        <div class="val" id="scoreOriginalVal">0</div>
+                                    </div>
+                                    <div class="score-arrow-icon">
+                                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                                    </div>
+                                    <div class="score-digit-group">
+                                        <div class="lbl">Adjusted Score</div>
+                                        <div class="val highlight" id="scoreProposedVal">0</div>
+                                    </div>
+                                </div>
+                                <div style="text-align:center; font-size:0.78rem; color:var(--text-muted); font-family:var(--font-mono);" id="scoreMaxVal">
+                                    /25 pts max
+                                </div>
+                            </div>
+
+                            <!-- Review Form -->
+                            <form id="manualReviewForm">
+                                <div class="form-group-review">
+                                    <label for="inputAdjustedScore">Adjusted Score (Optional)</label>
+                                    <input type="number" step="0.5" min="0" class="input-review-text" id="inputAdjustedScore" placeholder="Leave unchanged or enter updated points">
+                                    <span style="font-size:0.75rem; color:var(--text-muted);">Adjusted score will be permanently audited with previous score preserved.</span>
+                                </div>
+
+                                <div class="form-group-review">
+                                    <label for="selectReviewReason">Review Reason <span class="req">*</span></label>
+                                    <select class="select-review" id="selectReviewReason" required>
+                                        <option value="Edge-Case Partial Credit Appeal">Edge-Case Partial Credit Appeal</option>
+                                        <option value="Evaluator QA Sample">Evaluator QA Sample Inspection</option>
+                                        <option value="Sandbox Timeout Discrepancy">Sandbox Timeout / Container Latency</option>
+                                        <option value="Code Style & Optimal Algorithm Bonus">Code Style &amp; Optimal Algorithm Bonus</option>
+                                        <option value="Plagiarism / Policy Infraction">Plagiarism / Honor Code Policy Infraction</option>
+                                        <option value="Custom">Custom Review Reason...</option>
+                                    </select>
+                                    <input type="text" class="input-review-text" id="inputCustomReason" placeholder="Specify custom review reason..." style="display:none; margin-top:0.4rem;">
+                                </div>
+
+                                <div class="form-group-review">
+                                    <label for="textareaReviewNotes">Internal Reviewer Notes <span class="req">*</span></label>
+                                    <textarea class="textarea-review" id="textareaReviewNotes" placeholder="Explain the rationale for this evaluation or score change in detail..." required></textarea>
+                                </div>
+
+                                <div class="review-toggle-row">
+                                    <input type="checkbox" id="chkMarkReviewed" checked>
+                                    <label for="chkMarkReviewed"><span>Mark submission as officially Reviewed</span></label>
+                                </div>
+
+                                <button type="submit" class="btn-submit-review" id="btnSubmitManualReview">
+                                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                                    <span>Submit Review &amp; Update Score</span>
+                                </button>
+                            </form>
+
+                            <button type="button" class="btn-secondary-reeval" id="btnReviewRequestReeval">
+                                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                                <span>Request Automated Re-Evaluation</span>
+                            </button>
+
+                            <div id="prevReviewContainer" style="margin-top:1.5rem;">
+                                <!-- Populated if already reviewed -->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/config.js"></script>
+    <script src="/js/manual-review.js"></script>
+</body>
+</html>

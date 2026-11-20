@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BugBash Super Admin - Edit Administrative Role & Permissions.">
+    <title>Edit Role &amp; Permissions | BugBash Control Center</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../assets/icons/favicon.png">
+    <link rel="shortcut icon" href="../assets/icons/favicon.ico">
+
+    <!-- Early Theme Initialization -->
+    <script src="../js/theme.js"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../css/super-admin-dashboard.css?v=2.3">
+    <link rel="stylesheet" href="../css/super-admin-admins.css?v=1.0">
+    <link rel="stylesheet" href="../css/super-admin-roles.css?v=1.0">
+</head>
+<body>
+
+    <div class="sa-app-layout">
+        
+        <!-- Super Admin Sidebar -->
+        <aside class="sa-sidebar" id="saSidebar">
+            <div class="sa-sidebar-header">
+                <a href="/super-admin/dashboard" class="sa-brand">
+                    <img src="../assets/images/bugbash-logo.png?v=1.1" alt="BugBash" height="34" width="70" style="height: 34px !important; width: auto !important; object-fit: contain;">
+                    <span class="sa-brand-badge-pill">SUPER ADMIN</span>
+                </a>
+            </div>
+
+            <nav class="sa-sidebar-scroll">
+                <div class="sa-menu-group">
+                    <span class="sa-menu-title">Core Operations</span>
+                    <a href="/super-admin/dashboard" class="sa-nav-item">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg></span>
+                        <span>Overview</span>
+                    </a>
+                    <a href="/super-admin/admins" class="sa-nav-item">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg></span>
+                        <span>Admin Management</span>
+                    </a>
+                </div>
+
+                <div class="sa-menu-group">
+                    <span class="sa-menu-title">System &amp; Governance</span>
+                    <a href="/super-admin/roles" class="sa-nav-item active">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></span>
+                        <span>Roles &amp; Permissions</span>
+                    </a>
+                    <a href="/super-admin/permissions" class="sa-nav-item">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg></span>
+                        <span>Permission Matrix</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="sa-main-wrap">
+            
+            <header class="sa-topbar">
+                <div class="sa-topbar-left">
+                    <a href="/super-admin/roles" class="sa-forgot-link" style="display:flex; align-items:center; gap:6px;">
+                        &larr; Back to Roles Directory
+                    </a>
+                </div>
+
+                <div class="sa-topbar-right">
+                    <button type="button" class="sa-icon-btn theme-toggle" id="theme-toggle-btn" aria-label="Toggle theme">
+                        <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle></svg>
+                    </button>
+                    <button type="button" class="sa-icon-btn" id="saLogoutBtn" title="Sign Out">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    </button>
+                </div>
+            </header>
+
+            <main class="sa-content-body">
+                
+                <form id="editRoleForm" style="max-width: 1080px; margin: 0 auto;">
+                    
+                    <!-- Page Header Card -->
+                    <div class="sa-form-card" style="margin-bottom: 20px;">
+                        <div class="sa-form-header">
+                            <h1 class="sa-form-title">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                </svg>
+                                Edit Role &amp; Permissions
+                            </h1>
+                            <p class="sa-form-desc">
+                                Modify role metadata and adjust granular permissions. All updates propagate immediately to assigned administrators and invalidate active JWT claims.
+                            </p>
+                        </div>
+
+                        <!-- Assigned Admins Warning Banner -->
+                        <div id="assignedAdminsBanner" class="sa-notice-box" style="display:none; background:rgba(245, 158, 11, 0.1); border-color:rgba(245, 158, 11, 0.3); color:#fbbf24;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;">
+                                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                <line x1="12" y1="9" x2="12" y2="13"></line>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                            <div>
+                                <strong>Active Administrator Impact Warning:</strong>
+                                This role is currently assigned to <strong id="assignedAdminsCountText">0</strong> administrator(s). Adding or removing permissions will take effect immediately across all active accounts and will refresh their sessions.
+                            </div>
+                        </div>
+
+                        <div id="formAlert" class="sa-notice-box" style="display:none; background:rgba(239, 68, 68, 0.1); border-color:rgba(239, 68, 68, 0.3); color:#fca5a5;"></div>
+
+                        <div class="sa-form-grid">
+                            <div class="sa-form-group">
+                                <label class="sa-label" for="editRoleName">
+                                    Role Display Name <span class="req">*</span>
+                                </label>
+                                <input type="text" class="sa-input" id="editRoleName" required>
+                                <span class="sa-helper-text">System role identifiers are protected.</span>
+                            </div>
+
+                            <div class="sa-form-group">
+                                <label class="sa-label" for="editRoleDesc">
+                                    Role Description &amp; Scope <span class="req">*</span>
+                                </label>
+                                <input type="text" class="sa-input" id="editRoleDesc" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sticky Permission Selection Summary Bar -->
+                    <div class="sa-sticky-summary-bar">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <span class="sa-summary-count-pill">
+                                <strong id="selectedPermsCount">0</strong> of <span id="totalPermsCount">32</span> Permissions Selected
+                            </span>
+                        </div>
+
+                        <div style="display: flex; gap: 8px;">
+                            <button type="button" class="sa-btn-secondary" id="selectAllGlobalBtn" style="padding: 6px 14px; font-size: 0.8rem;">
+                                Select All Permissions
+                            </button>
+                            <button type="button" class="sa-btn-secondary" id="clearAllGlobalBtn" style="padding: 6px 14px; font-size: 0.8rem;">
+                                Clear All
+                            </button>
+                            <button type="submit" class="sa-btn-primary" id="editRoleSubmitBtn" style="padding: 6px 18px; font-size: 0.825rem;">
+                                Review &amp; Save Changes
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Module Permissions List -->
+                    <div id="modulesPermissionsContainer">
+                        <div style="text-align: center; padding: 48px; color: var(--text-muted);">
+                            Loading granular permissions...
+                        </div>
+                    </div>
+
+                    <div class="sa-form-actions" style="margin-top: 24px; margin-bottom: 48px;">
+                        <a href="/super-admin/roles" class="sa-btn-secondary">Cancel</a>
+                        <button type="submit" class="sa-btn-primary">Review &amp; Save Changes</button>
+                    </div>
+
+                </form>
+
+            </main>
+
+        </div>
+
+    </div>
+
+    <!-- Impact Confirmation Dialog -->
+    <div class="sa-modal-backdrop" id="roleUpdateConfirmModal">
+        <div class="sa-modal" style="max-width: 560px;">
+            <div class="sa-modal-header">
+                <div class="sa-modal-title" style="display:flex; align-items:center; gap:8px;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:#f59e0b;">
+                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                        <line x1="12" y1="9" x2="12" y2="13"></line>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                    Confirm Permission Adjustments
+                </div>
+                <button type="button" class="sa-modal-close" onclick="document.getElementById('roleUpdateConfirmModal').classList.remove('open')">&times;</button>
+            </div>
+            <div class="sa-modal-body" id="confirmDiffBody">
+                <!-- Dynamically populated -->
+            </div>
+            <div class="sa-modal-footer">
+                <button type="button" class="sa-btn-secondary" id="modalCancelUpdateBtn">Cancel</button>
+                <button type="button" class="sa-btn-primary" id="modalConfirmUpdateBtn">Apply &amp; Invalidate Sessions</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/config.js"></script>
+    <script src="../js/super-admin-edit-role.js"></script>
+</body>
+</html>

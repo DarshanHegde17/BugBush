@@ -283,6 +283,9 @@ class AdminAuthService:
         if client_ip_clean:
             self.reset_failed_attempts(client_ip_clean)
 
+        if clean_email in self._revoked_emails:
+            del self._revoked_emails[clean_email]
+
         now = datetime.now(timezone.utc)
         user["last_login"] = now.isoformat()
         if mongodb.users is not None:
@@ -375,7 +378,7 @@ class AdminAuthService:
             if status_clean in ("inactive", "suspended", "locked", "deactivated", "disabled") or "pending" in status_clean:
                 return None
 
-            permissions = ROLE_PERMISSIONS.get(user_role, ["assessments:manage"])
+            permissions = user.get("permissions") or ROLE_PERMISSIONS.get(user_role, ["assessments:manage"])
 
             return {
                 "id": str(user.get("id") or user.get("_id") or email),

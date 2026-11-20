@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BugBash Super Admin - Permissions Catalog & Cross-Role Matrix.">
+    <title>Permission Matrix | BugBash Control Center</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../assets/icons/favicon.png">
+    <link rel="shortcut icon" href="../assets/icons/favicon.ico">
+
+    <!-- Early Theme Initialization -->
+    <script src="../js/theme.js"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../css/super-admin-dashboard.css?v=2.3">
+    <link rel="stylesheet" href="../css/super-admin-admins.css?v=1.0">
+    <link rel="stylesheet" href="../css/super-admin-roles.css?v=1.0">
+</head>
+<body>
+
+    <div class="sa-app-layout">
+        
+        <!-- Super Admin Sidebar -->
+        <aside class="sa-sidebar" id="saSidebar">
+            <div class="sa-sidebar-header">
+                <a href="/super-admin/dashboard" class="sa-brand">
+                    <img src="../assets/images/bugbash-logo.png?v=1.1" alt="BugBash" height="34" width="70" style="height: 34px !important; width: auto !important; object-fit: contain;">
+                    <span class="sa-brand-badge-pill">SUPER ADMIN</span>
+                </a>
+            </div>
+
+            <nav class="sa-sidebar-scroll">
+                <div class="sa-menu-group">
+                    <span class="sa-menu-title">Core Operations</span>
+                    <a href="/super-admin/dashboard" class="sa-nav-item">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg></span>
+                        <span>Overview</span>
+                    </a>
+                    <a href="/super-admin/admins" class="sa-nav-item">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg></span>
+                        <span>Admin Management</span>
+                    </a>
+                </div>
+
+                <div class="sa-menu-group">
+                    <span class="sa-menu-title">System &amp; Governance</span>
+                    <a href="/super-admin/roles" class="sa-nav-item">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></span>
+                        <span>Roles &amp; Permissions</span>
+                    </a>
+                    <a href="/super-admin/permissions" class="sa-nav-item active">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg></span>
+                        <span>Permission Matrix</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="sa-main-wrap">
+            
+            <header class="sa-topbar">
+                <div class="sa-topbar-left">
+                    <a href="/super-admin/roles" class="sa-forgot-link" style="display:flex; align-items:center; gap:6px;">
+                        &larr; Back to Roles Directory
+                    </a>
+                </div>
+
+                <div class="sa-topbar-right">
+                    <button type="button" class="sa-icon-btn theme-toggle" id="theme-toggle-btn" aria-label="Toggle theme">
+                        <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle></svg>
+                    </button>
+                    <button type="button" class="sa-icon-btn" id="saLogoutBtn" title="Sign Out">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    </button>
+                </div>
+            </header>
+
+            <main class="sa-content-body">
+                
+                <div class="sa-page-header" style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 24px; flex-wrap:wrap; gap:16px;">
+                    <div>
+                        <h1 class="sa-page-title" style="font-size:1.6rem; font-weight:800; color:var(--text-primary);">
+                            Cross-Role Permission Matrix
+                        </h1>
+                        <p class="sa-page-subtitle" style="font-size:0.875rem; color:var(--text-secondary); margin-top:4px;">
+                            Complete comparative view of granular permissions authorized across all administrative roles.
+                        </p>
+                    </div>
+
+                    <a href="/super-admin/create-role" class="sa-btn-primary">
+                        + Create Custom Role
+                    </a>
+                </div>
+
+                <!-- Metrics -->
+                <div class="sa-roles-metrics" style="grid-template-columns: repeat(2, 1fr); max-width: 600px; margin-bottom: 20px;">
+                    <div class="sa-roles-metric-card">
+                        <div class="sa-roles-metric-icon custom">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="12"></line>
+                                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="sa-roles-metric-val" id="matrixTotalPerms">32</div>
+                            <div class="sa-roles-metric-label">Granular Permissions</div>
+                        </div>
+                    </div>
+
+                    <div class="sa-roles-metric-card">
+                        <div class="sa-roles-metric-icon system">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="14" width="7" height="7"></rect>
+                                <rect x="3" y="14" width="7" height="7"></rect>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="sa-roles-metric-val" id="matrixTotalCats">10</div>
+                            <div class="sa-roles-metric-label">Platform Modules</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Controls -->
+                <div class="sa-roles-toolbar">
+                    <div class="sa-roles-toolbar-left">
+                        <div class="sa-search-wrap">
+                            <span class="sa-search-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                </svg>
+                            </span>
+                            <input type="text" class="sa-search-input" id="matrixSearchInput" placeholder="Filter permissions by keyword...">
+                        </div>
+
+                        <select class="sa-select" id="matrixCategoryFilter">
+                            <option value="all">All Modules</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Permission Matrix Table Container -->
+                <div class="sa-matrix-container" id="permissionMatrixTableContainer">
+                    <div style="text-align:center; padding:48px; color:var(--text-muted);">
+                        Loading interactive permission matrix...
+                    </div>
+                </div>
+
+            </main>
+
+        </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/config.js"></script>
+    <script src="../js/super-admin-permissions.js"></script>
+</body>
+</html>

@@ -1,0 +1,516 @@
+/* ==========================================================================
+   BugBash - Super Admin Roles & Permissions Stylesheet
+   Primary Brand Accent: #ff6b35
+   ========================================================================== */
+
+/* Metrics Bar */
+.sa-roles-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.sa-roles-metric-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.sa-roles-metric-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 107, 53, 0.4);
+}
+
+.sa-roles-metric-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.sa-roles-metric-icon.total {
+    background: rgba(139, 92, 246, 0.12);
+    color: #a78bfa;
+}
+
+.sa-roles-metric-icon.custom {
+    background: rgba(255, 107, 53, 0.12);
+    color: #ff6b35;
+}
+
+.sa-roles-metric-icon.system {
+    background: rgba(59, 130, 246, 0.12);
+    color: #3b82f6;
+}
+
+.sa-roles-metric-icon.admins {
+    background: rgba(16, 185, 129, 0.12);
+    color: #10b981;
+}
+
+.sa-roles-metric-val {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    line-height: 1.1;
+    font-family: var(--font-mono);
+}
+
+.sa-roles-metric-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-top: 4px;
+}
+
+/* Control Bar */
+.sa-roles-toolbar {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.sa-roles-toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    flex: 1;
+}
+
+.sa-roles-toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Roles Cards Grid */
+.sa-roles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 20px;
+    margin-bottom: 32px;
+}
+
+.sa-role-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.sa-role-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 107, 53, 0.45);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+}
+
+.sa-role-card.system-card {
+    border-top: 3px solid #3b82f6;
+}
+
+.sa-role-card.custom-card {
+    border-top: 3px solid #ff6b35;
+}
+
+.sa-role-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.sa-role-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.sa-role-title:hover {
+    color: var(--primary-color);
+}
+
+.sa-role-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.725rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 9999px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    flex-shrink: 0;
+}
+
+.sa-role-badge.system {
+    background: rgba(59, 130, 246, 0.12);
+    color: #3b82f6;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.sa-role-badge.custom {
+    background: rgba(255, 107, 53, 0.12);
+    color: #ff6b35;
+    border: 1px solid rgba(255, 107, 53, 0.3);
+}
+
+.sa-role-desc {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 18px;
+    min-height: 48px;
+}
+
+.sa-role-meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 14px;
+    border-top: 1px solid var(--border-color);
+    margin-bottom: 16px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.sa-role-perms-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 20px;
+}
+
+.sa-role-perm-chip {
+    font-size: 0.725rem;
+    font-family: var(--font-mono);
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    color: #94a3b8;
+}
+
+.sa-role-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-color);
+    justify-content: flex-end;
+}
+
+/* ==========================================================================
+   Permission Selection Matrix & Builder (Create & Edit Role)
+   ========================================================================== */
+.sa-sticky-summary-bar {
+    position: sticky;
+    top: 70px;
+    z-index: 50;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 14px 20px;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.sa-summary-count-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 107, 53, 0.12);
+    border: 1px solid rgba(255, 107, 53, 0.3);
+    color: var(--primary-color);
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 9999px;
+}
+
+.sa-module-section {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 20px;
+    transition: border-color 0.15s ease;
+}
+
+.sa-module-section:hover {
+    border-color: rgba(255, 107, 53, 0.35);
+}
+
+.sa-module-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 20px;
+}
+
+.sa-module-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.sa-module-icon-wrap {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+}
+
+.sa-module-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.sa-module-desc {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+.sa-perms-checkbox-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+}
+
+.sa-perm-check-card {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+}
+
+.sa-perm-check-card:hover {
+    border-color: rgba(255, 107, 53, 0.3);
+    background: var(--surface-hover);
+}
+
+.sa-perm-check-card.checked {
+    border-color: var(--primary-color);
+    background: rgba(255, 107, 53, 0.06);
+}
+
+.sa-perm-checkbox {
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    accent-color: var(--primary-color);
+    cursor: pointer;
+}
+
+.sa-perm-meta {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sa-perm-name-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.sa-perm-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.sa-perm-key {
+    font-size: 0.725rem;
+    font-family: var(--font-mono);
+    color: var(--text-muted);
+}
+
+.sa-perm-desc {
+    font-size: 0.775rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+.sa-perm-sensitive-pill {
+    display: inline-block;
+    font-size: 0.675rem;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 4px;
+    background: rgba(239, 68, 68, 0.12);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    text-transform: uppercase;
+}
+
+/* ==========================================================================
+   Permissions Overview & Matrix (permissions.html)
+   ========================================================================== */
+.sa-matrix-container {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    overflow-x: auto;
+    margin-bottom: 32px;
+}
+
+.sa-matrix-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    min-width: 900px;
+}
+
+.sa-matrix-table th {
+    background: var(--surface-color);
+    padding: 14px 16px;
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-secondary);
+    border-bottom: 2px solid var(--border-color);
+    text-align: center;
+    white-space: nowrap;
+}
+
+.sa-matrix-table th:first-child {
+    text-align: left;
+    position: sticky;
+    left: 0;
+    background: var(--surface-color);
+    z-index: 10;
+    min-width: 260px;
+}
+
+.sa-matrix-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+    text-align: center;
+    color: var(--text-primary);
+}
+
+.sa-matrix-table td:first-child {
+    text-align: left;
+    position: sticky;
+    left: 0;
+    background: var(--card-bg);
+    z-index: 5;
+    border-right: 1px solid var(--border-color);
+}
+
+.sa-matrix-check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(16, 185, 129, 0.12);
+    color: #10b981;
+    font-weight: 800;
+}
+
+.sa-matrix-dash {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+}
+
+/* Tabs */
+.sa-tabs-nav {
+    display: flex;
+    gap: 8px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 24px;
+}
+
+.sa-tab-btn {
+    padding: 10px 18px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.sa-tab-btn:hover {
+    color: var(--text-primary);
+}
+
+.sa-tab-btn.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .sa-roles-metrics {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .sa-roles-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .sa-roles-metrics {
+        grid-template-columns: 1fr;
+    }
+    .sa-perms-checkbox-grid {
+        grid-template-columns: 1fr;
+    }
+}

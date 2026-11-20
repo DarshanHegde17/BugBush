@@ -104,6 +104,8 @@
             SUPER_ADMIN_PLATFORM_ACTIVITY: '/super-admin/platform/activity',
             SUPER_ADMIN_ADMINS: '/super-admin/admins',
             SUPER_ADMIN_ADMINS_INVITE: '/super-admin/admins/invite',
+            SUPER_ADMIN_ROLES: '/super-admin/roles',
+            SUPER_ADMIN_PERMISSIONS: '/super-admin/permissions',
             PRACTICE_PROBLEMS: '/practice/problems'
         },
 

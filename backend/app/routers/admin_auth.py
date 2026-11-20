@@ -52,6 +52,41 @@ def get_current_admin(authorization: Optional[str] = Header(None)) -> dict:
     return admin
 
 
+def require_permission(required_perm: str):
+    """
+    FastAPI dependency factory enforcing granular RBAC permissions.
+    - Resolves authenticated administrator from verified JWT.
+    - Super Admins ("super_admin") or accounts with "*" wildcard bypass all restrictions.
+    - Supports category wildcards: e.g. "questions:*" grants "questions:create".
+    - Supports management aliases: e.g. "questions:manage" grants any "questions:*" action.
+    - If user lacks permission, rejects with 403 Forbidden.
+    """
+    def permission_checker(current_admin: dict = Depends(get_current_admin)) -> dict:
+        user_role = (current_admin.get("role") or "").strip().lower()
+        if user_role == "super_admin":
+            return current_admin
+
+        perms = current_admin.get("permissions") or []
+        if "*" in perms:
+            return current_admin
+
+        if required_perm in perms:
+            return current_admin
+
+        # Category check e.g. "questions:*" or "questions:manage"
+        if ":" in required_perm:
+            category, action = required_perm.split(":", 1)
+            if f"{category}:*" in perms or f"{category}:manage" in perms or f"{category}:all" in perms:
+                return current_admin
+
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=f"Access restricted: Your administrative role lacks the '{required_perm}' permission."
+        )
+
+    return permission_checker
+
+
 # ==============================================================================
 # Admin Authentication Endpoints
 # ==============================================================================
@@ -119,6 +154,35 @@ async def get_current_admin_profile(current_admin: dict = Depends(get_current_ad
         organization_name=current_admin["organization_name"],
         permissions=current_admin["permissions"],
         last_login=current_admin.get("last_login")
+    )
+
+
+@router.get(
+    "/check-permission/{permission_key}",
+    status_code=status.HTTP_200_OK,
+    summary="Check if current administrator has specified permission",
+    description="Validates administrative authorization and checks for the required granular permission."
+)
+async def check_admin_permission(
+    permission_key: str,
+    current_admin: dict = Depends(get_current_admin)
+):
+    user_role = (current_admin.get("role") or "").strip().lower()
+    if user_role == "super_admin":
+        return {"status": "success", "authorized": True, "permission": permission_key, "reason": "super_admin wildcard"}
+
+    perms = current_admin.get("permissions") or []
+    if "*" in perms or permission_key in perms:
+        return {"status": "success", "authorized": True, "permission": permission_key}
+
+    if ":" in permission_key:
+        category, action = permission_key.split(":", 1)
+        if f"{category}:*" in perms or f"{category}:manage" in perms:
+            return {"status": "success", "authorized": True, "permission": permission_key}
+
+    raise HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail=f"Access restricted: Your administrative role lacks the '{permission_key}' permission."
     )
 
 

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Policies - BugBash Super Admin</title>
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+    <link rel="stylesheet" href="../css/super-admin-dashboard.css">
+    <link rel="stylesheet" href="../css/super-admin-config.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="sa-body">
+    <div class="sa-layout">
+        <aside class="sa-sidebar" id="saSidebar">
+            <div class="sa-sidebar-header">
+                <a href="/super-admin/dashboard" class="sa-brand">
+                    <img src="../assets/images/bugbash-logo.png?v=1.1" alt="BugBash" height="34" width="70" style="height: 34px !important; width: auto !important; object-fit: contain;">
+                    <span class="sa-brand-badge-pill">SUPER ADMIN</span>
+                </a>
+            </div>
+
+            <nav class="sa-sidebar-scroll">
+                <div class="sa-menu-group">
+                    <span class="sa-menu-title">Core Operations</span>
+                    <a href="/super-admin/dashboard" class="sa-nav-item">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg></span>
+                        <span>Overview</span>
+                    </a>
+                    <a href="/super-admin/admins" class="sa-nav-item">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg></span>
+                        <span>Admin Management</span>
+                    </a>
+                    <a href="/super-admin/users" class="sa-nav-item">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></span>
+                        <span>User Management</span>
+                    </a>
+                </div>
+
+                <div class="sa-menu-group">
+                    <span class="sa-menu-title">System &amp; Governance</span>
+                    <a href="/super-admin/system-configuration" class="sa-nav-item active">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></span>
+                        <span>System Configuration</span>
+                    </a>
+                    <a href="/super-admin/roles" class="sa-nav-item">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></span>
+                        <span>Roles &amp; Permissions</span>
+                    </a>
+                    <a href="/super-admin/permissions" class="sa-nav-item">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg></span>
+                        <span>Permission Matrix</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <div class="sa-main-wrap">
+            <header class="sa-topbar">
+                <div class="sa-topbar-left">
+                    <a href="/super-admin/system-configuration" class="sa-forgot-link" style="display:flex; align-items:center; gap:6px;">
+                        &larr; Back to Configuration Hub
+                    </a>
+                </div>
+                <div class="sa-topbar-right">
+                    <span id="formStatusMsg" style="display: none;"></span>
+                    <button type="button" class="sa-icon-btn theme-toggle" id="theme-toggle-btn" aria-label="Toggle theme">
+                        <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle></svg>
+                    </button>
+                </div>
+            </header>
+
+            <main class="sa-content">
+                <div class="sa-page-header" style="margin-bottom: 24px;">
+                    <div>
+                        <h1 class="sa-page-title" style="font-size: 1.75rem; font-weight: 800; margin: 0 0 6px 0;">Platform Security Policies</h1>
+                        <p class="sa-page-subtitle" style="color: var(--text-secondary); margin: 0;">Configure brute-force protection, lockout thresholds, password entropy, OTP lifespan, and session security.</p>
+                    </div>
+                </div>
+
+                <form id="securitySettingsForm" class="sa-settings-panel">
+                    <!-- Section 1: Password Complexity Standards -->
+                    <div class="sa-settings-section-header">
+                        <h2 class="sa-settings-section-title">Password Complexity &amp; Entropy</h2>
+                        <p class="sa-settings-section-subtitle">Enforced on user registrations, admin onboarding, and credential resets.</p>
+                    </div>
+
+                    <div class="sa-form-grid" style="margin-bottom: 24px;">
+                        <div class="sa-form-group">
+                            <label class="sa-form-label" for="min_password_length">Minimum Password Length</label>
+                            <div class="sa-input-group">
+                                <input type="number" id="min_password_length" class="sa-form-input" min="8" max="64" required>
+                                <span class="sa-input-suffix">Chars</span>
+                            </div>
+                            <span class="sa-form-hint">Strict Security Guardrail: Cannot be set lower than 8 characters.</span>
+                        </div>
+                    </div>
+
+                    <div class="sa-toggle-row">
+                        <div class="sa-toggle-info">
+                            <span class="sa-toggle-title">Require Uppercase Letter (A-Z)</span>
+                            <span class="sa-toggle-desc">Passwords must contain at least one uppercase alphabetic character.</span>
+                        </div>
+                        <label class="sa-switch">
+                            <input type="checkbox" id="require_uppercase">
+                            <span class="sa-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="sa-toggle-row">
+                        <div class="sa-toggle-info">
+                            <span class="sa-toggle-title">Require Lowercase Letter (a-z)</span>
+                            <span class="sa-toggle-desc">Passwords must contain at least one lowercase alphabetic character.</span>
+                        </div>
+                        <label class="sa-switch">
+                            <input type="checkbox" id="require_lowercase">
+                            <span class="sa-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="sa-toggle-row">
+                        <div class="sa-toggle-info">
+                            <span class="sa-toggle-title">Require Numeric Digits (0-9)</span>
+                            <span class="sa-toggle-desc">Passwords must contain at least one numeric digit.</span>
+                        </div>
+                        <label class="sa-switch">
+                            <input type="checkbox" id="require_numbers">
+                            <span class="sa-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="sa-toggle-row" style="margin-bottom: 28px;">
+                        <div class="sa-toggle-info">
+                            <span class="sa-toggle-title">Require Special Characters (!@#$%^&amp;*)</span>
+                            <span class="sa-toggle-desc">Passwords must include symbols to defend against dictionary attacks.</span>
+                        </div>
+                        <label class="sa-switch">
+                            <input type="checkbox" id="require_special_characters">
+                            <span class="sa-slider"></span>
+                        </label>
+                    </div>
+
+                    <!-- Section 2: Rate Limiting & Account Lockout -->
+                    <div class="sa-settings-section-header">
+                        <h2 class="sa-settings-section-title">Brute-Force &amp; Account Lockout Protection</h2>
+                        <p class="sa-settings-section-subtitle">Automated defense against credential stuffing and brute-force penetration attempts.</p>
+                    </div>
+
+                    <div class="sa-form-grid" style="margin-bottom: 28px;">
+                        <div class="sa-form-group">
+                            <label class="sa-form-label" for="login_attempt_limit">Maximum Failed Login Attempts</label>
+                            <div class="sa-input-group">
+                                <input type="number" id="login_attempt_limit" class="sa-form-input" min="3" max="20" required>
+                                <span class="sa-input-suffix">Attempts</span>
+                            </div>
+                            <span class="sa-form-hint">Number of consecutive password failures before temporary lockout triggers.</span>
+                        </div>
+
+                        <div class="sa-form-group">
+                            <label class="sa-form-label" for="account_lockout_duration_minutes">Lockout Duration</label>
+                            <div class="sa-input-group">
+                                <input type="number" id="account_lockout_duration_minutes" class="sa-form-input" min="5" max="1440" required>
+                                <span class="sa-input-suffix">Minutes</span>
+                            </div>
+                            <span class="sa-form-hint">Duration an account or IP remains rate-limited after exceeding failures.</span>
+                        </div>
+
+                        <div class="sa-form-group">
+                            <label class="sa-form-label" for="otp_expiration_minutes">OTP Token Expiration Window</label>
+                            <div class="sa-input-group">
+                                <input type="number" id="otp_expiration_minutes" class="sa-form-input" min="2" max="60" required>
+                                <span class="sa-input-suffix">Minutes</span>
+                            </div>
+                            <span class="sa-form-hint">Lifespan of email verification and password reset one-time codes.</span>
+                        </div>
+
+                        <div class="sa-form-group">
+                            <label class="sa-form-label" for="otp_resend_limit_per_hour">OTP Resend Limit per Hour</label>
+                            <div class="sa-input-group">
+                                <input type="number" id="otp_resend_limit_per_hour" class="sa-form-input" min="1" max="10" required>
+                                <span class="sa-input-suffix">Per Hour</span>
+                            </div>
+                            <span class="sa-form-hint">Prevents spamming mail delivery services.</span>
+                        </div>
+                    </div>
+
+                    <!-- Section 3: Session Lifespan & Authentication Modes -->
+                    <div class="sa-settings-section-header">
+                        <h2 class="sa-settings-section-title">Session Security &amp; MFA Policies</h2>
+                        <p class="sa-settings-section-subtitle">JWT token longevity, revocation rules, and Multi-Factor Authentication requirements.</p>
+                    </div>
+
+                    <div class="sa-form-grid" style="margin-bottom: 24px;">
+                        <div class="sa-form-group">
+                            <label class="sa-form-label" for="session_expiration_hours">Session Inactivity Expiration</label>
+                            <div class="sa-input-group">
+                                <input type="number" id="session_expiration_hours" class="sa-form-input" min="1" max="720" required>
+                                <span class="sa-input-suffix">Hours</span>
+                            </div>
+                            <span class="sa-form-hint">Duration after which an idle user must authenticate again.</span>
+                        </div>
+
+                        <div class="sa-form-group">
+                            <label class="sa-form-label" for="mfa_requirement">Multi-Factor Authentication (MFA)</label>
+                            <select id="mfa_requirement" class="sa-form-select">
+                                <option value="optional">Optional for All Users</option>
+                                <option value="required_for_admins">Mandatory for Administrators &amp; Super Admins</option>
+                                <option value="required_all">Mandatory for Entire Platform</option>
+                            </select>
+                        </div>
+
+                        <div class="sa-form-group col-span-2">
+                            <label class="sa-form-label" for="session_revocation_policy">Password Change Session Revocation</label>
+                            <select id="session_revocation_policy" class="sa-form-select">
+                                <option value="revoke_all_on_password_reset">Immediately Revoke All Other Active Sessions (Recommended)</option>
+                                <option value="preserve_active_sessions">Preserve Active Sessions</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="sa-toggle-row" style="margin-bottom: 28px;">
+                        <div class="sa-toggle-info">
+                            <span class="sa-toggle-title">Refresh Token Rotation</span>
+                            <span class="sa-toggle-desc">Issues a new refresh token on every renewal and automatically revokes leaked tokens.</span>
+                        </div>
+                        <label class="sa-switch">
+                            <input type="checkbox" id="refresh_token_rotation">
+                            <span class="sa-slider"></span>
+                        </label>
+                    </div>
+
+                    <!-- Sticky Actions Footer -->
+                    <div class="sa-sticky-actions">
+                        <div class="sa-actions-summary">
+                            <span class="sa-changes-pill">Security Policies</span>
+                            <span>Changes are validated on backend and recorded in audit logs.</span>
+                        </div>
+                        <div>
+                            <button type="submit" class="sa-btn-primary" id="saveSettingsBtn">Enforce Security Policies</button>
+                        </div>
+                    </div>
+                </form>
+            </main>
+        </div>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/super-admin-security-settings.js"></script>
+</body>
+</html>

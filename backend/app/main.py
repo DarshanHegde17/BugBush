@@ -4,9 +4,9 @@ from dotenv import load_dotenv
 # Load environment configuration from .env file
 load_dotenv()
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
 from backend.app.routers.auth import router as auth_router
@@ -18,6 +18,12 @@ from backend.app.routers.super_admin_dashboard import (
 )
 from backend.app.routers.super_admin_admins import router as super_admin_admins_router
 from backend.app.routers.super_admin_roles import roles_router as super_admin_roles_router, admin_roles_router as super_admin_admin_roles_router
+from backend.app.routers.super_admin_config import (
+    config_router as super_admin_config_router,
+    integrations_router as super_admin_integrations_router,
+    public_config_router
+)
+from backend.app.services.super_admin_config_service import super_admin_config_service
 from backend.app.routers.admin_dashboard import router as admin_dashboard_router
 from backend.app.routers.admin_assessments import router as admin_assessments_router
 from backend.app.routers.admin_candidates import router as admin_candidates_router, groups_router as admin_groups_router
@@ -54,6 +60,37 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+@app.middleware("http")
+async def maintenance_mode_middleware(request: Request, call_next):
+    """Enforces platform maintenance mode across non-exempt routes and endpoints."""
+    if super_admin_config_service.is_maintenance_active():
+        path = request.url.path
+        exempt_prefixes = (
+            "/super-admin",
+            "/api/v1/super-admin",
+            "/api/health",
+            "/assets",
+            "/css",
+            "/js",
+            "/api/v1/public"
+        )
+        is_exempt = any(path.startswith(p) for p in exempt_prefixes)
+        if not is_exempt:
+            if path.startswith("/api/"):
+                maint_info = super_admin_config_service.get_public_maintenance_status()
+                return JSONResponse(
+                    status_code=503,
+                    content={
+                        "status": "maintenance",
+                        "message": maint_info["message"],
+                        "start_time": maint_info["start_time"],
+                        "end_time": maint_info["end_time"]
+                    }
+                )
+    return await call_next(request)
+
+
 # Include API Routers
 app.include_router(auth_router, prefix="/api/v1/auth", tags=["Authentication"])
 app.include_router(admin_auth_router, prefix="/api/v1/admin/auth", tags=["Admin Authentication"])
@@ -63,6 +100,9 @@ app.include_router(super_admin_platform_router, prefix="/api/v1/super-admin/plat
 app.include_router(super_admin_admins_router, prefix="/api/v1/super-admin/admins", tags=["Super Admin Admin Management"])
 app.include_router(super_admin_roles_router, prefix="/api/v1/super-admin", tags=["Super Admin Roles & Permissions"])
 app.include_router(super_admin_admin_roles_router, prefix="/api/v1/super-admin/admins", tags=["Super Admin Admin Role Assignments"])
+app.include_router(super_admin_config_router, prefix="/api/v1/super-admin/configuration", tags=["Super Admin Configuration"])
+app.include_router(super_admin_integrations_router, prefix="/api/v1/super-admin/integrations", tags=["Super Admin Integrations"])
+app.include_router(public_config_router, prefix="/api/v1/public", tags=["Public Configuration"])
 app.include_router(admin_dashboard_router, prefix="/api/v1/admin", tags=["Admin Dashboard"])
 app.include_router(admin_assessments_router, prefix="/api/v1/admin/assessments", tags=["Admin Assessment Management"])
 app.include_router(admin_candidates_router, prefix="/api/v1/admin/candidates", tags=["Admin Candidates Management"])

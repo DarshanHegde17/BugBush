@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Service Settings - BugBash Super Admin</title>
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+    <link rel="stylesheet" href="../css/super-admin-dashboard.css">
+    <link rel="stylesheet" href="../css/super-admin-config.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="sa-body">
+    <div class="sa-layout">
+        <aside class="sa-sidebar" id="saSidebar">
+            <div class="sa-sidebar-header">
+                <a href="/super-admin/dashboard" class="sa-brand">
+                    <img src="../assets/images/bugbash-logo.png?v=1.1" alt="BugBash" height="34" width="70" style="height: 34px !important; width: auto !important; object-fit: contain;">
+                    <span class="sa-brand-badge-pill">SUPER ADMIN</span>
+                </a>
+            </div>
+
+            <nav class="sa-sidebar-scroll">
+                <div class="sa-menu-group">
+                    <span class="sa-menu-title">Core Operations</span>
+                    <a href="/super-admin/dashboard" class="sa-nav-item">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg></span>
+                        <span>Overview</span>
+                    </a>
+                    <a href="/super-admin/admins" class="sa-nav-item">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg></span>
+                        <span>Admin Management</span>
+                    </a>
+                    <a href="/super-admin/users" class="sa-nav-item">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></span>
+                        <span>User Management</span>
+                    </a>
+                </div>
+
+                <div class="sa-menu-group">
+                    <span class="sa-menu-title">System &amp; Governance</span>
+                    <a href="/super-admin/system-configuration" class="sa-nav-item active">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></span>
+                        <span>System Configuration</span>
+                    </a>
+                    <a href="/super-admin/roles" class="sa-nav-item">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></span>
+                        <span>Roles &amp; Permissions</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <div class="sa-main-wrap">
+            <header class="sa-topbar">
+                <div class="sa-topbar-left">
+                    <a href="/super-admin/system-configuration" class="sa-forgot-link" style="display:flex; align-items:center; gap:6px;">
+                        &larr; Back to Configuration Hub
+                    </a>
+                </div>
+                <div class="sa-topbar-right">
+                    <span id="formStatusMsg" style="display: none;"></span>
+                    <button type="button" class="sa-icon-btn theme-toggle" id="theme-toggle-btn" aria-label="Toggle theme">
+                        <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle></svg>
+                    </button>
+                </div>
+            </header>
+
+            <main class="sa-content">
+                <div class="sa-page-header" style="margin-bottom: 24px; display: flex; justify-content: space-between; align-items: flex-start;">
+                    <div>
+                        <h1 class="sa-page-title" style="font-size: 1.75rem; font-weight: 800; margin: 0 0 6px 0;">Email Gateway (SMTP) Configuration</h1>
+                        <p class="sa-page-subtitle" style="color: var(--text-secondary); margin: 0;">Configure outbound mail relay for candidate verification, password resets, and assessment notifications.</p>
+                    </div>
+                    <button type="button" class="sa-btn-secondary" id="openTestModalBtn">
+                        ✉️ Send Test Email
+                    </button>
+                </div>
+
+                <!-- Unconfigured Warning Banner -->
+                <div id="unconfiguredWarningBanner" class="sa-maint-banner inactive" style="display: none; background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.35);">
+                    <div class="sa-maint-icon">⚠️</div>
+                    <div class="sa-maint-info">
+                        <div class="sa-maint-title" style="color: #f59e0b;">SMTP Provider Not Fully Configured</div>
+                        <div class="sa-maint-desc">The application is running in development fallback mode. Live emails will be recorded in logs until valid SMTP credentials are saved.</div>
+                    </div>
+                </div>
+
+                <form id="emailSettingsForm" class="sa-settings-panel">
+                    <div class="sa-settings-section-header">
+                        <h2 class="sa-settings-section-title">SMTP Server Connection</h2>
+                        <p class="sa-settings-section-subtitle">Credentials and socket parameters for your outbound mail transfer agent.</p>
+                    </div>
+
+                    <div class="sa-form-grid" style="margin-bottom: 28px;">
+                        <div class="sa-form-group">
+                            <label class="sa-form-label" for="smtp_host">SMTP Host</label>
+                            <input type="text" id="smtp_host" class="sa-form-input" placeholder="e.g., smtp.gmail.com or smtp.sendgrid.net" required>
+                        </div>
+
+                        <div class="sa-form-group">
+                            <label class="sa-form-label" for="smtp_port">SMTP Port</label>
+                            <input type="number" id="smtp_port" class="sa-form-input" min="1" max="65535" required>
+                            <span class="sa-form-hint">Standard: 587 (STARTTLS), 465 (SSL), or 2525.</span>
+                        </div>
+
+                        <div class="sa-form-group">
+                            <label class="sa-form-label" for="encryption_method">Encryption Protocol</label>
+                            <select id="encryption_method" class="sa-form-select">
+                                <option value="TLS">STARTTLS (Port 587 - Recommended)</option>
+                                <option value="SSL">SSL / TLS Direct (Port 465)</option>
+                                <option value="None">None (Unencrypted)</option>
+                            </select>
+                        </div>
+
+                        <div class="sa-form-group">
+                            <label class="sa-form-label" for="smtp_user">SMTP Username / API User</label>
+                            <input type="text" id="smtp_user" class="sa-form-input" placeholder="e.g., apikey or admin@bugbash.com">
+                        </div>
+
+                        <div class="sa-form-group col-span-2">
+                            <label class="sa-form-label" for="smtp_password">SMTP App Password / Secret Key</label>
+                            <input type="password" id="smtp_password" class="sa-form-input" autocomplete="new-password">
+                            <span class="sa-form-hint">🛡️ <strong>Security Protected:</strong> Secret values are encrypted on the server and never returned to the browser. Leave unchanged to retain existing password.</span>
+                        </div>
+                    </div>
+
+                    <div class="sa-settings-section-header">
+                        <h2 class="sa-settings-section-title">Sender Identity &amp; Branding</h2>
+                        <p class="sa-settings-section-subtitle">Information candidates see in the "From:" header of dispatched emails.</p>
+                    </div>
+
+                    <div class="sa-form-grid" style="margin-bottom: 28px;">
+                        <div class="sa-form-group">
+                            <label class="sa-form-label" for="sender_email">From Email Address</label>
+                            <input type="email" id="sender_email" class="sa-form-input" placeholder="no-reply@bugbash.com" required>
+                        </div>
+
+                        <div class="sa-form-group">
+                            <label class="sa-form-label" for="sender_name">From Display Name</label>
+                            <input type="text" id="sender_name" class="sa-form-input" placeholder="BugBash Assessment Operations" required>
+                        </div>
+                    </div>
+
+                    <div class="sa-sticky-actions">
+                        <div class="sa-actions-summary">
+                            <span class="sa-changes-pill">Outbound Mail Pipeline</span>
+                            <span>Validates TLS handshake and authentication before delivery.</span>
+                        </div>
+                        <div>
+                            <button type="submit" class="sa-btn-primary" id="saveSettingsBtn">Save SMTP Settings</button>
+                        </div>
+                    </div>
+                </form>
+            </main>
+        </div>
+    </div>
+
+    <!-- Diagnostic Test Email Modal -->
+    <div class="sa-modal-backdrop" id="testEmailModal">
+        <div class="sa-modal">
+            <div class="sa-modal-header">
+                <h3 class="sa-modal-title">Dispatch Diagnostic Test Email</h3>
+                <button type="button" class="sa-modal-close" id="closeTestModalBtn">&times;</button>
+            </div>
+            <div class="sa-modal-body">
+                <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 16px;">
+                    Send an authenticated test message through your configured SMTP server to verify handshake, credentials, and inbox delivery.
+                </p>
+                <div class="sa-form-group" style="margin-bottom: 16px;">
+                    <label class="sa-form-label" for="testRecipientEmail">Test Recipient Email Address</label>
+                    <input type="email" id="testRecipientEmail" class="sa-form-input" placeholder="admin@example.com" required>
+                </div>
+                <div id="testResultAlert" style="display: none; padding: 12px; border-radius: 8px; font-size: 0.85rem; margin-top: 12px;"></div>
+            </div>
+            <div class="sa-modal-footer">
+                <button type="button" class="sa-btn-primary" id="sendTestEmailBtn">Dispatch Diagnostic Email</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/super-admin-email-settings.js"></script>
+</body>
+</html>

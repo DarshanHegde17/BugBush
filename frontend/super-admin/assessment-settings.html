@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assessment Defaults - BugBash Super Admin</title>
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+    <link rel="stylesheet" href="../css/super-admin-dashboard.css">
+    <link rel="stylesheet" href="../css/super-admin-config.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="sa-body">
+    <div class="sa-layout">
+        <aside class="sa-sidebar" id="saSidebar">
+            <div class="sa-sidebar-header">
+                <a href="/super-admin/dashboard" class="sa-brand">
+                    <img src="../assets/images/bugbash-logo.png?v=1.1" alt="BugBash" height="34" width="70" style="height: 34px !important; width: auto !important; object-fit: contain;">
+                    <span class="sa-brand-badge-pill">SUPER ADMIN</span>
+                </a>
+            </div>
+
+            <nav class="sa-sidebar-scroll">
+                <div class="sa-menu-group">
+                    <span class="sa-menu-title">Core Operations</span>
+                    <a href="/super-admin/dashboard" class="sa-nav-item">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg></span>
+                        <span>Overview</span>
+                    </a>
+                    <a href="/super-admin/admins" class="sa-nav-item">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg></span>
+                        <span>Admin Management</span>
+                    </a>
+                    <a href="/super-admin/users" class="sa-nav-item">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></span>
+                        <span>User Management</span>
+                    </a>
+                </div>
+
+                <div class="sa-menu-group">
+                    <span class="sa-menu-title">System &amp; Governance</span>
+                    <a href="/super-admin/system-configuration" class="sa-nav-item active">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></span>
+                        <span>System Configuration</span>
+                    </a>
+                    <a href="/super-admin/roles" class="sa-nav-item">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></span>
+                        <span>Roles &amp; Permissions</span>
+                    </a>
+                    <a href="/super-admin/permissions" class="sa-nav-item">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg></span>
+                        <span>Permission Matrix</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <div class="sa-main-wrap">
+            <header class="sa-topbar">
+                <div class="sa-topbar-left">
+                    <a href="/super-admin/system-configuration" class="sa-forgot-link" style="display:flex; align-items:center; gap:6px;">
+                        &larr; Back to Configuration Hub
+                    </a>
+                </div>
+                <div class="sa-topbar-right">
+                    <span id="formStatusMsg" style="display: none;"></span>
+                    <button type="button" class="sa-icon-btn theme-toggle" id="theme-toggle-btn" aria-label="Toggle theme">
+                        <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle></svg>
+                    </button>
+                </div>
+            </header>
+
+            <main class="sa-content">
+                <div class="sa-page-header" style="margin-bottom: 24px;">
+                    <div>
+                        <h1 class="sa-page-title" style="font-size: 1.75rem; font-weight: 800; margin: 0 0 6px 0;">Default Assessment Configuration</h1>
+                        <p class="sa-page-subtitle" style="color: var(--text-secondary); margin: 0;">Establish platform-wide defaults for newly created exams, timers, execution resource bounds, and result disclosures.</p>
+                    </div>
+                </div>
+
+                <div class="sa-status-badge connected" style="margin-bottom: 20px; font-size: 0.82rem; padding: 10px 14px; border-radius: 8px;">
+                    ℹ️ <strong>Defaults Guardrail:</strong> These parameters pre-populate newly authored assessments. Specific assessment settings override these defaults, ensuring active examinations are never unexpectedly disrupted.
+                </div>
+
+                <form id="assessmentSettingsForm" class="sa-settings-panel">
+                    <!-- Section 1: Timers & Structure -->
+                    <div class="sa-settings-section-header">
+                        <h2 class="sa-settings-section-title">Durations &amp; Timing Behavior</h2>
+                        <p class="sa-settings-section-subtitle">Candidate time allowances and section pacing enforcement.</p>
+                    </div>
+
+                    <div class="sa-form-grid" style="margin-bottom: 28px;">
+                        <div class="sa-form-group">
+                            <label class="sa-form-label" for="default_duration_minutes">Default Assessment Duration</label>
+                            <div class="sa-input-group">
+                                <input type="number" id="default_duration_minutes" class="sa-form-input" min="10" max="360" required>
+                                <span class="sa-input-suffix">Minutes</span>
+                            </div>
+                            <span class="sa-form-hint">Standard length pre-filled during assessment drafting.</span>
+                        </div>
+
+                        <div class="sa-form-group">
+                            <label class="sa-form-label" for="section_timer_behavior">Section Timer Behavior</label>
+                            <select id="section_timer_behavior" class="sa-form-select">
+                                <option value="flexible_total_time">Flexible Total Time (Candidates allocate time freely)</option>
+                                <option value="strict_per_section">Strict Per Section (Auto-submits section when timer expires)</option>
+                                <option value="warning_prompts">Warning Prompts (Alerts candidate when recommended time lapses)</option>
+                            </select>
+                        </div>
+
+                        <div class="sa-form-group">
+                            <label class="sa-form-label" for="default_difficulty">Default Difficulty Preset</label>
+                            <select id="default_difficulty" class="sa-form-select">
+                                <option value="Beginner">Beginner</option>
+                                <option value="Intermediate">Intermediate</option>
+                                <option value="Advanced">Advanced</option>
+                                <option value="Expert">Expert</option>
+                            </select>
+                        </div>
+
+                        <div class="sa-form-group">
+                            <label class="sa-form-label" for="max_questions_per_assessment">Maximum Questions Allowed</label>
+                            <input type="number" id="max_questions_per_assessment" class="sa-form-input" min="1" max="50" required>
+                            <span class="sa-form-hint">Maximum number of challenge items per single contest.</span>
+                        </div>
+                    </div>
+
+                    <!-- Section 2: Code Execution Sandbox & Resources -->
+                    <div class="sa-settings-section-header">
+                        <h2 class="sa-settings-section-title">Execution Sandbox &amp; Resource Bounds</h2>
+                        <p class="sa-settings-section-subtitle">Hardware and timeout constraints applied to candidate code submissions.</p>
+                    </div>
+
+                    <div class="sa-form-grid" style="margin-bottom: 28px;">
+                        <div class="sa-form-group">
+                            <label class="sa-form-label" for="code_execution_time_limit_seconds">Execution Timeout Limit</label>
+                            <div class="sa-input-group">
+                                <input type="number" step="0.5" id="code_execution_time_limit_seconds" class="sa-form-input" min="1.0" max="15.0" required>
+                                <span class="sa-input-suffix">Seconds</span>
+                            </div>
+                            <span class="sa-form-hint">Maximum runtime before a Time Limit Exceeded (TLE) is declared.</span>
+                        </div>
+
+                        <div class="sa-form-group">
+                            <label class="sa-form-label" for="memory_limit_mb">Memory Consumption Limit</label>
+                            <div class="sa-input-group">
+                                <input type="number" id="memory_limit_mb" class="sa-form-input" min="64" max="1024" required>
+                                <span class="sa-input-suffix">MB</span>
+                            </div>
+                            <span class="sa-form-hint">Maximum heap/RAM threshold allocated to the subprocess sandbox.</span>
+                        </div>
+
+                        <div class="sa-form-group">
+                            <label class="sa-form-label" for="submission_limits">Submission Limit per Problem</label>
+                            <input type="number" id="submission_limits" class="sa-form-input" min="0" max="50" required>
+                            <span class="sa-form-hint">Maximum evaluations allowed per question (enter 0 for unlimited).</span>
+                        </div>
+
+                        <div class="sa-form-group">
+                            <label class="sa-form-label" for="autosave_interval_seconds">Editor Autosave Interval</label>
+                            <div class="sa-input-group">
+                                <input type="number" id="autosave_interval_seconds" class="sa-form-input" min="5" max="300" required>
+                                <span class="sa-input-suffix">Seconds</span>
+                            </div>
+                            <span class="sa-form-hint">Frequency at which the candidate's active code draft is synced.</span>
+                        </div>
+
+                        <div class="sa-form-group col-span-2">
+                            <label class="sa-form-label">Allowed Programming Languages</label>
+                            <span class="sa-form-hint">Select the language compilers/interpreters enabled for candidate assessments:</span>
+                            <div class="sa-lang-chips" id="languagesContainer">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 3: Result Visibility & Instructions -->
+                    <div class="sa-settings-section-header">
+                        <h2 class="sa-settings-section-title">Results Disclosure &amp; Standard Rules</h2>
+                        <p class="sa-settings-section-subtitle">Determine when candidate score reports become accessible and pre-fill default rules.</p>
+                    </div>
+
+                    <div class="sa-form-grid" style="margin-bottom: 28px;">
+                        <div class="sa-form-group col-span-2">
+                            <label class="sa-form-label" for="result_visibility">Default Result Visibility Policy</label>
+                            <select id="result_visibility" class="sa-form-select">
+                                <option value="after_assessment_closes">Release After Assessment Closes (Recommended)</option>
+                                <option value="immediate">Immediate Score Display (Instant score upon exam submission)</option>
+                                <option value="manual_admin_release">Manual Admin Release (Withheld until published by Evaluator)</option>
+                                <option value="hidden_from_candidate">Hidden from Candidate (Internal hiring evaluation only)</option>
+                            </select>
+                        </div>
+
+                        <div class="sa-form-group col-span-2">
+                            <label class="sa-form-label" for="default_instructions">Standard Candidate Examination Instructions</label>
+                            <textarea id="default_instructions" class="sa-form-textarea" style="min-height: 120px;"></textarea>
+                            <span class="sa-form-hint">Pre-filled markdown guidelines presented in the examination pre-check lobby.</span>
+                        </div>
+                    </div>
+
+                    <!-- Sticky Actions Footer -->
+                    <div class="sa-sticky-actions">
+                        <div class="sa-actions-summary">
+                            <span class="sa-changes-pill">Assessment Defaults</span>
+                            <span>Newly authored tests inherit these standards automatically.</span>
+                        </div>
+                        <div>
+                            <button type="submit" class="sa-btn-primary" id="saveSettingsBtn">Save Assessment Defaults</button>
+                        </div>
+                    </div>
+                </form>
+            </main>
+        </div>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/super-admin-assessment-settings.js"></script>
+</body>
+</html>

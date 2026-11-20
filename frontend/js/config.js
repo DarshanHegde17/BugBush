@@ -106,6 +106,15 @@
             SUPER_ADMIN_ADMINS_INVITE: '/super-admin/admins/invite',
             SUPER_ADMIN_ROLES: '/super-admin/roles',
             SUPER_ADMIN_PERMISSIONS: '/super-admin/permissions',
+            SUPER_ADMIN_CONFIG: '/super-admin/configuration',
+            SUPER_ADMIN_CONFIG_GENERAL: '/super-admin/configuration/general',
+            SUPER_ADMIN_CONFIG_ASSESSMENT: '/super-admin/configuration/assessment',
+            SUPER_ADMIN_CONFIG_SECURITY: '/super-admin/configuration/security',
+            SUPER_ADMIN_CONFIG_EMAIL: '/super-admin/configuration/email',
+            SUPER_ADMIN_CONFIG_EMAIL_TEST: '/super-admin/configuration/email/test',
+            SUPER_ADMIN_CONFIG_MAINTENANCE: '/super-admin/configuration/maintenance',
+            SUPER_ADMIN_CONFIG_AUDIT: '/super-admin/configuration/audit',
+            SUPER_ADMIN_INTEGRATIONS: '/super-admin/integrations',
             PRACTICE_PROBLEMS: '/practice/problems'
         },
 

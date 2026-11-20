@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maintenance Mode - BugBash Super Admin</title>
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+    <link rel="stylesheet" href="../css/super-admin-dashboard.css">
+    <link rel="stylesheet" href="../css/super-admin-config.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="sa-body">
+    <div class="sa-layout">
+        <aside class="sa-sidebar" id="saSidebar">
+            <div class="sa-sidebar-header">
+                <a href="/super-admin/dashboard" class="sa-brand">
+                    <img src="../assets/images/bugbash-logo.png?v=1.1" alt="BugBash" height="34" width="70" style="height: 34px !important; width: auto !important; object-fit: contain;">
+                    <span class="sa-brand-badge-pill">SUPER ADMIN</span>
+                </a>
+            </div>
+
+            <nav class="sa-sidebar-scroll">
+                <div class="sa-menu-group">
+                    <span class="sa-menu-title">Core Operations</span>
+                    <a href="/super-admin/dashboard" class="sa-nav-item">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg></span>
+                        <span>Overview</span>
+                    </a>
+                    <a href="/super-admin/admins" class="sa-nav-item">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg></span>
+                        <span>Admin Management</span>
+                    </a>
+                    <a href="/super-admin/users" class="sa-nav-item">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></span>
+                        <span>User Management</span>
+                    </a>
+                </div>
+
+                <div class="sa-menu-group">
+                    <span class="sa-menu-title">System &amp; Governance</span>
+                    <a href="/super-admin/system-configuration" class="sa-nav-item active">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></span>
+                        <span>System Configuration</span>
+                    </a>
+                    <a href="/super-admin/roles" class="sa-nav-item">
+                        <span class="sa-nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></span>
+                        <span>Roles &amp; Permissions</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <div class="sa-main-wrap">
+            <header class="sa-topbar">
+                <div class="sa-topbar-left">
+                    <a href="/super-admin/system-configuration" class="sa-forgot-link" style="display:flex; align-items:center; gap:6px;">
+                        &larr; Back to Configuration Hub
+                    </a>
+                </div>
+                <div class="sa-topbar-right">
+                    <span id="formStatusMsg" style="display: none;"></span>
+                    <button type="button" class="sa-icon-btn theme-toggle" id="theme-toggle-btn" aria-label="Toggle theme">
+                        <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle></svg>
+                    </button>
+                </div>
+            </header>
+
+            <main class="sa-content">
+                <div class="sa-page-header" style="margin-bottom: 24px;">
+                    <div>
+                        <h1 class="sa-page-title" style="font-size: 1.75rem; font-weight: 800; margin: 0 0 6px 0;">Maintenance Mode &amp; Upgrades</h1>
+                        <p class="sa-page-subtitle" style="color: var(--text-secondary); margin: 0;">Schedule platform upgrade windows, pause candidate exam starts, and broadcast maintenance downtime.</p>
+                    </div>
+                </div>
+
+                <!-- Live Status Banner -->
+                <div id="maintStatusBanner" class="sa-maint-banner inactive">
+                    <div class="sa-maint-icon">🛡️</div>
+                    <div class="sa-maint-info">
+                        <div class="sa-maint-title" id="maintStatusText">NORMAL PLATFORM OPERATIONS</div>
+                        <div class="sa-maint-desc">All candidate portals, coding execution engines, and evaluations are online.</div>
+                    </div>
+                </div>
+
+                <form id="maintenanceForm" class="sa-settings-panel">
+                    <div class="sa-settings-section-header">
+                        <h2 class="sa-settings-section-title">Maintenance Activation &amp; Window</h2>
+                        <p class="sa-settings-section-subtitle">Toggle emergency or scheduled maintenance. Super Admin endpoints and health checks are exempted.</p>
+                    </div>
+
+                    <div class="sa-toggle-row" style="margin-bottom: 24px;">
+                        <div class="sa-toggle-info">
+                            <span class="sa-toggle-title">Enable Platform Maintenance Mode</span>
+                            <span class="sa-toggle-desc">Blocks non-administrative incoming traffic and returns HTTP 503 with maintenance message.</span>
+                        </div>
+                        <label class="sa-switch">
+                            <input type="checkbox" id="is_enabled">
+                            <span class="sa-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="sa-form-grid" style="margin-bottom: 28px;">
+                        <div class="sa-form-group">
+                            <label class="sa-form-label" for="maintenanceStartTime">Maintenance Start Window (UTC)</label>
+                            <input type="text" id="maintenanceStartTime" class="sa-form-input" placeholder="e.g. 2026-11-20T23:00:00Z (Optional)">
+                            <span class="sa-form-hint">Leave blank to enforce immediately when toggle is active.</span>
+                        </div>
+
+                        <div class="sa-form-group">
+                            <label class="sa-form-label" for="maintenanceEndTime">Estimated Completion (UTC)</label>
+                            <input type="text" id="maintenanceEndTime" class="sa-form-input" placeholder="e.g. 2026-11-21T02:00:00Z (Optional)">
+                            <span class="sa-form-hint">Displayed to candidates so they know when platform resumes.</span>
+                        </div>
+
+                        <div class="sa-form-group col-span-2">
+                            <label class="sa-form-label" for="maintenanceMessage">Maintenance Announcement Notice</label>
+                            <textarea id="maintenanceMessage" class="sa-form-textarea" style="min-height: 90px;"></textarea>
+                            <span class="sa-form-hint">Shown on candidate screen and API JSON error responses.</span>
+                        </div>
+                    </div>
+
+                    <!-- Live Candidate View Preview -->
+                    <div class="sa-settings-section-header">
+                        <h2 class="sa-settings-section-title">Live Candidate Notice Preview</h2>
+                        <p class="sa-settings-section-subtitle">Real-time simulation of the maintenance screen presented to candidates.</p>
+                    </div>
+
+                    <div class="sa-preview-container">
+                        <div class="sa-preview-header">
+                            <span>Candidate View Preview</span>
+                        </div>
+                        <div class="sa-preview-box">
+                            <div style="font-size: 2.5rem; margin-bottom: 12px;">🛠️</div>
+                            <h3 style="color: #ff6b35; font-size: 1.35rem; font-weight: 700; margin: 0 0 8px 0;">BugBash is Undergoing Upgrades</h3>
+                            <p id="previewMessage" style="color: #cbd5e1; font-size: 0.92rem; max-width: 500px; margin: 0 auto 16px auto; line-height: 1.6;">
+                                BugBash is currently undergoing scheduled platform upgrades. We will be back online shortly.
+                            </p>
+                            <span class="sa-status-badge degraded" style="font-size: 0.75rem;">HTTP 503 SERVICE UNAVAILABLE</span>
+                        </div>
+                    </div>
+
+                    <div class="sa-sticky-actions">
+                        <div class="sa-actions-summary">
+                            <span class="sa-changes-pill">Emergency Safe</span>
+                            <span>Super Admin routes and /api/health remain permanently accessible.</span>
+                        </div>
+                        <div>
+                            <button type="submit" class="sa-btn-primary" id="saveMaintenanceBtn">Update Maintenance Settings</button>
+                        </div>
+                    </div>
+                </form>
+            </main>
+        </div>
+    </div>
+
+    <!-- Confirm Enable Maintenance Modal -->
+    <div class="sa-modal-backdrop" id="confirmMaintModal">
+        <div class="sa-modal">
+            <div class="sa-modal-header">
+                <h3 class="sa-modal-title" style="color: #f59e0b;">⚠️ Confirm Maintenance Mode Activation</h3>
+            </div>
+            <div class="sa-modal-body">
+                <p style="font-size: 0.92rem; line-height: 1.5; color: var(--text-primary); margin-bottom: 14px;">
+                    Are you sure you want to <strong>ACTIVATE MAINTENANCE MODE</strong> across the BugBash platform?
+                </p>
+                <ul style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 16px; padding-left: 20px;">
+                    <li>Candidates and regular users will receive a 503 Maintenance notice.</li>
+                    <li>Live exam attempts and practice submissions will be temporarily paused.</li>
+                    <li>Super Admin routes (<code>/super-admin/*</code>) remain accessible for recovery.</li>
+                </ul>
+            </div>
+            <div class="sa-modal-footer">
+                <button type="button" class="sa-btn-secondary" id="cancelActionBtn">Cancel</button>
+                <button type="button" class="sa-btn-primary" id="confirmActionBtn" style="background: #f59e0b;">Confirm &amp; Activate</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/super-admin-maintenance.js"></script>
+</body>
+</html>

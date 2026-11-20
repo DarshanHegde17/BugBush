@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BugBash Admin &bull; Candidate &amp; Student Management</title>
+    <meta name="description" content="BugBash Administrator directory for candidate profile management, cohort grouping, assessment assignments, and participation telemetry.">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff6b35'><path d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/></svg>">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/css/admin-dashboard.css">
+    <link rel="stylesheet" href="/css/assessments.css">
+    <link rel="stylesheet" href="/css/candidates.css">
+</head>
+<body id="adminCandidatesPage">
+    <div class="app-container">
+        
+        <!-- ================================================================
+             1. Sidebar Navigation (Candidates Active)
+             ================================================================ -->
+        <aside class="admin-sidebar" id="adminSidebar">
+            <div class="sidebar-header">
+                <a href="/admin/dashboard" class="brand-wrapper">
+                    <div class="brand-logo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <div class="brand-text">
+                        <span>BugBash</span>
+                        <span class="admin-tag">ADMIN</span>
+                    </div>
+                </a>
+                <button type="button" class="sidebar-toggle-btn" id="sidebarToggleBtn" aria-label="Toggle Sidebar Navigation">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <ul class="sidebar-menu">
+                <li class="menu-category">Operations</li>
+                
+                <li class="nav-item">
+                    <a href="/admin/dashboard" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="9"></rect>
+                            <rect x="14" y="3" width="7" height="5"></rect>
+                            <rect x="14" y="12" width="7" height="9"></rect>
+                            <rect x="3" y="16" width="7" height="5"></rect>
+                        </svg>
+                        <span class="nav-text">Overview</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/admin/questions" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                        <span class="nav-text">Question Bank</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/admin/assessments" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                        <span class="nav-text">Assessments</span>
+                    </a>
+                </li>
+
+                <li class="nav-item active">
+                    <a href="/admin/candidates" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                        <span class="nav-text">Students &amp; Candidates</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/admin/submissions" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 11 12 14 22 4"></polyline>
+                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                        </svg>
+                        <span class="nav-text">Submissions</span>
+                    </a>
+                </li>
+
+                <li class="menu-category">Intelligence &amp; Config</li>
+
+                <li class="nav-item">
+                    <a href="/admin/results" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="20" x2="18" y2="10"></line>
+                            <line x1="12" y1="20" x2="12" y2="4"></line>
+                            <line x1="6" y1="20" x2="6" y2="14"></line>
+                        </svg>
+                        <span class="nav-text">Results &amp; Analytics</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/admin/ml-insights" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="2"></circle>
+                            <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"></path>
+                        </svg>
+                        <span class="nav-text">ML Insights</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/admin/profile" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <span class="nav-text">My Profile</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/admin/settings" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                        </svg>
+                        <span class="nav-text">Settings</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <div class="sidebar-user-card">
+                    <div class="user-avatar-badge" id="sidebarAdminAvatar">A</div>
+                    <div class="user-details">
+                        <span class="user-name" id="sidebarAdminName">Administrator</span>
+                        <span class="user-role">Super Admin</span>
+                    </div>
+                    <button type="button" class="btn-sidebar-logout btn-admin-logout" title="Sign Out">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16 17 21 12 16 7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ================================================================
+             2. Main Content Wrapper
+             ================================================================ -->
+        <div class="main-wrapper" id="mainWrapper">
+            
+            <!-- Topbar Navigation -->
+            <header class="admin-topbar">
+                <div class="topbar-left">
+                    <div class="breadcrumb-trail">
+                        <a href="/admin/dashboard" class="bc-link">Admin</a>
+                        <span class="bc-sep">/</span>
+                        <span class="bc-current">Candidate Directory</span>
+                    </div>
+                </div>
+
+                <div class="topbar-right">
+                    <button type="button" class="topbar-action-btn" id="themeToggleBtn" title="Toggle Theme">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                    </button>
+
+                    <div class="user-profile-pill">
+                        <div class="user-profile-avatar">A</div>
+                        <span class="user-profile-name" id="userPillName">Administrator</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Body -->
+            <main class="page-content">
+                
+                <!-- Sub-navigation Header Tabs -->
+                <div class="candidate-subnav-bar">
+                    <ul class="candidate-nav-tabs">
+                        <li>
+                            <a href="/admin/candidates" class="candidate-nav-tab active">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                                <span>All Candidates</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/admin/candidate-groups" class="candidate-nav-tab">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                                <span>Cohorts &amp; Groups</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/admin/import-candidates" class="candidate-nav-tab">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                                <span>Import CSV</span>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <div class="subnav-actions">
+                        <a href="/admin/import-candidates" class="btn btn-secondary">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                            <span>Import CSV</span>
+                        </a>
+                        <button type="button" class="btn btn-primary" id="btnOpenInviteModal">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                            <span>+ Invite Candidate</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 6 Telemetry Metric Cards -->
+                <div class="candidate-summary-grid">
+                    <div class="c-stat-card">
+                        <div class="c-stat-header">
+                            <span class="c-stat-title">Total Candidates</span>
+                            <div class="c-stat-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+                            </div>
+                        </div>
+                        <div class="c-stat-value" id="statTotalCandidates">0</div>
+                        <div class="c-stat-sub">Registered platform cohort</div>
+                    </div>
+
+                    <div class="c-stat-card">
+                        <div class="c-stat-header">
+                            <span class="c-stat-title">Active Candidates</span>
+                            <div class="c-stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            </div>
+                        </div>
+                        <div class="c-stat-value" id="statActiveCandidates" style="color: #10b981;">0</div>
+                        <div class="c-stat-sub">Non-suspended examinees</div>
+                    </div>
+
+                    <div class="c-stat-card">
+                        <div class="c-stat-header">
+                            <span class="c-stat-title">Verified Accounts</span>
+                            <div class="c-stat-icon" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                            </div>
+                        </div>
+                        <div class="c-stat-value" id="statVerifiedCandidates" style="color: #3b82f6;">0</div>
+                        <div class="c-stat-sub">Authenticated via OTP</div>
+                    </div>
+
+                    <div class="c-stat-card">
+                        <div class="c-stat-header">
+                            <span class="c-stat-title">Participants</span>
+                            <div class="c-stat-icon" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                            </div>
+                        </div>
+                        <div class="c-stat-value" id="statParticipants" style="color: #f59e0b;">0</div>
+                        <div class="c-stat-sub">Completed &ge; 1 assessment</div>
+                    </div>
+
+                    <div class="c-stat-card">
+                        <div class="c-stat-header">
+                            <span class="c-stat-title">Pending Invites</span>
+                            <div class="c-stat-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                            </div>
+                        </div>
+                        <div class="c-stat-value" id="statPendingInvites">0</div>
+                        <div class="c-stat-sub">Awaiting activation token</div>
+                    </div>
+
+                    <div class="c-stat-card">
+                        <div class="c-stat-header">
+                            <span class="c-stat-title">Suspended</span>
+                            <div class="c-stat-icon" style="background: rgba(239, 68, 68, 0.1); color: #ef4444;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
+                            </div>
+                        </div>
+                        <div class="c-stat-value" id="statSuspended" style="color: #ef4444;">0</div>
+                        <div class="c-stat-sub">Access locked by admin</div>
+                    </div>
+                </div>
+
+                <!-- Search & Filters Toolbar -->
+                <div class="filter-toolbar-card">
+                    <div class="search-box-wrapper">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        <input type="text" class="search-input-field" id="candidateSearchInput" placeholder="Search by name, email, ID, or college...">
+                    </div>
+
+                    <div class="filter-group-cluster">
+                        <select class="filter-select" id="candidateStatusFilter">
+                            <option value="">All Statuses</option>
+                            <option value="Active">Active Accounts</option>
+                            <option value="Suspended">Suspended</option>
+                            <option value="Verified">Email Verified</option>
+                            <option value="Unverified">Unverified</option>
+                            <option value="Invited">Pending Invitation</option>
+                            <option value="Assigned">Assessment Assigned</option>
+                            <option value="Completed">Assessment Completed</option>
+                            <option value="No_Assessment">No Assessment Assigned</option>
+                        </select>
+
+                        <select class="filter-select" id="candidateGroupFilter">
+                            <option value="">All Groups / Cohorts</option>
+                        </select>
+
+                        <select class="filter-select" id="candidateSortSelect">
+                            <option value="created_at:desc">Newest Registered</option>
+                            <option value="created_at:asc">Oldest Registered</option>
+                            <option value="full_name:asc">Name (A &rarr; Z)</option>
+                            <option value="full_name:desc">Name (Z &rarr; A)</option>
+                            <option value="email:asc">Email (A &rarr; Z)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Candidates Table Card -->
+                <div class="candidates-table-card">
+                    <div class="table-responsive">
+                        <table class="candidate-table">
+                            <thead>
+                                <tr>
+                                    <th>Candidate Name &amp; ID</th>
+                                    <th>Contact &amp; College</th>
+                                    <th>Account Status</th>
+                                    <th>Verification</th>
+                                    <th>Assessments &amp; Groups</th>
+                                    <th>Avg Score</th>
+                                    <th>Registration Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="candidatesTableBody">
+                                <tr>
+                                    <td colspan="9" style="text-align: center; padding: 32px; color: var(--text-muted, #64748b);">
+                                        Loading candidate records...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination Controls -->
+                    <div class="table-pagination-footer">
+                        <div>Showing <span id="showingCount" style="font-weight: 700; color: var(--text-primary, #f8fafc);">0</span> candidates</div>
+                        <div class="pagination-btn-group">
+                            <button type="button" class="btn-page-nav" id="btnPagePrev" disabled>&larr; Previous</button>
+                            <span id="pageIndicator" style="font-weight: 600; padding: 0 10px; color: var(--text-primary, #f8fafc);">Page 1 of 1</span>
+                            <button type="button" class="btn-page-nav" id="btnPageNext" disabled>Next &rarr;</button>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+
+    </div>
+
+    <!-- ====================================================================
+         Modals
+         ==================================================================== -->
+    
+    <!-- 1. Suspend Candidate Modal (Reason Mandatory) -->
+    <div class="modal-overlay-custom" id="modalSuspendCandidate" style="display: none;">
+        <div class="modal-dialog-custom">
+            <div class="modal-header-custom">
+                <h3>Suspend Candidate Account</h3>
+                <button type="button" class="btn-modal-close" onclick="closeModal('modalSuspendCandidate')">&times;</button>
+            </div>
+            <div class="modal-body-custom">
+                <div class="warning-callout-box">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                    <div>
+                        Suspension will immediately prevent <strong id="suspendTargetEmail"></strong> from logging in or starting assessments. Historical submissions and scores will be preserved.
+                    </div>
+                </div>
+                <div class="form-group-custom">
+                    <label for="suspendReasonInput">Suspension Reason (Mandatory):</label>
+                    <textarea id="suspendReasonInput" rows="3" class="form-control-custom" placeholder="e.g. Plagiarism flagged on exam #asmt-102, Terms of service breach..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer-custom">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('modalSuspendCandidate')">Cancel</button>
+                <button type="button" class="btn btn-danger" id="btnSubmitSuspend">Confirm Suspension</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Quick Assign Assessment Modal -->
+    <div class="modal-overlay-custom" id="modalQuickAssign" style="display: none;">
+        <div class="modal-dialog-custom">
+            <div class="modal-header-custom">
+                <h3>Assign Assessment</h3>
+                <button type="button" class="btn-modal-close" onclick="closeModal('modalQuickAssign')">&times;</button>
+            </div>
+            <div class="modal-body-custom">
+                <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 14px;">
+                    Enroll <strong id="assignTargetEmail" style="color: var(--text-primary);"></strong> into an evaluation.
+                </p>
+                <div class="form-group-custom">
+                    <label for="assignAssessmentSelect">Select Assessment:</label>
+                    <select id="assignAssessmentSelect" class="form-control-custom"></select>
+                </div>
+                <div class="form-group-custom">
+                    <label for="assignDeadlineInput">Submission Deadline (Optional):</label>
+                    <input type="datetime-local" id="assignDeadlineInput" class="form-control-custom">
+                </div>
+            </div>
+            <div class="modal-footer-custom">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('modalQuickAssign')">Cancel</button>
+                <button type="button" class="btn btn-primary" id="btnSubmitQuickAssign">Confirm Assignment</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Edit Candidate Managed Details Modal -->
+    <div class="modal-overlay-custom" id="modalEditCandidate" style="display: none;">
+        <div class="modal-dialog-custom">
+            <div class="modal-header-custom">
+                <h3>Edit Candidate Details</h3>
+                <button type="button" class="btn-modal-close" onclick="closeModal('modalEditCandidate')">&times;</button>
+            </div>
+            <div class="modal-body-custom">
+                <div class="form-group-custom">
+                    <label>Full Legal Name:</label>
+                    <input type="text" id="editCandidateName" class="form-control-custom">
+                </div>
+                <div class="form-group-custom">
+                    <label>Email Address (Read Only):</label>
+                    <input type="email" id="editCandidateEmail" class="form-control-custom" disabled style="opacity: 0.6;">
+                </div>
+                <div class="form-group-custom">
+                    <label>Phone Number:</label>
+                    <input type="text" id="editCandidatePhone" class="form-control-custom">
+                </div>
+                <div class="form-group-custom">
+                    <label>College / University / Organization:</label>
+                    <input type="text" id="editCandidateCollege" class="form-control-custom">
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div class="form-group-custom">
+                        <label>Degree / Major:</label>
+                        <input type="text" id="editCandidateMajor" class="form-control-custom">
+                    </div>
+                    <div class="form-group-custom">
+                        <label>Graduation Year:</label>
+                        <input type="text" id="editCandidateGradYear" class="form-control-custom">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer-custom">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('modalEditCandidate')">Cancel</button>
+                <button type="button" class="btn btn-primary" id="btnSubmitEditCandidate">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. Invite Candidate Modal -->
+    <div class="modal-overlay-custom" id="modalInviteCandidates" style="display: none;">
+        <div class="modal-dialog-custom" style="max-width: 580px;">
+            <div class="modal-header-custom">
+                <h3>Invite Candidates to BugBash</h3>
+                <button type="button" class="btn-modal-close" onclick="closeModal('modalInviteCandidates')">&times;</button>
+            </div>
+            <div class="modal-body-custom">
+                <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 14px;">
+                    Enter email addresses separated by commas or line breaks. Secure, single-use activation invitations will be generated.
+                </p>
+                <div class="form-group-custom">
+                    <label for="inviteEmailsInput">Candidate Emails (one per line or comma-separated):</label>
+                    <textarea id="inviteEmailsInput" rows="4" class="form-control-custom" style="font-family: monospace;" placeholder="student1@university.edu&#10;student2@university.edu&#10;candidate@gmail.com"></textarea>
+                </div>
+                <div class="form-group-custom">
+                    <label for="inviteAssessmentSelect">Optional: Attach Assessment</label>
+                    <select id="inviteAssessmentSelect" class="form-control-custom"></select>
+                </div>
+                <div class="form-group-custom">
+                    <label for="inviteExpiryDays">Invitation Validity:</label>
+                    <select id="inviteExpiryDays" class="form-control-custom">
+                        <option value="3">3 Days</option>
+                        <option value="7" selected>7 Days (Standard)</option>
+                        <option value="14">14 Days</option>
+                        <option value="30">30 Days</option>
+                    </select>
+                </div>
+                <div class="form-group-custom">
+                    <label for="inviteCustomMsg">Custom Message (Optional):</label>
+                    <input type="text" id="inviteCustomMsg" class="form-control-custom" placeholder="e.g. Welcome to BugBash! Please activate your assessment seat.">
+                </div>
+            </div>
+            <div class="modal-footer-custom">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('modalInviteCandidates')">Cancel</button>
+                <button type="button" class="btn btn-primary" id="btnSubmitInviteCandidates">Send Invitations</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/config.js"></script>
+    <script src="/js/candidates.js"></script>
+</body>
+</html>

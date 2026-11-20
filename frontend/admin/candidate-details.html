@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BugBash Admin &bull; Candidate Details &amp; Telemetry</title>
+    <meta name="description" content="BugBash Candidate Details: view personal information, assessment participation, performance telemetry, and chronological activity history.">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff6b35'><path d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/></svg>">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/css/admin-dashboard.css">
+    <link rel="stylesheet" href="/css/assessments.css">
+    <link rel="stylesheet" href="/css/candidates.css">
+    <link rel="stylesheet" href="/css/candidate-details.css">
+</head>
+<body id="adminCandidateDetailsPage">
+    <div class="app-container">
+        
+        <!-- ================================================================
+             1. Sidebar Navigation (Candidates Active)
+             ================================================================ -->
+        <aside class="admin-sidebar" id="adminSidebar">
+            <div class="sidebar-header">
+                <a href="/admin/dashboard" class="brand-wrapper">
+                    <div class="brand-logo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <div class="brand-text">
+                        <span>BugBash</span>
+                        <span class="admin-tag">ADMIN</span>
+                    </div>
+                </a>
+                <button type="button" class="sidebar-toggle-btn" id="sidebarToggleBtn" aria-label="Toggle Sidebar Navigation">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <ul class="sidebar-menu">
+                <li class="menu-category">Operations</li>
+                
+                <li class="nav-item">
+                    <a href="/admin/dashboard" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="9"></rect>
+                            <rect x="14" y="3" width="7" height="5"></rect>
+                            <rect x="14" y="12" width="7" height="9"></rect>
+                            <rect x="3" y="16" width="7" height="5"></rect>
+                        </svg>
+                        <span class="nav-text">Overview</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/admin/questions" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                        <span class="nav-text">Question Bank</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/admin/assessments" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                        <span class="nav-text">Assessments</span>
+                    </a>
+                </li>
+
+                <li class="nav-item active">
+                    <a href="/admin/candidates" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                        <span class="nav-text">Students &amp; Candidates</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/admin/submissions" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 11 12 14 22 4"></polyline>
+                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                        </svg>
+                        <span class="nav-text">Submissions</span>
+                    </a>
+                </li>
+
+                <li class="menu-category">Intelligence &amp; Config</li>
+
+                <li class="nav-item">
+                    <a href="/admin/results" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="20" x2="18" y2="10"></line>
+                            <line x1="12" y1="20" x2="12" y2="4"></line>
+                            <line x1="6" y1="20" x2="6" y2="14"></line>
+                        </svg>
+                        <span class="nav-text">Results &amp; Analytics</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/admin/ml-insights" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="2"></circle>
+                            <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"></path>
+                        </svg>
+                        <span class="nav-text">ML Insights</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/admin/profile" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <span class="nav-text">My Profile</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/admin/settings" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                        </svg>
+                        <span class="nav-text">Settings</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <div class="sidebar-user-card">
+                    <div class="user-avatar-badge" id="sidebarAdminAvatar">A</div>
+                    <div class="user-details">
+                        <span class="user-name" id="sidebarAdminName">Administrator</span>
+                        <span class="user-role">Super Admin</span>
+                    </div>
+                    <button type="button" class="btn-sidebar-logout btn-admin-logout" title="Sign Out">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16 17 21 12 16 7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ================================================================
+             2. Main Content Wrapper
+             ================================================================ -->
+        <div class="main-wrapper" id="mainWrapper">
+            
+            <!-- Topbar Navigation -->
+            <header class="admin-topbar">
+                <div class="topbar-left">
+                    <div class="breadcrumb-trail">
+                        <a href="/admin/dashboard" class="bc-link">Admin</a>
+                        <span class="bc-sep">/</span>
+                        <a href="/admin/candidates" class="bc-link">Candidates</a>
+                        <span class="bc-sep">/</span>
+                        <span class="bc-current">Candidate Details</span>
+                    </div>
+                </div>
+
+                <div class="topbar-right">
+                    <button type="button" class="topbar-action-btn" id="themeToggleBtn" title="Toggle Theme">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                    </button>
+
+                    <div class="user-profile-pill">
+                        <div class="user-profile-avatar">A</div>
+                        <span class="user-profile-name" id="userPillName">Administrator</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Body -->
+            <main class="page-content">
+                
+                <!-- Candidate Hero Header -->
+                <div class="candidate-hero-card">
+                    <div class="candidate-hero-flex">
+                        <div class="candidate-hero-main">
+                            <div class="candidate-hero-avatar" id="heroAvatar">C</div>
+                            <div class="candidate-hero-info">
+                                <div class="candidate-badges-row">
+                                    <span class="badge-status badge-active" id="heroStatusBadge">Loading...</span>
+                                    <span class="badge-status badge-verified" id="heroVerBadge">Verified</span>
+                                    <span class="mono-id-tag" id="heroCandidateId">--</span>
+                                </div>
+                                <h1 id="heroCandidateName">Candidate Details</h1>
+                                <div class="candidate-meta-line">
+                                    <span class="candidate-meta-item">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                                        <span id="heroCandidateEmail">--</span>
+                                    </span>
+                                    <span class="candidate-meta-item">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                                        <span id="heroCandidatePhone">--</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="candidate-hero-actions">
+                            <a href="/admin/candidates" class="btn btn-secondary">
+                                &larr; Back to Directory
+                            </a>
+                            <button type="button" class="btn btn-primary" id="btnHeroAssign">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                                <span>Assign Exam</span>
+                            </button>
+                            <button type="button" class="btn btn-danger" id="btnHeroSuspend" style="display: none;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
+                                <span>Suspend</span>
+                            </button>
+                            <button type="button" class="btn btn-secondary" id="btnHeroReactivate" style="display: none; border-color: #10b981; color: #10b981;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"></path><path d="M1 20v-6h6"></path><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                                <span>Reactivate</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4 Performance Telemetry Metric Cards -->
+                <div class="telemetry-stats-row">
+                    <div class="telemetry-card-item">
+                        <span class="telemetry-card-label">Total Attempts</span>
+                        <div class="telemetry-card-val" id="statTotalAttempts">0</div>
+                        <span class="telemetry-card-desc">Assessment test sessions</span>
+                    </div>
+
+                    <div class="telemetry-card-item">
+                        <span class="telemetry-card-label">Average Score</span>
+                        <div class="telemetry-card-val" id="statAvgScore" style="color: #ff6b35;">0 pts</div>
+                        <span class="telemetry-card-desc">Across all completed tests</span>
+                    </div>
+
+                    <div class="telemetry-card-item">
+                        <span class="telemetry-card-label">Highest Score</span>
+                        <div class="telemetry-card-val" id="statHighestScore" style="color: #10b981;">0 pts</div>
+                        <span class="telemetry-card-desc">Peak test performance</span>
+                    </div>
+
+                    <div class="telemetry-card-item">
+                        <span class="telemetry-card-label">Completion Rate</span>
+                        <div class="telemetry-card-val" id="statCompletionRate" style="color: #3b82f6;">0%</div>
+                        <span class="telemetry-card-desc">Submitted vs Assigned</span>
+                    </div>
+                </div>
+
+                <!-- Details Split Grid -->
+                <div class="details-sections-grid">
+                    
+                    <!-- Left: Profile & Academic Specs -->
+                    <aside class="profile-spec-card">
+                        <h3>Personal &amp; Academic Info</h3>
+                        <ul class="profile-info-list">
+                            <li class="profile-info-row">
+                                <span class="info-label">Registration Date</span>
+                                <span class="info-val" id="specRegDate">--</span>
+                            </li>
+                            <li class="profile-info-row">
+                                <span class="info-label">College / Institution</span>
+                                <span class="info-val" id="specCollege">--</span>
+                            </li>
+                            <li class="profile-info-row">
+                                <span class="info-label">Degree &amp; Major</span>
+                                <span class="info-val" id="specMajor">--</span>
+                            </li>
+                            <li class="profile-info-row">
+                                <span class="info-label">Graduation Year</span>
+                                <span class="info-val" id="specGradYear">--</span>
+                            </li>
+                            <li class="profile-info-row">
+                                <span class="info-label">Assigned Cohorts &amp; Groups</span>
+                                <div id="specGroupsContainer" style="margin-top: 4px;"></div>
+                            </li>
+                            <li class="profile-info-row">
+                                <span class="info-label">Candidate Bio</span>
+                                <span class="info-val" id="specBio" style="font-size: 13px; font-weight: 400; color: var(--text-secondary); line-height: 1.5;">--</span>
+                            </li>
+                        </ul>
+                    </aside>
+
+                    <!-- Right: Multi-tab Panel -->
+                    <div class="details-tabs-container">
+                        <div class="details-tab-nav">
+                            <button type="button" class="tab-nav-btn active" data-tab="assessments">Assessments &amp; Status</button>
+                            <button type="button" class="tab-nav-btn" data-tab="results">Recent Results</button>
+                            <button type="button" class="tab-nav-btn" data-tab="activity">Chronological Activity</button>
+                        </div>
+
+                        <!-- Tab 1: Assessments Breakdown -->
+                        <div class="tab-panel-content active" id="panel-assessments">
+                            <div style="text-align: center; padding: 24px; color: var(--text-muted);">
+                                Loading assessment participation records...
+                            </div>
+                        </div>
+
+                        <!-- Tab 2: Recent Results -->
+                        <div class="tab-panel-content" id="panel-results">
+                            <table class="candidate-table">
+                                <thead>
+                                    <tr>
+                                        <th>Assessment</th>
+                                        <th>Score</th>
+                                        <th>Percentage</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="resultsTableBody">
+                                    <tr>
+                                        <td colspan="5" style="text-align: center; padding: 24px; color: var(--text-muted);">Loading results...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Tab 3: Activity Timeline -->
+                        <div class="tab-panel-content" id="panel-activity">
+                            <div class="activity-timeline" id="candidateActivityTimeline">
+                                <div style="color: var(--text-muted);">Loading activity log...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </main>
+        </div>
+
+    </div>
+
+    <!-- Quick Assign Modal -->
+    <div class="modal-overlay-custom" id="modalAssignCandidate" style="display: none;">
+        <div class="modal-dialog-custom">
+            <div class="modal-header-custom">
+                <h3>Assign Assessment to Candidate</h3>
+                <button type="button" class="btn-modal-close" onclick="closeModal('modalAssignCandidate')">&times;</button>
+            </div>
+            <div class="modal-body-custom">
+                <div class="form-group-custom">
+                    <label for="assignAssessmentSelect">Choose Assessment:</label>
+                    <select id="assignAssessmentSelect" class="form-control-custom"></select>
+                </div>
+                <div class="form-group-custom">
+                    <label for="assignDeadlineInput">Completion Deadline (Optional):</label>
+                    <input type="datetime-local" id="assignDeadlineInput" class="form-control-custom">
+                </div>
+            </div>
+            <div class="modal-footer-custom">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('modalAssignCandidate')">Cancel</button>
+                <button type="button" class="btn btn-primary" id="btnSubmitAssignCandidate">Confirm Assignment</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/config.js"></script>
+    <script src="/js/candidate-details.js"></script>
+</body>
+</html>

@@ -56,6 +56,10 @@
             ADMIN_CHANGE_PASSWORD: '/admin/change-password',
             ADMIN_ASSESSMENTS: '/admin/assessments',
             ADMIN_ASSESSMENT_QUESTIONS_CATALOG: '/admin/assessments/questions/catalog',
+            ADMIN_CANDIDATES: '/admin/candidates',
+            ADMIN_CANDIDATE_GROUPS: '/admin/candidate-groups',
+            ADMIN_CANDIDATES_IMPORT: '/admin/candidates/import',
+            ADMIN_CANDIDATES_INVITATIONS: '/admin/candidates/invitations',
             PRACTICE_PROBLEMS: '/practice/problems'
         },
 

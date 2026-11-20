@@ -899,9 +899,9 @@ class AdminAssessmentService:
         self,
         assessment_id: str,
         candidate_emails: List[str],
-        cohort_names: Optional[List[str]],
-        deadline: Optional[str],
-        admin_user: dict
+        cohort_names: Optional[List[str]] = None,
+        deadline: Optional[str] = None,
+        admin_user: dict = None
     ) -> int:
         """
         Assigns candidates to assessment and records assignment.

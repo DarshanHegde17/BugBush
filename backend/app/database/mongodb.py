@@ -92,6 +92,14 @@ class MongoDB:
             except Exception as e:
                 logger.debug(f"Results/Activity index: {e}")
 
+            # Candidate Groups & Invitations
+            try:
+                self.db.candidate_groups.create_index([("id", ASCENDING)], unique=True, background=True)
+                self.db.candidate_invitations.create_index([("token", ASCENDING)], unique=True, sparse=True, background=True)
+                self.db.candidate_invitations.create_index([("email", ASCENDING)], background=True)
+            except Exception as e:
+                logger.debug(f"Candidate groups/invitations index: {e}")
+
         except Exception as e:
             logger.warning(f"Error creating MongoDB indexes: {e}")
 
@@ -163,6 +171,14 @@ class MongoDB:
     @property
     def admin_audit_logs(self) -> Optional[Collection]:
         return self.db.admin_audit_logs if (self.is_connected and self.db is not None) else None
+
+    @property
+    def candidate_groups(self) -> Optional[Collection]:
+        return self.db.candidate_groups if (self.is_connected and self.db is not None) else None
+
+    @property
+    def candidate_invitations(self) -> Optional[Collection]:
+        return self.db.candidate_invitations if (self.is_connected and self.db is not None) else None
 
     def __getattr__(self, name: str) -> Optional[Collection]:
         if self.is_connected and self.db is not None:

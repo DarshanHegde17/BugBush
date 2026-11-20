@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BugBash Admin &bull; Import Candidates (CSV)</title>
+    <meta name="description" content="Bulk import candidate records from CSV, detect duplicates, validate email syntax, assign assessments, and dispatch activation invitations.">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff6b35'><path d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/></svg>">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/css/admin-dashboard.css">
+    <link rel="stylesheet" href="/css/assessments.css">
+    <link rel="stylesheet" href="/css/candidates.css">
+    <link rel="stylesheet" href="/css/candidate-groups.css">
+</head>
+<body id="adminImportCandidatesPage">
+    <div class="app-container">
+        
+        <!-- ================================================================
+             1. Sidebar Navigation (Candidates Active)
+             ================================================================ -->
+        <aside class="admin-sidebar" id="adminSidebar">
+            <div class="sidebar-header">
+                <a href="/admin/dashboard" class="brand-wrapper">
+                    <div class="brand-logo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <div class="brand-text">
+                        <span>BugBash</span>
+                        <span class="admin-tag">ADMIN</span>
+                    </div>
+                </a>
+                <button type="button" class="sidebar-toggle-btn" id="sidebarToggleBtn" aria-label="Toggle Sidebar Navigation">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <ul class="sidebar-menu">
+                <li class="menu-category">Operations</li>
+                
+                <li class="nav-item">
+                    <a href="/admin/dashboard" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="9"></rect>
+                            <rect x="14" y="3" width="7" height="5"></rect>
+                            <rect x="14" y="12" width="7" height="9"></rect>
+                            <rect x="3" y="16" width="7" height="5"></rect>
+                        </svg>
+                        <span class="nav-text">Overview</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/admin/questions" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                        <span class="nav-text">Question Bank</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/admin/assessments" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                        <span class="nav-text">Assessments</span>
+                    </a>
+                </li>
+
+                <li class="nav-item active">
+                    <a href="/admin/candidates" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                        <span class="nav-text">Students &amp; Candidates</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/admin/submissions" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 11 12 14 22 4"></polyline>
+                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                        </svg>
+                        <span class="nav-text">Submissions</span>
+                    </a>
+                </li>
+
+                <li class="menu-category">Intelligence &amp; Config</li>
+
+                <li class="nav-item">
+                    <a href="/admin/results" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="20" x2="18" y2="10"></line>
+                            <line x1="12" y1="20" x2="12" y2="4"></line>
+                            <line x1="6" y1="20" x2="6" y2="14"></line>
+                        </svg>
+                        <span class="nav-text">Results &amp; Analytics</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/admin/ml-insights" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="2"></circle>
+                            <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"></path>
+                        </svg>
+                        <span class="nav-text">ML Insights</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/admin/profile" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <span class="nav-text">My Profile</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/admin/settings" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                        </svg>
+                        <span class="nav-text">Settings</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <div class="sidebar-user-card">
+                    <div class="user-avatar-badge" id="sidebarAdminAvatar">A</div>
+                    <div class="user-details">
+                        <span class="user-name" id="sidebarAdminName">Administrator</span>
+                        <span class="user-role">Super Admin</span>
+                    </div>
+                    <button type="button" class="btn-sidebar-logout btn-admin-logout" title="Sign Out">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16 17 21 12 16 7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ================================================================
+             2. Main Content Wrapper
+             ================================================================ -->
+        <div class="main-wrapper" id="mainWrapper">
+            
+            <!-- Topbar Navigation -->
+            <header class="admin-topbar">
+                <div class="topbar-left">
+                    <div class="breadcrumb-trail">
+                        <a href="/admin/dashboard" class="bc-link">Admin</a>
+                        <span class="bc-sep">/</span>
+                        <a href="/admin/candidates" class="bc-link">Candidates</a>
+                        <span class="bc-sep">/</span>
+                        <span class="bc-current">Import CSV</span>
+                    </div>
+                </div>
+
+                <div class="topbar-right">
+                    <button type="button" class="topbar-action-btn" id="themeToggleBtn" title="Toggle Theme">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                    </button>
+
+                    <div class="user-profile-pill">
+                        <div class="user-profile-avatar">A</div>
+                        <span class="user-profile-name" id="userPillName">Administrator</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Body -->
+            <main class="page-content">
+                
+                <!-- Sub-navigation Header Tabs -->
+                <div class="candidate-subnav-bar">
+                    <ul class="candidate-nav-tabs">
+                        <li>
+                            <a href="/admin/candidates" class="candidate-nav-tab">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                                <span>All Candidates</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/admin/candidate-groups" class="candidate-nav-tab">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                                <span>Cohorts &amp; Groups</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/admin/import-candidates" class="candidate-nav-tab active">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                                <span>Import CSV</span>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <div class="subnav-actions">
+                        <button type="button" class="btn btn-secondary" id="btnDownloadCsvTemplate">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                            <span>Download CSV Template</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- CSV Workspace Container -->
+                <div class="import-workspace-container">
+                    
+                    <!-- Drag & Drop Upload Card -->
+                    <div class="csv-upload-dropzone" id="csvDropZone">
+                        <input type="file" id="csvFileInput" accept=".csv" style="display: none;">
+                        <div class="dropzone-icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                        </div>
+                        <h2 class="dropzone-title">Upload Candidate CSV Roster</h2>
+                        <p class="dropzone-sub">
+                            Drag and drop your candidate spreadsheet (.csv) here, or click to browse files on your computer. Required columns: <strong>Full Name</strong>, <strong>Email</strong>. Optional: <strong>Phone Number</strong>, <strong>Group Name</strong>.
+                        </p>
+                        <div id="uploadedFileBadge" class="file-info-badge" style="display: none;"></div>
+                    </div>
+
+                    <!-- Import Options Card -->
+                    <div class="import-options-card">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <input type="checkbox" id="chkSendInvitations" checked style="accent-color: #ff6b35; width: 18px; height: 18px; cursor: pointer;">
+                            <label for="chkSendInvitations" style="font-size: 13.5px; font-weight: 600; color: var(--text-primary); cursor: pointer;">
+                                Dispatch account activation invitations to imported emails
+                            </label>
+                        </div>
+
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <label for="importAssignAssessmentSelect" style="font-size: 13px; color: var(--text-secondary); white-space: nowrap;">
+                                Auto-Enroll into Assessment:
+                            </label>
+                            <select id="importAssignAssessmentSelect" class="filter-select" style="min-width: 260px;"></select>
+                        </div>
+                    </div>
+
+                    <!-- CSV Preview Card (Hidden until file selected) -->
+                    <div class="csv-preview-card" id="csvPreviewCard" style="display: none;">
+                        <div class="csv-preview-header">
+                            <div>
+                                <h3 style="margin: 0 0 4px; font-size: 15px; font-weight: 700; color: var(--text-primary);">CSV Pre-Import Verification</h3>
+                                <div class="validation-summary-badges">
+                                    <span class="val-badge valid"><span id="valCountValid">0</span> Valid Records</span>
+                                    <span class="val-badge duplicate"><span id="valCountDuplicate">0</span> Duplicates</span>
+                                    <span class="val-badge error"><span id="valCountError">0</span> Errors</span>
+                                </div>
+                            </div>
+
+                            <button type="button" class="btn btn-primary" id="btnConfirmImport">
+                                Confirm &amp; Import Records
+                            </button>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="candidate-table">
+                                <thead>
+                                    <tr>
+                                        <th>Row #</th>
+                                        <th>Full Name</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Group Cohort</th>
+                                        <th>Validation Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="csvPreviewTableBody"></tbody>
+                            </table>
+                        </div>
+
+                        <div id="previewTruncateNotice" style="display: none; padding: 12px 20px; font-size: 12px; color: var(--text-muted); border-top: 1px solid var(--border-color); text-align: center;">
+                            Showing first 50 rows preview. All valid records will be imported upon confirmation.
+                        </div>
+                    </div>
+
+                </div>
+
+            </main>
+        </div>
+
+    </div>
+
+    <!-- Import Report Modal -->
+    <div class="modal-overlay-custom" id="modalImportReport" style="display: none;">
+        <div class="modal-dialog-custom" style="max-width: 580px;">
+            <div class="modal-header-custom">
+                <h3>Bulk Candidate Import Report</h3>
+                <button type="button" class="btn-modal-close" onclick="closeModal('modalImportReport')">&times;</button>
+            </div>
+            <div class="modal-body-custom">
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; text-align: center;">
+                    <div style="background: rgba(12,15,23,0.5); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);">
+                        <div style="font-size: 11px; text-transform: uppercase; color: var(--text-muted);">Total Rows</div>
+                        <div id="reportTotalRows" style="font-size: 18px; font-weight: 800; font-family: monospace;">0</div>
+                    </div>
+                    <div style="background: rgba(16,185,129,0.1); padding: 12px; border-radius: 8px; border: 1px solid rgba(16,185,129,0.3);">
+                        <div style="font-size: 11px; text-transform: uppercase; color: #10b981;">Imported</div>
+                        <div id="reportSuccess" style="font-size: 18px; font-weight: 800; color: #10b981; font-family: monospace;">0</div>
+                    </div>
+                    <div style="background: rgba(245,158,11,0.1); padding: 12px; border-radius: 8px; border: 1px solid rgba(245,158,11,0.3);">
+                        <div style="font-size: 11px; text-transform: uppercase; color: #f59e0b;">Duplicates</div>
+                        <div id="reportDuplicates" style="font-size: 18px; font-weight: 800; color: #f59e0b; font-family: monospace;">0</div>
+                    </div>
+                    <div style="background: rgba(239,68,68,0.1); padding: 12px; border-radius: 8px; border: 1px solid rgba(239,68,68,0.3);">
+                        <div style="font-size: 11px; text-transform: uppercase; color: #ef4444;">Failed</div>
+                        <div id="reportFailed" style="font-size: 18px; font-weight: 800; color: #ef4444; font-family: monospace;">0</div>
+                    </div>
+                </div>
+
+                <div id="reportErrorsList" style="max-height: 180px; overflow-y: auto; background: rgba(12,15,23,0.4); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); display: none;"></div>
+            </div>
+            <div class="modal-footer-custom">
+                <a href="/admin/candidates" class="btn btn-primary">Go to Candidate Directory</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/config.js"></script>
+    <script src="/js/import-candidates.js"></script>
+</body>
+</html>

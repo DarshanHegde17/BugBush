@@ -23,7 +23,7 @@ if __name__ == "__main__":
     url = f"http://{host}:{port}"
 
     print("=" * 55)
-    print("           BugBash Assessment Platform           ")
+    print("           BugBash Assessment Platform  ")
     print("         Smart Coding. Better Assessment.        ")
     print("=" * 55)
     print(f"🚀 Full Project (UI + API): {url}")

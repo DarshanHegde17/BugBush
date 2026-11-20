@@ -615,6 +615,10 @@ class UserService:
         if not user.get("is_verified", False):
             return False, user, "Your account email is not verified. Please verify your email first."
 
+        if user.get("account_status") == "Suspended" or user.get("is_suspended", False):
+            reason = user.get("suspension_reason") or "Administrative suspension"
+            return False, user, f"Your account has been suspended: {reason}. Please contact support."
+
         # Ensure user dashboard data is populated
         self._init_user_dashboard_data(clean_email)
 

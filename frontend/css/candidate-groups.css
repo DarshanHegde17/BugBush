@@ -1,0 +1,227 @@
+/* ==========================================================================
+   BugBash - Candidate Groups & CSV Import Stylesheet
+   Brand Accent: #ff6b35 (Orange)
+   Responsive, Theme-Aware (Dark & Light)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Candidate Groups Grid
+   -------------------------------------------------------------------------- */
+.groups-grid-layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+    margin-bottom: 28px;
+}
+
+.group-card-item {
+    background: var(--bg-card, #131824);
+    border: 1px solid var(--border-color, #212838);
+    border-radius: 12px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.group-card-item:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 107, 53, 0.4);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.group-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.group-card-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary, #f8fafc);
+    margin: 0 0 6px;
+}
+
+.group-card-desc {
+    font-size: 13px;
+    color: var(--text-secondary, #94a3b8);
+    line-height: 1.5;
+    margin-bottom: 16px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.group-tags-cluster {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 18px;
+}
+
+.group-meta-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    padding: 12px 0;
+    border-top: 1px solid var(--border-color, #212838);
+    border-bottom: 1px solid var(--border-color, #212838);
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.group-meta-item-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--text-muted, #64748b);
+    margin-bottom: 2px;
+}
+
+.group-meta-item-val {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text-primary, #f8fafc);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.group-card-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+/* --------------------------------------------------------------------------
+   2. CSV Import Workspace Styles
+   -------------------------------------------------------------------------- */
+.import-workspace-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.csv-upload-dropzone {
+    background: var(--bg-card, #131824);
+    border: 2px dashed var(--border-color, #212838);
+    border-radius: 14px;
+    padding: 40px 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.csv-upload-dropzone:hover,
+.csv-upload-dropzone.drag-over {
+    border-color: #ff6b35;
+    background: rgba(255, 107, 53, 0.04);
+}
+
+.dropzone-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(255, 107, 53, 0.1);
+    color: #ff6b35;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+}
+
+.dropzone-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary, #f8fafc);
+    margin: 0;
+}
+
+.dropzone-sub {
+    font-size: 13px;
+    color: var(--text-secondary, #94a3b8);
+    max-width: 440px;
+    line-height: 1.5;
+}
+
+.file-info-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    color: #10b981;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* CSV Preview Table */
+.csv-preview-card {
+    background: var(--bg-card, #131824);
+    border: 1px solid var(--border-color, #212838);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.csv-preview-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-color, #212838);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.validation-summary-badges {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.val-badge {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.val-badge.valid {
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+}
+
+.val-badge.duplicate {
+    background: rgba(245, 158, 11, 0.15);
+    color: #f59e0b;
+}
+
+.val-badge.error {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+}
+
+/* Import Options Row */
+.import-options-card {
+    background: var(--bg-card, #131824);
+    border: 1px solid var(--border-color, #212838);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+}

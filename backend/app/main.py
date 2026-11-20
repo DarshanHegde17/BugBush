@@ -13,6 +13,7 @@ from backend.app.routers.auth import router as auth_router
 from backend.app.routers.admin_auth import router as admin_auth_router
 from backend.app.routers.admin_dashboard import router as admin_dashboard_router
 from backend.app.routers.admin_assessments import router as admin_assessments_router
+from backend.app.routers.admin_candidates import router as admin_candidates_router, groups_router as admin_groups_router
 from backend.app.routers.users import router as users_router, assessments_router
 from backend.app.routers.practice import router as practice_router
 from backend.app.routers.exam import (
@@ -41,6 +42,8 @@ app.include_router(auth_router, prefix="/api/v1/auth", tags=["Authentication"])
 app.include_router(admin_auth_router, prefix="/api/v1/admin/auth", tags=["Admin Authentication"])
 app.include_router(admin_dashboard_router, prefix="/api/v1/admin", tags=["Admin Dashboard"])
 app.include_router(admin_assessments_router, prefix="/api/v1/admin/assessments", tags=["Admin Assessment Management"])
+app.include_router(admin_candidates_router, prefix="/api/v1/admin/candidates", tags=["Admin Candidates Management"])
+app.include_router(admin_groups_router, prefix="/api/v1/admin/candidate-groups", tags=["Admin Candidate Groups"])
 app.include_router(users_router, prefix="/api/v1/users", tags=["Users & Dashboard"])
 app.include_router(assessments_router, prefix="/api/v1/assessments", tags=["Assessments Execution"])
 app.include_router(practice_router, prefix="/api/v1/practice", tags=["Practice Coding"])

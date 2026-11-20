@@ -1,0 +1,335 @@
+/* ==========================================================================
+   BugBash - Candidate Details & Telemetry Stylesheet
+   Brand Accent: #ff6b35 (Orange)
+   Responsive, Theme-Aware (Dark & Light)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Candidate Hero Header Card
+   -------------------------------------------------------------------------- */
+.candidate-hero-card {
+    background: var(--bg-card, #131824);
+    border: 1px solid var(--border-color, #212838);
+    border-radius: 14px;
+    padding: 28px 32px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+}
+
+.candidate-hero-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #ff6b35, #ff8c5a);
+}
+
+.candidate-hero-flex {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.candidate-hero-main {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.candidate-hero-avatar {
+    width: 76px;
+    height: 76px;
+    min-width: 76px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(255,107,53,0.25), rgba(255,107,53,0.5));
+    border: 2px solid rgba(255,107,53,0.4);
+    color: #ff6b35;
+    font-size: 28px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.candidate-hero-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.candidate-hero-info h1 {
+    margin: 0 0 6px;
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text-primary, #f8fafc);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.candidate-badges-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+}
+
+.mono-id-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    color: var(--text-muted, #64748b);
+    background: rgba(12, 15, 23, 0.6);
+    padding: 3px 8px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color, #212838);
+}
+
+.candidate-meta-line {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 13px;
+    color: var(--text-secondary, #94a3b8);
+    flex-wrap: wrap;
+}
+
+.candidate-meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.candidate-hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* --------------------------------------------------------------------------
+   2. Performance Telemetry Metrics (4 Cards)
+   -------------------------------------------------------------------------- */
+.telemetry-stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+@media (max-width: 992px) {
+    .telemetry-stats-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 540px) {
+    .telemetry-stats-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+.telemetry-card-item {
+    background: var(--bg-card, #131824);
+    border: 1px solid var(--border-color, #212838);
+    border-radius: 12px;
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.telemetry-card-label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text-muted, #64748b);
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+}
+
+.telemetry-card-val {
+    font-size: 26px;
+    font-weight: 800;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-primary, #f8fafc);
+    margin-bottom: 4px;
+}
+
+.telemetry-card-desc {
+    font-size: 11.5px;
+    color: var(--text-muted, #64748b);
+}
+
+/* --------------------------------------------------------------------------
+   3. Details Sections Split Grid
+   -------------------------------------------------------------------------- */
+.details-sections-grid {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 20px;
+}
+
+@media (max-width: 1024px) {
+    .details-sections-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Left Sidebar / Profile Card */
+.profile-spec-card {
+    background: var(--bg-card, #131824);
+    border: 1px solid var(--border-color, #212838);
+    border-radius: 12px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.profile-spec-card h3 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary, #f8fafc);
+    border-bottom: 1px solid var(--border-color, #212838);
+    padding-bottom: 10px;
+}
+
+.profile-info-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.profile-info-row {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.info-label {
+    font-size: 11.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--text-muted, #64748b);
+}
+
+.info-val {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text-primary, #f8fafc);
+}
+
+/* Right Content Area: Tabs Container */
+.details-tabs-container {
+    background: var(--bg-card, #131824);
+    border: 1px solid var(--border-color, #212838);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.details-tab-nav {
+    display: flex;
+    border-bottom: 1px solid var(--border-color, #212838);
+    background: rgba(12, 15, 23, 0.4);
+    padding: 0 16px;
+    overflow-x: auto;
+}
+
+.tab-nav-btn {
+    padding: 14px 20px;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text-secondary, #94a3b8);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.tab-nav-btn:hover {
+    color: var(--text-primary, #f8fafc);
+}
+
+.tab-nav-btn.active {
+    color: #ff6b35;
+    border-bottom-color: #ff6b35;
+}
+
+.tab-panel-content {
+    padding: 22px;
+    display: none;
+}
+
+.tab-panel-content.active {
+    display: block;
+}
+
+/* Activity Timeline */
+.activity-timeline {
+    position: relative;
+    padding-left: 28px;
+    margin-top: 10px;
+}
+
+.activity-timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 6px;
+    bottom: 6px;
+    width: 2px;
+    background: var(--border-color, #212838);
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.timeline-item:last-child {
+    margin-bottom: 0;
+}
+
+.timeline-dot {
+    position: absolute;
+    left: -28px;
+    top: 4px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--bg-card, #131824);
+    border: 2px solid #ff6b35;
+}
+
+.timeline-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--text-primary, #f8fafc);
+    margin-bottom: 2px;
+}
+
+.timeline-desc {
+    font-size: 12.5px;
+    color: var(--text-secondary, #94a3b8);
+    margin-bottom: 4px;
+}
+
+.timeline-time {
+    font-size: 11px;
+    color: var(--text-muted, #64748b);
+    font-family: 'JetBrains Mono', monospace;
+}

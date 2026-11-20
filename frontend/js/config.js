@@ -65,6 +65,15 @@
             ADMIN_RESULTS: '/admin/results',
             ADMIN_RESULTS_STATS: '/admin/results/statistics',
             ADMIN_RESULTS_EXPORT: '/admin/results/export',
+            ADMIN_ML_STATS: '/admin/ml-insights/statistics',
+            ADMIN_ML_PIPELINE: '/admin/ml-insights/pipeline',
+            ADMIN_ML_ANALYSES: '/admin/ml-insights/analyses',
+            ADMIN_ML_ALGORITHMS: '/admin/ml-insights/algorithms',
+            ADMIN_ML_COMPLEXITY: '/admin/ml-insights/complexity',
+            ADMIN_ML_OPTIMIZATION: '/admin/ml-insights/optimization',
+            ADMIN_ML_FEEDBACK: '/admin/ml-insights/feedback',
+            ADMIN_ML_MODELS: '/admin/ml-insights/models',
+            ADMIN_ML_MODELS_PERF: '/admin/ml-insights/models/performance',
             PRACTICE_PROBLEMS: '/practice/problems'
         },
 

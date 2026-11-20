@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BugBash Admin &bull; Deep Code Logic Recognition &amp; AST Analysis</title>
+    <meta name="description" content="BugBash Administrator interface for deep code logic recognition, Big-O complexity proofs, and reviewer feedback correction.">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff6b35'><path d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/></svg>">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/css/admin-dashboard.css">
+    <link rel="stylesheet" href="/css/assessments.css">
+    <link rel="stylesheet" href="/css/results.css">
+    <link rel="stylesheet" href="/css/ml-insights.css">
+    <link rel="stylesheet" href="/css/code-analysis.css">
+</head>
+<body id="adminCodeAnalysisPage">
+    <div class="app-container">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="admin-sidebar" id="adminSidebar">
+            <div class="sidebar-header">
+                <a href="/admin/dashboard" class="brand-wrapper">
+                    <div class="brand-logo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <div class="brand-text">
+                        <span>BugBash</span>
+                        <span class="admin-tag">ADMIN</span>
+                    </div>
+                </a>
+                <button type="button" class="sidebar-toggle-btn" id="sidebarToggleBtn" aria-label="Toggle Sidebar Navigation">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <ul class="sidebar-menu">
+                <li class="menu-category">Operations</li>
+                <li class="nav-item">
+                    <a href="/admin/dashboard" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+                        <span class="nav-text">Overview</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/questions" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                        <span class="nav-text">Question Bank</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/assessments" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                        <span class="nav-text">Assessments</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/candidates" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        <span class="nav-text">Students &amp; Candidates</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/submissions" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                        <span class="nav-text">Submissions</span>
+                    </a>
+                </li>
+                <li class="menu-category">Intelligence</li>
+                <li class="nav-item">
+                    <a href="/admin/results" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                        <span class="nav-text">Results &amp; Analytics</span>
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a href="/admin/ml-insights" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                        <span class="nav-text">ML Insights</span>
+                    </a>
+                </li>
+                <li class="menu-category">System</li>
+                <li class="nav-item">
+                    <a href="/admin/profile" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        <span class="nav-text">My Profile</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <button type="button" class="btn-logout" onclick="localStorage.removeItem('bugbash_admin_token'); window.location.href='/admin/login';">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    <span class="nav-text">Log Out</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Wrapper -->
+        <div class="main-wrapper">
+            <header class="admin-topbar">
+                <div class="topbar-left">
+                    <a href="/admin/ml-insights" style="display:inline-flex; align-items:center; gap:6px; color:var(--text-secondary); text-decoration:none; font-size:13px; font-weight:600;">
+                        &larr; Back to ML Overview
+                    </a>
+                </div>
+                <div class="topbar-right">
+                    <div class="ml-nav-pills">
+                        <a href="/admin/ml-insights" class="ml-nav-pill">Overview</a>
+                        <a href="/admin/code-analysis" class="ml-nav-pill active">Code Analysis</a>
+                        <a href="/admin/algorithm-analytics" class="ml-nav-pill">Algorithm Analytics</a>
+                        <a href="/admin/ml-model-performance" class="ml-nav-pill">Model Performance</a>
+                    </div>
+                </div>
+            </header>
+
+            <main class="page-content" id="codeAnalysisMainContent">
+                
+                <!-- Page Top Bar -->
+                <div class="scorecard-hero" style="margin-bottom:20px; padding:18px 24px;">
+                    <div>
+                        <h1 id="analysisQuestionTitle" style="font-size:20px; margin:0 0 4px 0;">Loading Code Analysis...</h1>
+                        <div class="scorecard-subline">
+                            <span id="analysisAssessmentTitle">Assessment Title</span>
+                            <span>&bull;</span>
+                            <span id="analysisCandidateName">Candidate</span>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="lang-tag" id="codeLangBadge">PYTHON</span>
+                    </div>
+                </div>
+
+                <!-- Two-Column Deep Inspection Grid -->
+                <div class="code-analysis-grid">
+                    
+                    <!-- Left Column: Source Code Viewer -->
+                    <div class="code-viewer-card">
+                        <div class="code-viewer-header">
+                            <span style="font-size:12px; font-weight:700; color:#e6edf3;">Candidate Submitted Source Code</span>
+                            <button type="button" class="btn-export-trigger" id="btnCopySourceCode" style="padding:4px 10px; font-size:11px;">
+                                Copy Code
+                            </button>
+                        </div>
+                        <pre class="code-snippet-pre"><code id="sourceCodePre">// Loading submission AST...</code></pre>
+                    </div>
+
+                    <!-- Right Column: Logic, Approaches, Complexity, Feedback, and Corrections -->
+                    <div class="analysis-cards-column">
+                        
+                        <!-- 1. Algorithm Recognition Banner -->
+                        <div class="analysis-section-card">
+                            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
+                                <div>
+                                    <div style="font-size:11px; text-transform:uppercase; font-weight:600; color:var(--text-secondary);">Recognized Algorithm Pattern</div>
+                                    <h2 id="detectedAlgorithmTitle" style="font-size:17px; font-weight:800; margin:2px 0 0 0; color:var(--text-primary);">
+                                        --
+                                    </h2>
+                                </div>
+                                <span class="severity-pill medium" id="algorithmConfidenceBadge">95% Confidence</span>
+                            </div>
+
+                            <div style="margin-top:10px;">
+                                <div style="font-size:11px; font-weight:600; color:var(--text-secondary); text-transform:uppercase;">Detected Programming Concepts:</div>
+                                <div class="concept-tags-cloud" id="conceptTagsCloud">
+                                    <!-- Populated dynamically -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 2. Structural AST Logic Features -->
+                        <div class="analysis-section-card">
+                            <h3 class="section-card-title">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" color="#ff6b35"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                                Code Logic Structural Features
+                            </h3>
+                            <div class="features-grid">
+                                <div class="feature-field-box">
+                                    <span class="feature-label">Control Flow</span>
+                                    <span class="feature-val" id="featureControlFlow">--</span>
+                                </div>
+                                <div class="feature-field-box">
+                                    <span class="feature-label">Data Structures Used</span>
+                                    <span class="feature-val" id="featureDataStructures">--</span>
+                                </div>
+                                <div class="feature-field-box">
+                                    <span class="feature-label">Loop Structures</span>
+                                    <span class="feature-val" id="featureLoopStructures">--</span>
+                                </div>
+                                <div class="feature-field-box">
+                                    <span class="feature-label">Recursion Patterns</span>
+                                    <span class="feature-val" id="featureRecursion">--</span>
+                                </div>
+                                <div class="feature-field-box" style="grid-column: 1 / -1;">
+                                    <span class="feature-label">Function &amp; Method Calls</span>
+                                    <span class="feature-val" id="featureFunctionCalls">--</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 3. Multiple Solution Approaches Comparison -->
+                        <div class="analysis-section-card">
+                            <h3 class="section-card-title">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" color="#3b82f6"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                                Recognized &amp; Alternative Solution Approaches
+                            </h3>
+                            <div class="table-responsive-wrapper">
+                                <table class="approaches-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Approach</th>
+                                            <th>Time</th>
+                                            <th>Space</th>
+                                            <th>Trade-offs</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="approachesTableBody">
+                                        <!-- Populated dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- 4. Big-O Complexity Estimations with Proof Evidence -->
+                        <div class="cpx-dual-grid">
+                            <div class="cpx-card-box">
+                                <div style="font-size:11px; text-transform:uppercase; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">Time Complexity</div>
+                                <div class="cpx-big-notation" id="bigOTimeNotation">O(n)</div>
+                                <div style="font-size:12px; color:var(--text-primary);" id="timeExplanation">Explanation...</div>
+                                <div style="font-size:11px; font-weight:700; color:var(--text-secondary); margin-top:8px;">Code Evidence:</div>
+                                <ul class="cpx-evidence-list" id="timeEvidenceList"></ul>
+                            </div>
+
+                            <div class="cpx-card-box">
+                                <div style="font-size:11px; text-transform:uppercase; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">Space Complexity</div>
+                                <div class="cpx-big-notation" id="bigOSpaceNotation" style="color:#10b981;">O(n)</div>
+                                <div style="font-size:12px; color:var(--text-primary);" id="spaceExplanation">Explanation...</div>
+                                <div style="font-size:11px; color:var(--text-secondary); margin-top:4px;" id="spaceMemoryDetail">Auxiliary Memory: --</div>
+                                <div style="font-size:11px; font-weight:700; color:var(--text-secondary); margin-top:8px;">Code Evidence:</div>
+                                <ul class="cpx-evidence-list" id="spaceEvidenceList"></ul>
+                            </div>
+                        </div>
+
+                        <!-- 5. Code Quality & Optimization Opportunities -->
+                        <div class="analysis-section-card">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                                <h3 class="section-card-title" style="margin:0;">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" color="#f59e0b"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                    Code Quality &amp; Optimization Insights
+                                </h3>
+                                <div style="font-size:12px; font-weight:700;">
+                                    Readability: <span id="qualityReadabilityScore" style="color:#10b981;">95/100</span>
+                                    <span style="opacity:0.4; margin:0 4px;">&bull;</span>
+                                    <span id="qualityMaintainabilityRating" style="color:#ff6b35;">Rating: A</span>
+                                </div>
+                            </div>
+
+                            <div id="optimizationsContainer">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- 6. AI Pedagogical Feedback -->
+                        <div class="ai-feedback-banner">
+                            <h4>
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+                                AI-Generated Pedagogical Candidate Feedback
+                            </h4>
+                            <div style="margin-bottom:8px;">
+                                <strong style="font-size:12px; color:#10b981;">What Candidate Did Well:</strong>
+                                <ul class="ai-points-list" id="aiStrengthsList"></ul>
+                            </div>
+                            <div style="margin-bottom:8px;">
+                                <strong style="font-size:12px; color:#ef4444;">Logical Mistakes / Pitfalls:</strong>
+                                <ul class="ai-points-list" id="aiMistakesList"></ul>
+                            </div>
+                            <div>
+                                <strong style="font-size:12px; color:#3b82f6;">Recommended Study Topics:</strong>
+                                <div class="concept-tags-cloud" id="aiStudyTopicsList" style="margin-top:4px;"></div>
+                            </div>
+                            <div class="ai-disclaimer">
+                                Disclaimer: AI assistance layer designed for formative learning feedback. Not guaranteed mathematical correctness.
+                            </div>
+                        </div>
+
+                        <!-- 7. Existing Reviewer Correction Notice -->
+                        <div id="existingCorrectionNotice" style="display:none;"></div>
+
+                        <!-- 8. Human Review & Feedback Correction Form -->
+                        <div class="correction-panel-card">
+                            <h3>
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                Human Reviewer Feedback Correction
+                            </h3>
+                            <p style="font-size:12px; color:var(--text-secondary); margin:0 0 14px 0;">
+                                Flag incorrect algorithm recognition, adjust Big-O estimates, or correct misleading feedback. Corrections are safely preserved in the evaluation benchmark dataset.
+                            </p>
+
+                            <form id="correctionForm">
+                                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+                                    <div class="correction-input-group">
+                                        <label for="inputCorrectedAlgorithm">Corrected Algorithm Name</label>
+                                        <input type="text" id="inputCorrectedAlgorithm" class="correction-input" placeholder="e.g. Two Pointers / Dynamic Programming">
+                                    </div>
+                                    <div class="correction-input-group">
+                                        <label for="inputCorrectedApproach">Corrected Solution Approach</label>
+                                        <input type="text" id="inputCorrectedApproach" class="correction-input" placeholder="e.g. Inward-Walking Pointers">
+                                    </div>
+                                    <div class="correction-input-group">
+                                        <label for="inputCorrectedTime">Corrected Time Big-O</label>
+                                        <input type="text" id="inputCorrectedTime" class="correction-input" placeholder="e.g. O(n log n)">
+                                    </div>
+                                    <div class="correction-input-group">
+                                        <label for="inputCorrectedSpace">Corrected Space Big-O</label>
+                                        <input type="text" id="inputCorrectedSpace" class="correction-input" placeholder="e.g. O(1)">
+                                    </div>
+                                </div>
+
+                                <div class="correction-input-group" style="margin-top:6px;">
+                                    <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+                                        <input type="checkbox" id="checkMisleadingFeedback">
+                                        <span>Flag AI Feedback as Misleading or Sub-Optimal</span>
+                                    </label>
+                                </div>
+
+                                <div class="correction-input-group">
+                                    <label for="inputCorrectionNotes">Reviewer Notes &amp; Rationale</label>
+                                    <textarea id="inputCorrectionNotes" class="correction-textarea" rows="2" placeholder="Explain rationale for this correction..." required></textarea>
+                                </div>
+
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px;">
+                                    <label style="display:flex; align-items:center; gap:6px; font-size:12px; color:var(--text-secondary); cursor:pointer;">
+                                        <input type="checkbox" id="checkSubmitDataset" checked>
+                                        <span>Submit to ML Benchmark Evaluation Dataset</span>
+                                    </label>
+                                    <button type="submit" class="btn-submit-correction" id="btnSubmitCorrectionForm">
+                                        Submit Correction
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/config.js"></script>
+    <script src="/js/code-analysis.js"></script>
+</body>
+</html>

@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BugBash Admin &bull; Assessment Details &amp; Telemetry</title>
+    <meta name="description" content="BugBash Enterprise Assessment Details: view complete specifications, telemetry metrics, question breakdown, and candidate assignments.">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff6b35'><path d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/></svg>">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Admin & Assessment Stylesheets -->
+    <link rel="stylesheet" href="/css/admin-dashboard.css">
+    <link rel="stylesheet" href="/css/assessments.css">
+    <link rel="stylesheet" href="/css/assessment-details.css">
+</head>
+<body id="adminAssessmentDetailsPage">
+    <div class="app-container">
+        
+        <!-- ================================================================
+             1. Sidebar Navigation (Assessments Active)
+             ================================================================ -->
+        <aside class="admin-sidebar" id="adminSidebar">
+            <div class="sidebar-header">
+                <a href="/admin/dashboard" class="brand-wrapper">
+                    <div class="brand-logo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <div class="brand-text">
+                        <span>BugBash</span>
+                        <span class="admin-tag">ADMIN</span>
+                    </div>
+                </a>
+                <button type="button" class="sidebar-toggle-btn" id="sidebarToggleBtn" aria-label="Toggle Sidebar Navigation">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <ul class="sidebar-menu">
+                <li class="menu-category">Operations</li>
+                
+                <li class="nav-item">
+                    <a href="/admin/dashboard" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="9"></rect>
+                            <rect x="14" y="3" width="7" height="5"></rect>
+                            <rect x="14" y="12" width="7" height="9"></rect>
+                            <rect x="3" y="16" width="7" height="5"></rect>
+                        </svg>
+                        <span class="nav-text">Overview</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/admin/questions" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                        <span class="nav-text">Question Bank</span>
+                    </a>
+                </li>
+
+                <li class="nav-item active">
+                    <a href="/admin/assessments" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                        <span class="nav-text">Assessments</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/admin/candidates" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                        <span class="nav-text">Students &amp; Candidates</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/admin/submissions" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 11 12 14 22 4"></polyline>
+                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                        </svg>
+                        <span class="nav-text">Submissions</span>
+                    </a>
+                </li>
+
+                <li class="menu-category">Intelligence &amp; Config</li>
+
+                <li class="nav-item">
+                    <a href="/admin/results" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="20" x2="18" y2="10"></line>
+                            <line x1="12" y1="20" x2="12" y2="4"></line>
+                            <line x1="6" y1="20" x2="6" y2="14"></line>
+                        </svg>
+                        <span class="nav-text">Results &amp; Analytics</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/admin/ml-insights" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="2"></circle>
+                            <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"></path>
+                        </svg>
+                        <span class="nav-text">ML Insights</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/admin/profile" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <span class="nav-text">My Profile</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/admin/settings" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                        </svg>
+                        <span class="nav-text">Settings</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <div class="sidebar-user-card">
+                    <div class="user-avatar-badge" id="sidebarAdminAvatar">A</div>
+                    <div class="user-details">
+                        <span class="user-name" id="sidebarAdminName">Administrator</span>
+                        <span class="user-role">Super Admin</span>
+                    </div>
+                    <button type="button" class="btn-sidebar-logout btn-admin-logout" title="Sign Out">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16 17 21 12 16 7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ================================================================
+             2. Main Content Wrapper
+             ================================================================ -->
+        <div class="main-wrapper" id="mainWrapper">
+            
+            <!-- Top Navigation Bar -->
+            <header class="admin-topbar">
+                <div class="topbar-left">
+                    <div class="breadcrumb-trail">
+                        <a href="/admin/dashboard" class="bc-link">Admin</a>
+                        <span class="bc-sep">/</span>
+                        <a href="/admin/assessments" class="bc-link">Assessments</a>
+                        <span class="bc-sep">/</span>
+                        <span class="bc-current">Details &amp; Telemetry</span>
+                    </div>
+                </div>
+
+                <div class="topbar-right">
+                    <button type="button" class="topbar-action-btn" id="themeToggleBtn" title="Toggle Light/Dark Theme">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                    </button>
+
+                    <div class="user-profile-pill">
+                        <div class="user-profile-avatar">A</div>
+                        <span class="user-profile-name" id="userPillName">Administrator</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Body -->
+            <main class="page-content details-page-content">
+                
+                <!-- Hero Header Card -->
+                <div class="assessment-hero-card">
+                    <div class="hero-top-row">
+                        <div>
+                            <div class="hero-badges-row">
+                                <span class="badge-status badge-draft" id="heroStatusBadge">Loading...</span>
+                                <span class="id-mono-tag" id="heroAssessmentId">--</span>
+                                <span class="meta-pill" id="heroAssessmentType">Coding Exam</span>
+                                <span class="meta-pill" id="heroAssessmentDifficulty">Medium</span>
+                            </div>
+                            <h1 class="hero-title" id="heroAssessmentTitle">Assessment Details</h1>
+                            <p class="hero-desc" id="heroAssessmentDesc">Loading assessment specifications...</p>
+                        </div>
+                        
+                        <div class="hero-actions-cluster">
+                            <a href="#" class="btn btn-secondary" id="btnHeroEdit">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                                <span>Edit Specs</span>
+                            </a>
+                            <button type="button" class="btn btn-primary" id="btnHeroPublish" style="display: none;">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                <span>Publish Exam</span>
+                            </button>
+                            <button type="button" class="btn btn-secondary" id="btnHeroDuplicate" title="Duplicate assessment template">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                <span>Duplicate</span>
+                            </button>
+                            <button type="button" class="btn btn-secondary" id="btnHeroArchive" title="Archive assessment">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="21 8 21 21 3 21 3 8"></polyline><rect x="1" y="3" width="22" height="5"></rect><line x1="10" y1="12" x2="14" y2="12"></line></svg>
+                                <span>Archive</span>
+                            </button>
+                            <button type="button" class="btn btn-danger-ghost" id="btnHeroDelete" title="Delete assessment permanently">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6 Telemetry Metric Cards -->
+                <div class="telemetry-grid">
+                    <div class="telemetry-card">
+                        <span class="telemetry-label">Assigned Candidates</span>
+                        <div class="telemetry-value" id="statAssignedCount">0</div>
+                        <span class="telemetry-sub">Total invited cohort</span>
+                    </div>
+                    <div class="telemetry-card">
+                        <span class="telemetry-label">Attempts Started</span>
+                        <div class="telemetry-value" id="statAttemptsStarted">0</div>
+                        <span class="telemetry-sub">In progress or resumed</span>
+                    </div>
+                    <div class="telemetry-card">
+                        <span class="telemetry-label">Submissions Completed</span>
+                        <div class="telemetry-value" id="statCompletedCount">0</div>
+                        <span class="telemetry-sub">Graded &amp; finalized</span>
+                    </div>
+                    <div class="telemetry-card">
+                        <span class="telemetry-label">Completion Rate</span>
+                        <div class="telemetry-value" id="statCompletionRate" style="color: #10b981;">0%</div>
+                        <span class="telemetry-sub">Submissions vs Started</span>
+                    </div>
+                    <div class="telemetry-card">
+                        <span class="telemetry-label">Average Score</span>
+                        <div class="telemetry-value" id="statAvgScore" style="color: #ff6b35;">0 pts</div>
+                        <span class="telemetry-sub">Cohort benchmark</span>
+                    </div>
+                    <div class="telemetry-card">
+                        <span class="telemetry-label">Pass Percentage</span>
+                        <div class="telemetry-value" id="statPassPercentage" style="color: #3b82f6;">0%</div>
+                        <span class="telemetry-sub">Met passing threshold</span>
+                    </div>
+                </div>
+
+                <!-- 2-Column Content Layout -->
+                <div class="details-split-layout">
+                    
+                    <!-- Left: Questions Breakdown & Specs -->
+                    <div class="details-left-pane">
+                        
+                        <!-- Sections & Questions Breakdown -->
+                        <div class="details-content-card">
+                            <div class="card-header-bar">
+                                <h3>Assessment Structure &amp; Question Bank</h3>
+                                <span class="header-hint">Assembled from Question Bank</span>
+                            </div>
+                            <div class="card-body-inner" id="sectionsAccordionContainer">
+                                <div style="text-align: center; padding: 24px; color: var(--text-muted, #64748b);">
+                                    Loading sections and question records...
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Examination Rules & Policy -->
+                        <div class="details-content-card">
+                            <div class="card-header-bar">
+                                <h3>Execution Rules &amp; Environment Policies</h3>
+                            </div>
+                            <div class="card-body-inner">
+                                <div class="specs-spec-grid">
+                                    <div class="spec-prop-item">
+                                        <span class="spec-prop-key">Examination Duration:</span>
+                                        <span class="spec-prop-val" id="ruleDuration">--</span>
+                                    </div>
+                                    <div class="spec-prop-item">
+                                        <span class="spec-prop-key">Total Marks:</span>
+                                        <span class="spec-prop-val" id="ruleTotalMarks">--</span>
+                                    </div>
+                                    <div class="spec-prop-item">
+                                        <span class="spec-prop-key">Passing Criteria:</span>
+                                        <span class="spec-prop-val" id="rulePassing">--</span>
+                                    </div>
+                                    <div class="spec-prop-item">
+                                        <span class="spec-prop-key">Permitted Attempts:</span>
+                                        <span class="spec-prop-val" id="ruleMaxAttempts">--</span>
+                                    </div>
+                                    <div class="spec-prop-item">
+                                        <span class="spec-prop-key">Question Navigation:</span>
+                                        <span class="spec-prop-val" id="ruleNavigation">--</span>
+                                    </div>
+                                    <div class="spec-prop-item">
+                                        <span class="spec-prop-key">Negative Marking:</span>
+                                        <span class="spec-prop-val" id="ruleNegativeMark">--</span>
+                                    </div>
+                                    <div class="spec-prop-item">
+                                        <span class="spec-prop-key">Autosave Protocol:</span>
+                                        <span class="spec-prop-val" id="ruleAutosave">--</span>
+                                    </div>
+                                    <div class="spec-prop-item">
+                                        <span class="spec-prop-key">Result Visibility:</span>
+                                        <span class="spec-prop-val" id="ruleVisibility">--</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Schedule & Availability -->
+                        <div class="details-content-card">
+                            <div class="card-header-bar">
+                                <h3>Scheduling &amp; Time Window</h3>
+                            </div>
+                            <div class="card-body-inner">
+                                <div class="specs-spec-grid">
+                                    <div class="spec-prop-item">
+                                        <span class="spec-prop-key">Window Start:</span>
+                                        <span class="spec-prop-val" id="schedStart">--</span>
+                                    </div>
+                                    <div class="spec-prop-item">
+                                        <span class="spec-prop-key">Window End / Deadline:</span>
+                                        <span class="spec-prop-val" id="schedEnd">--</span>
+                                    </div>
+                                    <div class="spec-prop-item">
+                                        <span class="spec-prop-key">Execution Timezone:</span>
+                                        <span class="spec-prop-val" id="schedTimezone">--</span>
+                                    </div>
+                                    <div class="spec-prop-item">
+                                        <span class="spec-prop-key">Availability Policy:</span>
+                                        <span class="spec-prop-val" id="schedAvailability">--</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Right: Candidate Assignments Table -->
+                    <div class="details-right-pane">
+                        <div class="details-content-card">
+                            <div class="card-header-bar">
+                                <div>
+                                    <h3>Assigned Candidates</h3>
+                                    <span class="header-hint">Authorized examinees &amp; live statuses</span>
+                                </div>
+                                <button type="button" class="btn btn-primary btn-sm" id="btnOpenAssignModal">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                    <span>+ Assign Candidates</span>
+                                </button>
+                            </div>
+
+                            <div class="card-body-table">
+                                <table class="admin-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Candidate</th>
+                                            <th>Status</th>
+                                            <th>Score</th>
+                                            <th>Started At</th>
+                                            <th>Submitted At</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="assignedCandidatesTableBody">
+                                        <tr>
+                                            <td colspan="5" style="text-align: center; padding: 24px; color: var(--text-muted, #64748b);">
+                                                Loading candidate cohort...
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </main>
+        </div>
+
+    </div>
+
+    <!-- Candidate Assignment Modal -->
+    <div class="modal-overlay" id="modalAssignCandidates" style="display: none;">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Assign Candidates to Assessment</h3>
+                <button type="button" class="btn-close-modal" onclick="document.getElementById('modalAssignCandidates').style.display='none';">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 13.5px; color: var(--text-secondary, #94a3b8); margin-bottom: 14px;">
+                    Enter candidate email addresses (one per line or comma-separated). Candidates will be granted authorization to attempt this assessment.
+                </p>
+                <textarea id="inputCandidateEmails" rows="6" class="form-input" style="width: 100%; font-family: monospace; font-size: 13px;" placeholder="candidate.alex@bugbash.io&#10;candidate2.test@bugbash.io&#10;darshanhegdehegde@gmail.com"></textarea>
+            </div>
+            <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px;">
+                <button type="button" class="btn btn-secondary" onclick="document.getElementById('modalAssignCandidates').style.display='none';">Cancel</button>
+                <button type="button" class="btn btn-primary" id="btnSubmitCandidateAssignment">Confirm Assignment</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/config.js"></script>
+    <script src="/js/assessment-details.js"></script>
+</body>
+</html>

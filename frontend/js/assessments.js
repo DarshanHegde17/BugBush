@@ -91,7 +91,12 @@
     // 1. Initialization & Authentication Check
     // =========================================================================
     function init() {
-        // Resolve Auth Token
+        if (window.location.pathname.includes('/admin/') || document.getElementById('adminAssessmentsPage')) {
+            initAdminAssessments();
+            return;
+        }
+
+        // Resolve Candidate Auth Token
         state.token = localStorage.getItem('bb_auth_token') || sessionStorage.getItem('bb_auth_token');
         if (!state.token) {
             console.warn('[BugBash] No authorization token found. Redirecting to login.');
@@ -765,6 +770,374 @@
             .replace(/>/g, '&gt;')
             .replace(/"/g, '&quot;')
             .replace(/'/g, '&#039;');
+    }
+
+    // =========================================================================
+    // Admin Assessment Management Controller
+    // =========================================================================
+    async function initAdminAssessments() {
+        const token = sessionStorage.getItem('bugbash_admin_token') || localStorage.getItem('bugbash_admin_token');
+        if (!token) {
+            window.location.href = '/admin/login';
+            return;
+        }
+
+        const API_BASE = (window.BugBashConfig && window.BugBashConfig.API_BASE_URL) || 
+                         (window.location.origin ? window.location.origin + '/api/v1' : 'http://127.0.0.1:8000/api/v1');
+
+        async function adminApi(endpoint, options = {}) {
+            const res = await fetch(`${API_BASE}${endpoint}`, {
+                ...options,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                    ...(options.headers || {})
+                }
+            });
+            if (res.status === 401 || res.status === 403) {
+                sessionStorage.removeItem('bugbash_admin_token');
+                window.location.href = '/admin/login';
+                throw new Error('Unauthorized');
+            }
+            return res;
+        }
+
+        // Setup Layout & Profile
+        try {
+            const meRes = await adminApi('/admin/auth/me');
+            if (meRes.ok) {
+                const adminUser = await meRes.json();
+                const greetingName = document.getElementById('adminGreetingName');
+                const pillName = document.getElementById('userPillName');
+                const sidebarName = document.getElementById('sidebarAdminName');
+                if (greetingName) greetingName.textContent = adminUser.full_name || 'Admin';
+                if (pillName) pillName.textContent = adminUser.full_name || 'Admin';
+                if (sidebarName) sidebarName.textContent = adminUser.full_name || 'Admin';
+            }
+        } catch (_) {}
+
+        // Sidebar & Theme Toggles
+        const toggleBtn = document.getElementById('sidebarToggleBtn');
+        const sidebar = document.getElementById('adminSidebar');
+        const mainWrapper = document.getElementById('mainWrapper');
+        if (toggleBtn && sidebar && mainWrapper) {
+            toggleBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('collapsed');
+                mainWrapper.classList.toggle('expanded');
+            });
+        }
+
+        const themeToggle = document.getElementById('themeToggleBtn');
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                const current = document.documentElement.getAttribute('data-theme') || 'dark';
+                const next = current === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', next);
+                localStorage.setItem('bugbash_theme', next);
+            });
+        }
+
+        // Logout
+        document.querySelectorAll('.btn-admin-logout').forEach(b => {
+            b.addEventListener('click', async (e) => {
+                e.preventDefault();
+                try { await adminApi('/admin/auth/logout', { method: 'POST' }); } catch (_) {}
+                sessionStorage.removeItem('bugbash_admin_token');
+                window.location.href = '/admin/login';
+            });
+        });
+
+        // Admin Assessments State
+        let currentStatusFilter = 'all';
+        let currentSearchQuery = '';
+        let currentTypeFilter = 'all';
+        let currentPage = 1;
+        const pageSize = 15;
+
+        // Elements
+        const tableBody = document.getElementById('adminAssessmentsTableBody');
+        const searchInput = document.getElementById('adminAssessmentSearch');
+        const filterPills = document.querySelectorAll('.filter-pill[data-status]');
+        const typeSelect = document.getElementById('adminTypeFilter');
+        const prevBtn = document.getElementById('btnPagePrev');
+        const nextBtn = document.getElementById('btnPageNext');
+        const pageIndicator = document.getElementById('pageIndicator');
+        const showingCountEl = document.getElementById('showingCount');
+
+        async function loadAssessments() {
+            if (!tableBody) return;
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="9" style="text-align: center; padding: 32px; color: var(--text-muted, #64748b);">
+                        <div style="display: inline-block; width: 24px; height: 24px; border: 2px solid #ff6b35; border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
+                        <div style="margin-top: 8px;">Loading assessment records...</div>
+                    </td>
+                </tr>
+            `;
+
+            try {
+                const offset = (currentPage - 1) * pageSize;
+                let url = `/admin/assessments?status=${encodeURIComponent(currentStatusFilter)}&limit=${pageSize}&offset=${offset}`;
+                if (currentSearchQuery) url += `&search=${encodeURIComponent(currentSearchQuery)}`;
+                if (currentTypeFilter && currentTypeFilter !== 'all') url += `&type=${encodeURIComponent(currentTypeFilter)}`;
+
+                const res = await adminApi(url);
+                if (!res.ok) throw new Error('Failed to fetch assessments');
+
+                const data = await res.json();
+                const assessments = data.assessments || [];
+                const stats = data.statistics || {};
+                const totalCount = data.total_count || 0;
+
+                // Update Metrics Cards
+                updateMetric('totalAssessmentsCount', stats.total_assessments);
+                updateMetric('publishedAssessmentsCount', stats.published_assessments);
+                updateMetric('draftAssessmentsCount', stats.draft_assessments);
+                updateMetric('scheduledAssessmentsCount', stats.scheduled_assessments);
+                updateMetric('completedAssessmentsCount', stats.completed_assessments);
+
+                // Update Pagination Controls
+                if (showingCountEl) showingCountEl.textContent = `${Math.min(assessments.length, pageSize)} of ${totalCount}`;
+                if (pageIndicator) pageIndicator.textContent = `Page ${currentPage} of ${Math.max(1, Math.ceil(totalCount / pageSize))}`;
+                if (prevBtn) prevBtn.disabled = currentPage <= 1;
+                if (nextBtn) nextBtn.disabled = currentPage >= Math.ceil(totalCount / pageSize);
+
+                if (assessments.length === 0) {
+                    tableBody.innerHTML = `
+                        <tr>
+                            <td colspan="9" style="text-align: center; padding: 48px; color: var(--text-muted, #64748b);">
+                                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom: 8px; opacity: 0.5;">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                </svg>
+                                <div style="font-size: 14px; font-weight: 600; color: var(--text-primary, #f8fafc);">No assessments found</div>
+                                <div style="font-size: 12px; margin-top: 4px;">Adjust your search or filters, or create a new assessment.</div>
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                tableBody.innerHTML = assessments.map(a => {
+                    const st = a.status || 'Draft';
+                    const badgeClass = `badge-${st.toLowerCase().replace(/\s+/g, '-')}`;
+                    return `
+                        <tr>
+                            <td>
+                                <div class="assessment-cell-info">
+                                    <a href="/admin/assessment-details?id=${encodeURIComponent(a.id)}" class="assessment-cell-title">${escapeHtml(a.title)}</a>
+                                    <span class="assessment-cell-id">${escapeHtml(a.id)} &bull; ${escapeHtml(a.difficulty || 'Medium')}</span>
+                                </div>
+                            </td>
+                            <td><span style="font-weight: 500;">${escapeHtml(a.assessment_type || 'Coding Exam')}</span></td>
+                            <td style="text-align: center;"><strong>${a.total_questions || 0}</strong></td>
+                            <td>${a.duration_minutes || 60} mins</td>
+                            <td><strong>${a.total_marks || 100}</strong> pts</td>
+                            <td>${a.assigned_candidates_count || 0} candidates</td>
+                            <td><span class="badge-status ${badgeClass}">${escapeHtml(st)}</span></td>
+                            <td>${escapeHtml(a.created_date || 'Nov 2026')}</td>
+                            <td>
+                                <div class="table-actions">
+                                    <a href="/admin/assessment-details?id=${encodeURIComponent(a.id)}" class="btn-tbl-action" title="View Details">
+                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                    </a>
+                                    ${a.can_edit ? `
+                                        <a href="/admin/edit-assessment?id=${encodeURIComponent(a.id)}" class="btn-tbl-action" title="Edit Assessment">
+                                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                                        </a>
+                                    ` : ''}
+                                    <button type="button" class="btn-tbl-action btn-menu-trigger" data-id="${encodeURIComponent(a.id)}" data-status="${escapeHtml(st)}" data-title="${escapeHtml(a.title)}" title="More Actions">
+                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+
+                // Wire action dropdowns
+                wireActionMenuListeners();
+
+            } catch (err) {
+                console.error('[BugBash Admin] Failed to load assessments:', err);
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="9" style="text-align: center; padding: 32px; color: #ef4444;">
+                            Failed to load assessments from server. Please refresh or check connection.
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        function updateMetric(id, val) {
+            const el = document.getElementById(id);
+            if (el) el.textContent = val !== undefined && val !== null ? Number(val).toLocaleString() : '0';
+        }
+
+        function wireActionMenuListeners() {
+            document.querySelectorAll('.btn-menu-trigger').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const aid = btn.getAttribute('data-id');
+                    const st = btn.getAttribute('data-status');
+                    const title = btn.getAttribute('data-title');
+
+                    // Remove existing floating menus
+                    document.querySelectorAll('.tbl-dropdown-menu').forEach(m => m.remove());
+
+                    const menu = document.createElement('div');
+                    menu.className = 'tbl-dropdown-menu active';
+                    menu.innerHTML = `
+                        <button type="button" class="tbl-dropdown-item" data-action="duplicate" data-id="${aid}">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            Duplicate Assessment
+                        </button>
+                        ${st === 'Draft' || st === 'Scheduled' ? `
+                            <button type="button" class="tbl-dropdown-item" data-action="publish" data-id="${aid}">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                                Publish Now
+                            </button>
+                        ` : ''}
+                        ${st !== 'Archived' ? `
+                            <button type="button" class="tbl-dropdown-item" data-action="archive" data-id="${aid}">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="21 8 21 21 3 21 3 8"></polyline><rect x="1" y="3" width="22" height="5"></rect><line x1="10" y1="12" x2="14" y2="12"></line></svg>
+                                Archive
+                            </button>
+                        ` : ''}
+                        ${st === 'Draft' || st === 'Archived' ? `
+                            <button type="button" class="tbl-dropdown-item item-danger" data-action="delete" data-id="${aid}">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                Delete
+                            </button>
+                        ` : ''}
+                    `;
+
+                    btn.parentElement.appendChild(menu);
+
+                    menu.querySelectorAll('[data-action]').forEach(actionBtn => {
+                        actionBtn.addEventListener('click', async () => {
+                            const action = actionBtn.getAttribute('data-action');
+                            menu.remove();
+                            await handleAssessmentAction(action, aid, title);
+                        });
+                    });
+                });
+            });
+
+            document.addEventListener('click', () => {
+                document.querySelectorAll('.tbl-dropdown-menu').forEach(m => m.remove());
+            });
+        }
+
+        async function handleAssessmentAction(action, aid, title) {
+            if (action === 'duplicate') {
+                try {
+                    const res = await adminApi(`/admin/assessments/${encodeURIComponent(aid)}/duplicate`, { method: 'POST' });
+                    if (res.ok) {
+                        alert(`Assessment '${title}' cloned successfully!`);
+                        loadAssessments();
+                    } else {
+                        const err = await res.json();
+                        alert(err.detail || 'Failed to duplicate assessment.');
+                    }
+                } catch (e) {
+                    alert('Network error while duplicating assessment.');
+                }
+            } else if (action === 'publish') {
+                if (!confirm(`Are you sure you want to publish '${title}'? Candidates will be able to start attempts according to the schedule.`)) return;
+                try {
+                    const res = await adminApi(`/admin/assessments/${encodeURIComponent(aid)}/publish`, { method: 'POST' });
+                    if (res.ok) {
+                        alert(`Assessment '${title}' published successfully!`);
+                        loadAssessments();
+                    } else {
+                        const err = await res.json();
+                        alert(err.detail || 'Failed to publish assessment.');
+                    }
+                } catch (e) {
+                    alert('Network error while publishing assessment.');
+                }
+            } else if (action === 'archive') {
+                if (!confirm(`Archive assessment '${title}'? Candidates will no longer be able to start new attempts.`)) return;
+                try {
+                    const res = await adminApi(`/admin/assessments/${encodeURIComponent(aid)}/archive`, { method: 'POST' });
+                    if (res.ok) {
+                        alert(`Assessment '${title}' archived.`);
+                        loadAssessments();
+                    } else {
+                        const err = await res.json();
+                        alert(err.detail || 'Failed to archive assessment.');
+                    }
+                } catch (e) {
+                    alert('Network error while archiving assessment.');
+                }
+            } else if (action === 'delete') {
+                if (!confirm(`Permanently delete assessment '${title}'? This action cannot be undone.`)) return;
+                try {
+                    const res = await adminApi(`/admin/assessments/${encodeURIComponent(aid)}`, { method: 'DELETE' });
+                    if (res.ok) {
+                        alert(`Assessment '${title}' deleted.`);
+                        loadAssessments();
+                    } else {
+                        const err = await res.json();
+                        alert(err.detail || 'Failed to delete assessment.');
+                    }
+                } catch (e) {
+                    alert('Network error while deleting assessment.');
+                }
+            }
+        }
+
+        // Filters & Search Event Listeners
+        filterPills.forEach(pill => {
+            pill.addEventListener('click', () => {
+                filterPills.forEach(p => p.classList.remove('active'));
+                pill.classList.add('active');
+                currentStatusFilter = pill.getAttribute('data-status') || 'all';
+                currentPage = 1;
+                loadAssessments();
+            });
+        });
+
+        if (typeSelect) {
+            typeSelect.addEventListener('change', () => {
+                currentTypeFilter = typeSelect.value;
+                currentPage = 1;
+                loadAssessments();
+            });
+        }
+
+        let searchTimeout = null;
+        if (searchInput) {
+            searchInput.addEventListener('input', () => {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    currentSearchQuery = searchInput.value.trim();
+                    currentPage = 1;
+                    loadAssessments();
+                }, 300);
+            });
+        }
+
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    loadAssessments();
+                }
+            });
+        }
+
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                currentPage++;
+                loadAssessments();
+            });
+        }
+
+        // Initial Load
+        loadAssessments();
     }
 
     // Run on DOM Ready

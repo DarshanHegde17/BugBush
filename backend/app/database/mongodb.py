@@ -160,6 +160,20 @@ class MongoDB:
     def practice_problems(self) -> Optional[Collection]:
         return self.db.practice_problems if (self.is_connected and self.db is not None) else None
 
+    @property
+    def admin_audit_logs(self) -> Optional[Collection]:
+        return self.db.admin_audit_logs if (self.is_connected and self.db is not None) else None
+
+    def __getattr__(self, name: str) -> Optional[Collection]:
+        if self.is_connected and self.db is not None:
+            return self.db[name]
+        return None
+
+    def __getitem__(self, name: str) -> Optional[Collection]:
+        if self.is_connected and self.db is not None:
+            return self.db[name]
+        return None
+
 
 # Global singleton instance
 mongodb = MongoDB()

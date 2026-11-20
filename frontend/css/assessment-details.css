@@ -1,0 +1,260 @@
+/* ==========================================================================
+   BugBash - Enterprise Assessment Details & Telemetry Stylesheet
+   Brand Accent: #ff6b35
+   Provides detailed assessment inspection, sections & questions breakdown,
+   timer & rules overview, and live candidate assignment management.
+   ========================================================================== */
+
+.details-page-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Hero Header Card */
+.details-hero-card {
+    background: var(--bg-card, #131824);
+    border: 1px solid var(--border-color, #212838);
+    border-radius: var(--radius-lg, 12px);
+    padding: 24px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.details-hero-left {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+    min-width: 300px;
+}
+
+.hero-meta-strip {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.hero-assessment-id {
+    font-size: 11px;
+    font-family: monospace;
+    color: var(--text-muted, #64748b);
+    background: var(--bg-input, #0a0e17);
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color, #212838);
+}
+
+.details-hero-title {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text-primary, #f8fafc);
+    letter-spacing: -0.5px;
+}
+
+.details-hero-desc {
+    font-size: 13px;
+    color: var(--text-secondary, #94a3b8);
+    line-height: 1.6;
+    max-width: 800px;
+}
+
+.details-hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* Statistics Grid */
+.details-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+}
+
+.detail-stat-box {
+    background: var(--bg-card, #131824);
+    border: 1px solid var(--border-color, #212838);
+    border-radius: var(--radius-lg, 12px);
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    transition: all 0.2s ease;
+}
+
+.detail-stat-box:hover {
+    border-color: rgba(255, 107, 53, 0.4);
+    transform: translateY(-2px);
+}
+
+.detail-stat-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text-muted, #64748b);
+    letter-spacing: 0.5px;
+}
+
+.detail-stat-value {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text-primary, #f8fafc);
+}
+
+.detail-stat-sub {
+    font-size: 11px;
+    color: #10b981;
+    font-weight: 600;
+}
+
+/* Main 2-Column Layout */
+.details-content-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1.2fr;
+    gap: 24px;
+}
+
+/* Cards */
+.details-card {
+    background: var(--bg-card, #131824);
+    border: 1px solid var(--border-color, #212838);
+    border-radius: var(--radius-lg, 12px);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-bottom: 24px;
+}
+
+.details-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color, #212838);
+    padding-bottom: 14px;
+}
+
+.details-card-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary, #f8fafc);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Section Breakdown Accordion */
+.section-item-block {
+    background: var(--bg-input, #0a0e17);
+    border: 1px solid var(--border-color, #212838);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 12px;
+}
+
+.section-item-header {
+    padding: 14px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid var(--border-color, #212838);
+}
+
+.section-item-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #ff6b35;
+}
+
+.section-item-meta {
+    font-size: 12px;
+    color: var(--text-secondary, #94a3b8);
+}
+
+.section-questions-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+
+.section-questions-table th {
+    padding: 10px 16px;
+    text-align: left;
+    color: var(--text-muted, #64748b);
+    border-bottom: 1px solid var(--border-color, #212838);
+    font-weight: 600;
+}
+
+.section-questions-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color, #212838);
+    color: var(--text-primary, #f8fafc);
+}
+
+/* Rules & Schedule Specs Grid */
+.specs-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+}
+
+.spec-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    background: var(--bg-input, #0a0e17);
+    padding: 10px 14px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color, #212838);
+}
+
+.spec-meta-label {
+    font-size: 11px;
+    color: var(--text-muted, #64748b);
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.spec-meta-val {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary, #f8fafc);
+}
+
+/* Candidates Table */
+.candidates-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+
+.candidates-table th {
+    padding: 10px 14px;
+    color: var(--text-muted, #64748b);
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 1px solid var(--border-color, #212838);
+    background: var(--bg-input, #0a0e17);
+}
+
+.candidates-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border-color, #212838);
+    color: var(--text-primary, #f8fafc);
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .details-content-grid {
+        grid-template-columns: 1fr;
+    }
+}

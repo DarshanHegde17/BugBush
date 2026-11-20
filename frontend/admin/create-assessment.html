@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BugBash Admin &bull; Create Assessment</title>
+    <meta name="description" content="Create, configure, and assemble coding assessments with manual and automatic question selection.">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff6b35'><path d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/></svg>">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/css/admin-dashboard.css">
+    <link rel="stylesheet" href="/css/assessments.css">
+    <link rel="stylesheet" href="/css/assessment-form.css">
+</head>
+<body>
+    <div class="app-container">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="admin-sidebar" id="adminSidebar">
+            <div class="sidebar-header">
+                <a href="/admin/dashboard" class="brand-wrapper">
+                    <div class="brand-logo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    </div>
+                    <div class="brand-text">
+                        <span>BugBash</span>
+                        <span class="admin-tag">ADMIN</span>
+                    </div>
+                </a>
+                <button type="button" class="sidebar-toggle-btn" id="sidebarToggleBtn" aria-label="Toggle Sidebar">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                </button>
+            </div>
+
+            <ul class="sidebar-menu">
+                <li class="menu-category">Operations</li>
+                <li class="nav-item">
+                    <a href="/admin/dashboard" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+                        <span class="nav-text">Overview</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/questions" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                        <span class="nav-text">Question Bank</span>
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a href="/admin/assessments" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                        <span class="nav-text">Assessments</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/candidates" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+                        <span class="nav-text">Students &amp; Candidates</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/admin/submissions" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                        <span class="nav-text">Submissions</span>
+                    </a>
+                </li>
+                <li class="menu-category">Settings &amp; Access</li>
+                <li class="nav-item">
+                    <a href="/admin/profile" class="nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        <span class="nav-text">My Profile</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#logout" class="nav-link btn-admin-logout">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                        <span class="nav-text">Logout</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <div class="admin-avatar" id="sidebarAdminAvatar">AD</div>
+                <div class="admin-info">
+                    <div class="admin-name" id="sidebarAdminName">Administrator</div>
+                    <div class="admin-role-badge">System Admin</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Wrapper -->
+        <div class="main-wrapper" id="mainWrapper">
+            
+            <!-- Topbar -->
+            <header class="top-navbar">
+                <div class="topbar-left">
+                    <div class="topbar-greeting">
+                        Assessment Workspace &bull; <span id="adminGreetingName">Admin</span>
+                    </div>
+                </div>
+                <div class="topbar-right">
+                    <button type="button" class="action-btn" id="themeToggleBtn" aria-label="Toggle Theme">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    </button>
+                    <div class="user-menu-pill" id="userMenuBtn">
+                        <div class="user-menu-avatar" id="userPillAvatar">AD</div>
+                        <span class="user-menu-name" id="userPillName">Admin</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Wizard Content -->
+            <main class="page-content">
+                <div class="form-page-container">
+                    
+                    <!-- Header with Breadcrumb -->
+                    <div class="form-header-bar">
+                        <div>
+                            <div class="breadcrumb-trail">
+                                <a href="/admin/assessments">Assessments</a>
+                                <span>/</span>
+                                <span>Create New</span>
+                            </div>
+                            <div class="form-header-title">
+                                <h1 id="wizardPageTitle">Create Assessment Configuration</h1>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Alert Box -->
+                    <div class="form-alert-box alert-error" id="formAlertBox"></div>
+
+                    <!-- Stepper Bar (6 Steps) -->
+                    <nav class="wizard-stepper" aria-label="Assessment Creation Steps">
+                        <div class="step-indicator active" data-step="1">
+                            <span class="step-badge">1</span>
+                            <span class="step-name">Basic Info</span>
+                        </div>
+                        <div class="step-divider"></div>
+
+                        <div class="step-indicator" data-step="2">
+                            <span class="step-badge">2</span>
+                            <span class="step-name">Sections &amp; Questions</span>
+                        </div>
+                        <div class="step-divider"></div>
+
+                        <div class="step-indicator" data-step="3">
+                            <span class="step-badge">3</span>
+                            <span class="step-name">Timers</span>
+                        </div>
+                        <div class="step-divider"></div>
+
+                        <div class="step-indicator" data-step="4">
+                            <span class="step-badge">4</span>
+                            <span class="step-name">Rules &amp; Settings</span>
+                        </div>
+                        <div class="step-divider"></div>
+
+                        <div class="step-indicator" data-step="5">
+                            <span class="step-badge">5</span>
+                            <span class="step-name">Schedule</span>
+                        </div>
+                        <div class="step-divider"></div>
+
+                        <div class="step-indicator" data-step="6">
+                            <span class="step-badge">6</span>
+                            <span class="step-name">Review</span>
+                        </div>
+                    </nav>
+
+                    <!-- ========================================================
+                         STEP 1: Basic Information
+                         ======================================================== -->
+                    <div class="form-step-pane active" data-step="1">
+                        <div class="step-section-heading">
+                            <h2>1. Basic Assessment Information</h2>
+                            <p>Configure assessment title, purpose, instructions, and target languages.</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="inputAssessmentTitle">
+                                Assessment Title <span class="required">*</span>
+                            </label>
+                            <input type="text" id="inputAssessmentTitle" class="form-control" placeholder="e.g. Mid-Term Dynamic Programming & Systems Evaluation" required>
+                            <span class="form-hint">A clear, descriptive name visible to candidates and evaluators.</span>
+                        </div>
+
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label class="form-label" for="inputAssessmentType">Assessment Type</label>
+                                <select id="inputAssessmentType" class="form-control">
+                                    <option value="Coding Examination">Coding Examination</option>
+                                    <option value="Technical Interview">Technical Interview</option>
+                                    <option value="MCQ Assessment">MCQ Assessment</option>
+                                    <option value="Mixed Assessment">Mixed Assessment (Coding + MCQ)</option>
+                                    <option value="Practice Assessment">Practice Assessment</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="inputDifficulty">Target Difficulty</label>
+                                <select id="inputDifficulty" class="form-control">
+                                    <option value="Easy">Easy</option>
+                                    <option value="Medium" selected>Medium</option>
+                                    <option value="Hard">Hard</option>
+                                    <option value="Mixed">Mixed Difficulty</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="inputAssessmentDesc">
+                                Description &bull; Overview <span class="required">*</span>
+                            </label>
+                            <textarea id="inputAssessmentDesc" class="form-control" placeholder="Describe the topics tested, goals, and expectations..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="inputInstructions">Candidate Instructions</label>
+                            <textarea id="inputInstructions" class="form-control" placeholder="Instructions shown to candidates before starting..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Permitted Programming Languages <span class="required">*</span></label>
+                            <div class="language-chips-grid">
+                                <input type="checkbox" id="langPy" class="lang-chip-checkbox" value="Python" checked>
+                                <label for="langPy" class="lang-chip-label">Python</label>
+
+                                <input type="checkbox" id="langJava" class="lang-chip-checkbox" value="Java" checked>
+                                <label for="langJava" class="lang-chip-label">Java</label>
+
+                                <input type="checkbox" id="langCpp" class="lang-chip-checkbox" value="C++" checked>
+                                <label for="langCpp" class="lang-chip-label">C++</label>
+
+                                <input type="checkbox" id="langC" class="lang-chip-checkbox" value="C" checked>
+                                <label for="langC" class="lang-chip-label">C</label>
+
+                                <input type="checkbox" id="langJs" class="lang-chip-checkbox" value="JavaScript" checked>
+                                <label for="langJs" class="lang-chip-label">JavaScript</label>
+
+                                <input type="checkbox" id="langSql" class="lang-chip-checkbox" value="SQL" checked>
+                                <label for="langSql" class="lang-chip-label">SQL</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="inputTags">Tags (Comma-separated)</label>
+                            <input type="text" id="inputTags" class="form-control" placeholder="Algorithms, Graph, Dynamic Programming, Placement">
+                        </div>
+                    </div>
+
+                    <!-- ========================================================
+                         STEP 2: Sections & Questions Selection
+                         ======================================================== -->
+                    <div class="form-step-pane" data-step="2">
+                        <div class="step-section-heading">
+                            <h2>2. Assessment Sections &amp; Questions</h2>
+                            <p>Assemble questions from the Question Bank manually or automatically with custom counts.</p>
+                        </div>
+
+                        <!-- Question Selection Toolbar -->
+                        <div class="question-selection-toolbar">
+                            <div class="selection-metrics">
+                                <div class="metric-badge-item">Selected Questions: <strong id="selectedQuestionCountText">0</strong></div>
+                                <div class="metric-badge-item">Total Marks: <strong id="totalCalculatedMarksText">0</strong> pts</div>
+                            </div>
+                            <div class="selection-buttons-group">
+                                <button type="button" class="btn-secondary" id="btnOpenManualSelectModal">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                                    Add Questions from Bank
+                                </button>
+                                <button type="button" class="btn-primary" id="btnOpenAutoGenerateModal">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                                    Auto-Generate Questions
+                                </button>
+                                <button type="button" class="btn-secondary" id="btnAddSectionBtn">
+                                    + Add Section
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Sections Container -->
+                        <div class="sections-container" id="sectionsContainer"></div>
+                    </div>
+
+                    <!-- ========================================================
+                         STEP 3: Timer Configuration
+                         ======================================================== -->
+                    <div class="form-step-pane" data-step="3">
+                        <div class="step-section-heading">
+                            <h2>3. Timer &amp; Duration Configuration</h2>
+                            <p>Configure assessment duration, remaining time alerts, and section timer countdowns.</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Timer Mode</label>
+                            <div style="display: flex; gap: 20px; margin-top: 6px;">
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="radio" name="timerModeRadio" value="total" checked>
+                                    <span>Total Assessment Timer Only</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="radio" name="timerModeRadio" value="section">
+                                    <span>Individual Section Timers Only</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="radio" name="timerModeRadio" value="both">
+                                    <span>Both Total &amp; Section Timers</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label class="form-label" for="inputTotalDuration">
+                                    Total Assessment Duration (Minutes) <span class="required">*</span>
+                                </label>
+                                <input type="number" id="inputTotalDuration" class="form-control" value="60" min="5" max="480">
+                                <span class="form-hint">Enforced by backend session timeout verification.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ========================================================
+                         STEP 4: Rules & Settings
+                         ======================================================== -->
+                    <div class="form-step-pane" data-step="4">
+                        <div class="step-section-heading">
+                            <h2>4. Assessment Rules &amp; Evaluation Policy</h2>
+                            <p>Configure passing benchmarks, negative marking, attempt allowances, and security settings.</p>
+                        </div>
+
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label class="form-label" for="inputPassingPct">Passing Score Percentage (%)</label>
+                                <input type="number" id="inputPassingPct" class="form-control" value="60" min="0" max="100">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="inputMaxAttempts">Maximum Permitted Attempts</label>
+                                <select id="inputMaxAttempts" class="form-control">
+                                    <option value="1" selected>1 Attempt (Standard Exam)</option>
+                                    <option value="2">2 Attempts</option>
+                                    <option value="3">3 Attempts</option>
+                                    <option value="5">5 Attempts (Practice)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label class="form-label" for="selectNavigationRule">Question Navigation Rule</label>
+                                <select id="selectNavigationRule" class="form-control">
+                                    <option value="free" selected>Free Navigation (Jump across questions)</option>
+                                    <option value="linear">Linear Only (Sequential - No Revisiting)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="selectResultVisibility">Result Visibility</label>
+                                <select id="selectResultVisibility" class="form-control">
+                                    <option value="immediate" selected>Immediate (Upon final submission)</option>
+                                    <option value="after_deadline">After Assessment Deadline Passes</option>
+                                    <option value="manual">Manual Release by Administrator</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Switch Toggles -->
+                        <div class="switch-control">
+                            <div class="switch-label-group">
+                                <span class="switch-title">Negative Marking</span>
+                                <span class="switch-desc">Deduct points for incorrect MCQ or failed execution attempts.</span>
+                            </div>
+                            <input type="checkbox" id="toggleNegativeMarking" class="switch-input">
+                        </div>
+
+                        <div class="form-group" id="negativeMarkValueGroup" style="display: none;">
+                            <label class="form-label" for="inputNegativeMarkValue">Negative Points Deducted per Mistake</label>
+                            <input type="number" id="inputNegativeMarkValue" class="form-control" value="2" min="0.5" step="0.5">
+                        </div>
+
+                        <div class="switch-control">
+                            <div class="switch-label-group">
+                                <span class="switch-title">Random Question Order</span>
+                                <span class="switch-desc">Shuffle question order uniquely for each candidate attempt.</span>
+                            </div>
+                            <input type="checkbox" id="toggleRandomOrder" class="switch-input">
+                        </div>
+
+                        <div class="switch-control">
+                            <div class="switch-label-group">
+                                <span class="switch-title">Random MCQ Answer Order</span>
+                                <span class="switch-desc">Shuffle A/B/C/D choices randomly across candidates.</span>
+                            </div>
+                            <input type="checkbox" id="toggleRandomOptions" class="switch-input">
+                        </div>
+
+                        <div class="switch-control">
+                            <div class="switch-label-group">
+                                <span class="switch-title">Allow Modifying Previous Answers</span>
+                                <span class="switch-desc">Permit candidates to edit earlier code before final submit.</span>
+                            </div>
+                            <input type="checkbox" id="toggleChangeAnswers" class="switch-input" checked>
+                        </div>
+                    </div>
+
+                    <!-- ========================================================
+                         STEP 5: Schedule & Candidates
+                         ======================================================== -->
+                    <div class="form-step-pane" data-step="5">
+                        <div class="step-section-heading">
+                            <h2>5. Scheduling &amp; Candidate Assignment</h2>
+                            <p>Configure assessment availability, calendar window, and assign candidate cohorts.</p>
+                        </div>
+
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label class="form-label" for="selectAvailability">Assessment Availability</label>
+                                <select id="selectAvailability" class="form-control">
+                                    <option value="scheduled" selected>Scheduled Window</option>
+                                    <option value="always">Always Available (Self-Paced)</option>
+                                    <option value="fixed_window">Strict Fixed Proctored Window</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="selectTimezone">Timezone</label>
+                                <select id="selectTimezone" class="form-control">
+                                    <option value="UTC" selected>UTC (Coordinated Universal Time)</option>
+                                    <option value="Asia/Kolkata">Asia/Kolkata (IST)</option>
+                                    <option value="America/New_York">America/New_York (EST)</option>
+                                    <option value="Europe/London">Europe/London (BST)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label class="form-label" for="inputStartDate">Start Date &amp; Time</label>
+                                <input type="datetime-local" id="inputStartDate" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="inputEndDate">End Date &amp; Submission Deadline</label>
+                                <input type="datetime-local" id="inputEndDate" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="inputAssignedCandidates">Assigned Candidate Emails</label>
+                            <textarea id="inputAssignedCandidates" class="form-control" placeholder="Enter candidate emails (separated by commas or newlines) e.g. student1@university.edu, candidate@test.com"></textarea>
+                            <span class="form-hint">Only assigned registered candidates will be permitted to access and start this examination.</span>
+                        </div>
+                    </div>
+
+                    <!-- ========================================================
+                         STEP 6: Review & Finalize
+                         ======================================================== -->
+                    <div class="form-step-pane" data-step="6">
+                        <div class="step-section-heading">
+                            <h2>6. Review Assessment Specifications</h2>
+                            <p>Review final examination configuration before saving or publishing.</p>
+                        </div>
+
+                        <div class="specs-meta-grid" style="margin-bottom: 24px;">
+                            <div class="spec-meta-item">
+                                <span class="spec-meta-label">Title</span>
+                                <span class="spec-meta-val" id="revTitle">--</span>
+                            </div>
+                            <div class="spec-meta-item">
+                                <span class="spec-meta-label">Type</span>
+                                <span class="spec-meta-val" id="revType">--</span>
+                            </div>
+                            <div class="spec-meta-item">
+                                <span class="spec-meta-label">Duration</span>
+                                <span class="spec-meta-val" id="revDuration">--</span>
+                            </div>
+                            <div class="spec-meta-item">
+                                <span class="spec-meta-label">Total Marks</span>
+                                <span class="spec-meta-val" id="revTotalMarks">--</span>
+                            </div>
+                            <div class="spec-meta-item">
+                                <span class="spec-meta-label">Passing Score</span>
+                                <span class="spec-meta-val" id="revPassingScore">--</span>
+                            </div>
+                            <div class="spec-meta-item">
+                                <span class="spec-meta-label">Navigation</span>
+                                <span class="spec-meta-val" id="revNavigation">--</span>
+                            </div>
+                        </div>
+
+                        <h3 style="font-size: 15px; font-weight: 700; color: var(--text-primary, #f8fafc); margin-bottom: 12px;">Assembled Questions</h3>
+                        <div id="revQuestionsSummaryList"></div>
+                    </div>
+
+                    <!-- Wizard Navigation Footer -->
+                    <div class="wizard-footer-nav">
+                        <div>
+                            <button type="button" class="btn-secondary" id="btnWizardPrev" style="display: none;">&larr; Previous Step</button>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <button type="button" class="btn-secondary" id="btnWizardSaveDraft">Save as Draft</button>
+                            <button type="button" class="btn-primary" id="btnWizardNext">Next Step &rarr;</button>
+                            <button type="button" class="btn-primary" id="btnWizardPublish" style="display: none; background: #10b981; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);">
+                                Publish Assessment
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </main>
+        </div>
+
+    </div>
+
+    <!-- ====================================================================
+         Modal 1: Manual Question Selection
+         ==================================================================== -->
+    <div class="modal-overlay" id="modalManualSelect" style="display: none;">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Select Questions from BugBash Question Bank</h3>
+                <button type="button" class="btn-close-modal" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="qbSearchInput" class="form-control" placeholder="Search questions..." style="flex: 1; min-width: 180px;">
+                    <select id="qbLangFilter" class="form-control" style="width: auto;">
+                        <option value="all">All Languages</option>
+                        <option value="Python">Python</option>
+                        <option value="Java">Java</option>
+                        <option value="C++">C++</option>
+                        <option value="JavaScript">JavaScript</option>
+                        <option value="SQL">SQL</option>
+                    </select>
+                    <select id="qbDiffFilter" class="form-control" style="width: auto;">
+                        <option value="all">All Difficulties</option>
+                        <option value="Easy">Easy</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Hard">Hard</option>
+                    </select>
+                    <select id="qbTypeFilter" class="form-control" style="width: auto;">
+                        <option value="all">All Question Types</option>
+                        <option value="coding">Coding Problems</option>
+                        <option value="mcq">Technical MCQs</option>
+                    </select>
+                </div>
+                <div class="qb-catalog-list" id="qbCatalogList"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary btn-dismiss-modal">Cancel</button>
+                <button type="button" class="btn-primary" id="btnAddSelectedFromCatalog">Add Selected Questions</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         Modal 2: Automatic Question Generation with Exact Counts
+         ==================================================================== -->
+    <div class="modal-overlay" id="modalAutoGenerate" style="display: none;">
+        <div class="modal-card" style="max-width: 680px;">
+            <div class="modal-header">
+                <h3>Automatic Question Generation</h3>
+                <button type="button" class="btn-close-modal" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 13px; color: var(--text-secondary, #94a3b8); margin-bottom: 16px;">
+                    Specify exact question counts per language and difficulty. BugBash will validate availability in the Question Bank and assemble unique question IDs.
+                </p>
+
+                <div class="auto-gen-grid">
+                    <!-- Python -->
+                    <div class="auto-gen-card">
+                        <div class="auto-gen-card-title">Python Questions</div>
+                        <div class="count-inputs-row">
+                            <div class="count-input-group">
+                                <label>Easy</label>
+                                <input type="number" id="autoPyEasy" min="0" value="0">
+                            </div>
+                            <div class="count-input-group">
+                                <label>Medium</label>
+                                <input type="number" id="autoPyMed" min="0" value="0">
+                            </div>
+                            <div class="count-input-group">
+                                <label>Hard</label>
+                                <input type="number" id="autoPyHard" min="0" value="0">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Java -->
+                    <div class="auto-gen-card">
+                        <div class="auto-gen-card-title">Java Questions</div>
+                        <div class="count-inputs-row">
+                            <div class="count-input-group">
+                                <label>Easy</label>
+                                <input type="number" id="autoJavaEasy" min="0" value="0">
+                            </div>
+                            <div class="count-input-group">
+                                <label>Medium</label>
+                                <input type="number" id="autoJavaMed" min="0" value="0">
+                            </div>
+                            <div class="count-input-group">
+                                <label>Hard</label>
+                                <input type="number" id="autoJavaHard" min="0" value="0">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SQL -->
+                    <div class="auto-gen-card">
+                        <div class="auto-gen-card-title">SQL Queries</div>
+                        <div class="count-inputs-row">
+                            <div class="count-input-group">
+                                <label>Easy</label>
+                                <input type="number" id="autoSqlEasy" min="0" value="0">
+                            </div>
+                            <div class="count-input-group">
+                                <label>Medium</label>
+                                <input type="number" id="autoSqlMed" min="0" value="0">
+                            </div>
+                            <div class="count-input-group">
+                                <label>Hard</label>
+                                <input type="number" id="autoSqlHard" min="0" value="0">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- C/C++ -->
+                    <div class="auto-gen-card">
+                        <div class="auto-gen-card-title">C / C++ Challenges</div>
+                        <div class="count-inputs-row">
+                            <div class="count-input-group">
+                                <label>Easy</label>
+                                <input type="number" id="autoCEasy" min="0" value="0">
+                            </div>
+                            <div class="count-input-group">
+                                <label>Medium</label>
+                                <input type="number" id="autoCMed" min="0" value="0">
+                            </div>
+                            <div class="count-input-group">
+                                <label>Hard</label>
+                                <input type="number" id="autoCHard" min="0" value="0">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MCQs -->
+                <div style="margin-top: 18px; background: var(--bg-input, #0a0e17); padding: 14px 18px; border-radius: 8px; border: 1px solid var(--border-color, #212838); display: flex; align-items: center; justify-content: space-between;">
+                    <div>
+                        <strong style="color: #ff6b35; font-size: 14px;">Technical MCQs</strong>
+                        <div style="font-size: 11px; color: var(--text-muted, #64748b);">Number of multiple-choice questions to include</div>
+                    </div>
+                    <input type="number" id="autoMcqCount" min="0" max="12" value="0" style="width: 70px; padding: 6px; text-align: center; font-size: 13px; font-weight: 700; border-radius: 6px; border: 1px solid var(--border-color, #212838); background: var(--bg-card, #131824); color: var(--text-primary, #f8fafc);">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary btn-dismiss-modal">Cancel</button>
+                <button type="button" class="btn-primary" id="btnSubmitAutoGenerate">Generate &amp; Add Questions</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/config.js"></script>
+    <script src="/js/assessment-form.js"></script>
+</body>
+</html>

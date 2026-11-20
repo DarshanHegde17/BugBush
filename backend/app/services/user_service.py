@@ -823,6 +823,21 @@ class UserService:
             except Exception as e:
                 logger.warning(f"Error querying OTP from MongoDB: {e}")
 
+        # If no OTP session found, check if user is already verified in MongoDB
+        target_email = email.strip().lower() if email else (otp_record.get("email") if otp_record else None)
+        if not target_email and token and mongodb.otps is not None:
+            try:
+                rec_check = mongodb.otps.find_one({"token": token})
+                if rec_check:
+                    target_email = rec_check.get("email")
+            except Exception:
+                pass
+
+        if target_email:
+            existing_user = self._get_user_doc(target_email)
+            if existing_user and existing_user.get("is_verified", False):
+                return True, None
+
         if not otp_record:
             return False, "Invalid or missing verification session. Please request a new verification code."
 
@@ -923,6 +938,8 @@ class UserService:
         user = self._get_user_doc(clean_email)
         if not user:
             return False, None, "Account not found for OTP dispatch."
+        if user.get("is_verified", False):
+            return False, None, "This account is already verified. You can sign in directly."
 
         now = datetime.now(timezone.utc)
 

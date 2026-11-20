@@ -54,6 +54,8 @@
             ADMIN_DASHBOARD_ACTIVITY: '/admin/dashboard/recent-activity',
             ADMIN_PERMISSIONS: '/admin/permissions',
             ADMIN_CHANGE_PASSWORD: '/admin/change-password',
+            ADMIN_ASSESSMENTS: '/admin/assessments',
+            ADMIN_ASSESSMENT_QUESTIONS_CATALOG: '/admin/assessments/questions/catalog',
             PRACTICE_PROBLEMS: '/practice/problems'
         },
 

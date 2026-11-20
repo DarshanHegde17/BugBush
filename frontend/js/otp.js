@@ -60,12 +60,17 @@ function initOtpVerification() {
     if (initialDevOtp) {
         showDevOtpHelper(initialDevOtp);
     } else if (rawEmail && rawEmail.includes('@')) {
-        // Query backend for dev helper code if running in development mode
+        // Query backend for dev helper code or account verification status
         const apiBase = window.BugBashConfig?.API_BASE_URL || (window.location.origin + '/api/v1');
         fetch(`${apiBase}/auth/dev-otp?email=${encodeURIComponent(rawEmail)}`)
             .then(res => res.ok ? res.json() : null)
             .then(data => {
-                if (data && data.dev_otp) {
+                if (!data) return;
+                if (data.is_verified) {
+                    transitionToSuccessState(orgName, rawEmail);
+                    return;
+                }
+                if (data.dev_otp) {
                     sessionStorage.setItem('bugbash_dev_otp', data.dev_otp);
                     showDevOtpHelper(data.dev_otp);
                 }
